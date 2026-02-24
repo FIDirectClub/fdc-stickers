@@ -397,7 +397,7 @@ function addToCartPDP(productId, qty) {
   if (!product || product.stock <= 0) return;
   var existing = cart.find(function(i) { return i.id === productId; });
   if (existing) {
-    if (existing.qty + qty > product.stock) { showToast('Maximum entries reached', '⚠️'); return; }
+    if (existing.qty + qty > product.stock) { showToast('Maximum quantity reached', '⚠️'); return; }
     existing.qty += qty;
   } else {
     cart.push({ id: productId, qty: qty });
@@ -438,8 +438,8 @@ function renderProduct(product) {
     : '<div class="product-image-placeholder">🔫</div>';
 
   var stockHtml = oos
-    ? '<span class="stock-out">ENTRIES CLOSED</span>'
-    : (low ? '<span class="stock-low">Only ' + product.stock + ' entries remaining!</span>' : '<span class="stock-in">✓ ' + product.stock + ' entries remaining — Ships free</span>');
+    ? '<span class="stock-out">SOLD OUT</span>'
+    : (low ? '<span class="stock-low">Only ' + product.stock + ' remaining!</span>' : '<span class="stock-in">✓ ' + product.stock + ' remaining — Ships free</span>');
 
   var specsHtml = '';
   if (product.specs) {
@@ -456,7 +456,7 @@ function renderProduct(product) {
       (product.prize ? '<div style="background:rgba(255,45,85,0.08);border:2px solid var(--border);padding:12px 16px;margin-bottom:16px;font-family:\'Barlow Condensed\',sans-serif;font-size:14px;letter-spacing:1px;color:var(--gold);box-shadow:2px 2px 0 rgba(0,0,0,0.1);">🏆 <strong>WIN:</strong> ' + product.prize + (product.prizeValue ? ' (ARV $' + product.prizeValue.toLocaleString() + ')' : '') + '</div>' : '') +
       '<h1 class="product-title">' + product.name + '</h1>' +
       (product.tagline ? '<p class="product-tagline">"' + product.tagline + '"</p>' : '') +
-      '<div class="product-price-tag">$' + product.price.toFixed(2) + ' <span style="font-size:18px;color:var(--steel-light);letter-spacing:1px;">/ entry</span></div>' +
+      '<div class="product-price-tag">$' + product.price.toFixed(2) + ' <span style="font-size:18px;color:var(--steel-light);letter-spacing:1px;">/ sticker</span></div>' +
       '<div class="product-stock-info">' + stockHtml + '</div>' +
       '<div class="product-actions">' +
         '<div class="qty-selector">' +
@@ -464,11 +464,11 @@ function renderProduct(product) {
           '<input type="number" id="pdpQty" value="1" min="1" max="' + product.stock + '">' +
           '<button onclick="changeQty(1)">+</button>' +
         '</div>' +
-        '<button class="pdp-add-btn" id="pdpAddBtn" onclick="addToCartPDP(\'' + product.id + '\', getQty())"' + (oos ? ' disabled' : '') + '>' + (oos ? 'ENTRIES CLOSED' : 'ENTER TO WIN — $' + product.price.toFixed(2) + '/ea') + '</button>' +
+        '<button class="pdp-add-btn" id="pdpAddBtn" onclick="addToCartPDP(\'' + product.id + '\', getQty())"' + (oos ? ' disabled' : '') + '>' + (oos ? 'SOLD OUT' : 'ADD TO CART — $' + product.price.toFixed(2) + '/ea') + '</button>' +
       '</div>' +
       '<div class="product-description"><h3>About This Giveaway</h3>' + (product.fullDescription || '<p>' + product.description + '</p>') + '</div>' +
       (specsHtml ? '<div class="product-specs">' + specsHtml + '</div>' : '') +
-      '<div class="shipping-note">🏆 Each sticker purchased = 1 sweepstakes entry for the prize firearm shown above. Ships free to lower 48. FL orders include 7.5% sales tax. No purchase necessary — <a href="/#rules" style="color:var(--gold);">see Official Rules</a>.</div>' +
+      '<div class="shipping-note">🏆 Each sticker purchased includes a free sweepstakes entry for the prize firearm shown above. Ships free to lower 48. FL orders include 7.5% sales tax. No purchase necessary — <a href="/#rules" style="color:var(--gold);">see Official Rules</a>.</div>' +
     '</div>' +
   '</div></div>';
 
