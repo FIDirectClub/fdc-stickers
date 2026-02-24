@@ -7,8 +7,9 @@ Official sticker shop for **Firearms Direct Club**. Built for Vercel deployment 
 ```
 fdc-stickers/
 ├── index.html          # Main storefront (catalog, cart, checkout)
-├── admin.html          # Admin panel (inventory, orders, reports)
+├── admin.html          # Admin panel (login-gated, inventory, orders, reports)
 ├── api/
+│   ├── auth.js         # Vercel serverless function for admin authentication
 │   └── charge.js       # Vercel serverless function for Authorize.net
 ├── vercel.json         # Vercel deployment config
 ├── package.json        # Project metadata
@@ -41,9 +42,14 @@ In your Vercel project dashboard → **Settings** → **Environment Variables**,
 
 | Variable | Description | Example |
 |----------|-------------|---------|
+| `ADMIN_USERNAME` | Admin panel login username | `admin` |
+| `ADMIN_PASSWORD` | Admin panel login password (use something strong!) | `MyStr0ng!Pass2025` |
+| `ADMIN_SECRET` | Random string for signing session tokens | `a9f2k4m7x3p8...` (use a 32+ char random string) |
 | `AUTHNET_API_LOGIN_ID` | Your Authorize.net API Login ID | `5KP3u95bQpv` |
 | `AUTHNET_TRANSACTION_KEY` | Your Authorize.net Transaction Key | `346HZ32z3fP4hTG2` |
 | `AUTHNET_SANDBOX` | Set to `true` for testing, `false` for production | `true` |
+
+> **Generating ADMIN_SECRET:** Run `openssl rand -hex 32` in your terminal, or use any random string generator. This signs session tokens — keep it secret.
 
 ### 4. Configure Client Keys
 
@@ -164,10 +170,14 @@ Includes hamburger menu, mobile cart button, and touch-optimized checkout form.
 
 ## 🔒 Security Notes
 
+- **Admin authentication** is server-side via `/api/auth` — credentials are Vercel environment variables, never in the code
+- Session tokens are HMAC-SHA256 signed and expire after 24 hours
+- Login has timing-safe comparison and brute-force delay (500-1000ms on failed attempts)
+- Tokens stored in `sessionStorage` (cleared when browser tab closes)
 - Card data is tokenized client-side via Accept.js — raw card numbers never touch your server
 - Transaction Key is stored as a Vercel environment variable, never exposed to the client
 - All API Login IDs and Client Keys stored in the admin panel are public-facing keys only
-- Consider adding authentication to the admin panel for production (HTTP Basic Auth, Vercel Auth, etc.)
+- For local development, you can enable `LOCAL_DEV_CREDENTIALS` in admin.html (disabled by default)
 
 ## 📄 License
 

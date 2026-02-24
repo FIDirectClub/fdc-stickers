@@ -15,6 +15,9 @@
   "functions": {
     "api/charge.js": {
       "maxDuration": 30
+    },
+    "api/auth.js": {
+      "maxDuration": 10
     }
   }
 }
