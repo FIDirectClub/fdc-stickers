@@ -900,7 +900,7 @@
   }
 
   .checkout-body {
-    padding: 32px;
+    padding: 32px 32px 40px;
   }
 
   .checkout-section-title {
@@ -911,7 +911,7 @@
     text-transform: uppercase;
     color: var(--gold);
     margin-bottom: 20px;
-    margin-top: 32px;
+    margin-top: 40px;
   }
 
   .checkout-section-title:first-child { margin-top: 0; }
@@ -984,8 +984,8 @@
   .checkout-order-summary {
     background: rgba(255,255,255,0.4);
     border: 2px solid var(--border);
-    padding: 20px;
-    margin-top: 24px;
+    padding: 24px;
+    margin-top: 32px;
   }
 
   .checkout-item-row {
@@ -993,12 +993,12 @@
     justify-content: space-between;
     font-size: 14px;
     color: var(--steel-light);
-    padding: 6px 0;
+    padding: 8px 0;
   }
 
   .checkout-total-section {
-    margin-top: 12px;
-    padding-top: 12px;
+    margin-top: 16px;
+    padding-top: 16px;
     border-top: 2px solid var(--border);
   }
 
@@ -1008,7 +1008,7 @@
     font-family: 'Barlow Condensed', sans-serif;
     font-size: 14px;
     color: var(--steel-light);
-    padding: 4px 0;
+    padding: 6px 0;
   }
 
   .checkout-total-row.grand {
@@ -1016,8 +1016,8 @@
     color: var(--white);
     font-weight: 700;
     letter-spacing: 2px;
-    margin-top: 8px;
-    padding-top: 8px;
+    margin-top: 12px;
+    padding-top: 12px;
     border-top: 2px solid var(--border);
   }
 
@@ -1025,7 +1025,7 @@
 
   .place-order-btn {
     width: 100%;
-    margin-top: 28px;
+    margin-top: 32px;
     background: var(--gold);
     color: #fff;
     font-family: 'Bangers', cursive;
@@ -1266,8 +1266,8 @@
 
   /* === SWEEPSTAKES T&C CHECKBOX === */
   .tc-checkbox-wrapper {
-    margin-top: 20px;
-    padding: 16px 20px;
+    margin-top: 28px;
+    padding: 20px 24px;
     background: rgba(255,204,0,0.1);
     border: 2px solid var(--border);
   }
@@ -1688,7 +1688,7 @@
       <span>Total</span>
       <span class="cart-summary-value" id="cartTotal">$0.00</span>
     </div>
-    <button class="checkout-btn" onclick="openCheckout()">Proceed to Checkout & Enter</button>
+    <button class="checkout-btn" onclick="openCheckout()">Proceed to Checkout</button>
   </div>
 </div>
 
@@ -1812,7 +1812,7 @@
       <div class="order-error" id="orderError"></div>
 
       <button class="place-order-btn" id="placeOrderBtn" onclick="placeOrder()">
-        Place Order & Enter Sweepstakes
+        Place Order
       </button>
     </div>
 
