@@ -1,0 +1,2415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FDC Stickers — Firearms Direct Club | Milton, FL</title>
+<meta name="description" content="FDC Stickers — Official stickers from Firearms Direct Club. Premium vinyl stickers for the 2A community. Milton, Florida.">
+<meta property="og:title" content="FDC Stickers — Firearms Direct Club">
+<meta property="og:description" content="Premium vinyl stickers for the 2A community. Stick it everywhere. Milton, FL.">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Permanent+Marker&family=Barlow+Condensed:wght@400;600;700&family=Barlow:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #D4A947;
+    --gold-bright: #F5D76E;
+    --gold-dim: rgba(212,169,71,0.15);
+    --black: #0A0A0A;
+    --dark: #111111;
+    --darker: #1a1a1a;
+    --white: #F2F2F2;
+    --red: #C0392B;
+    --green: #27AE60;
+    --steel: #8C8C8C;
+    --steel-light: #B0B0B0;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; scroll-padding-top: 80px; overflow-x: hidden; }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: 'Barlow', sans-serif;
+    overflow-x: hidden;
+    max-width: 100vw;
+  }
+
+  body.menu-open, body.cart-open, body.checkout-open { overflow: hidden; }
+
+  /* === NAVIGATION === */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 48px;
+    background: rgba(10,10,10,0.9);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--gold-dim);
+  }
+
+  .nav-brand {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    text-decoration: none;
+  }
+
+  .nav-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    color: var(--gold);
+    letter-spacing: 4px;
+  }
+
+  .nav-logo span {
+    color: var(--white);
+    font-size: 12px;
+    letter-spacing: 2px;
+    display: block;
+    margin-top: -4px;
+    font-family: 'Barlow Condensed', sans-serif;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 36px;
+    list-style: none;
+    align-items: center;
+  }
+
+  .nav-links a {
+    color: var(--steel-light);
+    text-decoration: none;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    transition: color 0.3s;
+  }
+
+  .nav-links a:hover { color: var(--gold); }
+
+  .cart-btn {
+    position: relative;
+    background: none;
+    border: 1px solid var(--gold-dim);
+    color: var(--gold);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+
+  .cart-btn:hover {
+    background: var(--gold);
+    color: var(--black);
+    border-color: var(--gold);
+  }
+
+  .cart-count {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background: var(--red);
+    color: var(--white);
+    font-size: 11px;
+    font-weight: 700;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    display: none;
+  }
+
+  .cart-count.visible { display: flex; }
+
+  /* === HAMBURGER === */
+  .hamburger {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 44px;
+    height: 44px;
+    background: none;
+    border: 1px solid rgba(212,169,71,0.25);
+    cursor: pointer;
+    padding: 0;
+    gap: 5px;
+    z-index: 200;
+    transition: border-color 0.3s;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .hamburger:hover { border-color: var(--gold); }
+
+  .hamburger-bar {
+    display: block;
+    width: 22px;
+    height: 2px;
+    background: var(--gold);
+    transition: all 0.3s ease;
+    transform-origin: center;
+  }
+
+  .hamburger.open .hamburger-bar:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .hamburger.open .hamburger-bar:nth-child(2) { opacity: 0; transform: scaleX(0); }
+  .hamburger.open .hamburger-bar:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+  /* === MOBILE MENU === */
+  .mobile-menu {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    z-index: 99;
+    background: rgba(10,10,10,0.97);
+    backdrop-filter: blur(20px);
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    pointer-events: none;
+  }
+
+  .mobile-menu.open { opacity: 1; pointer-events: auto; }
+
+  .mobile-menu a {
+    color: var(--white);
+    text-decoration: none;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 48px;
+    letter-spacing: 6px;
+    padding: 16px 0;
+    transition: color 0.3s, transform 0.3s, opacity 0.3s;
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  .mobile-menu.open a { opacity: 1; transform: translateY(0); }
+  .mobile-menu a:nth-child(1) { transition-delay: 0.05s; }
+  .mobile-menu a:nth-child(2) { transition-delay: 0.1s; }
+  .mobile-menu a:nth-child(3) { transition-delay: 0.15s; }
+  .mobile-menu a:nth-child(4) { transition-delay: 0.2s; }
+  .mobile-menu a:hover { color: var(--gold); }
+
+  .mobile-menu-footer {
+    position: absolute;
+    bottom: 40px;
+    text-align: center;
+    opacity: 0;
+    transition: opacity 0.4s ease 0.3s;
+  }
+
+  .mobile-menu.open .mobile-menu-footer { opacity: 1; }
+
+  .mobile-menu-footer p {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 12px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--steel);
+  }
+
+  /* === HERO === */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 120px 24px 80px;
+    position: relative;
+    background:
+      radial-gradient(ellipse at 50% 80%, rgba(212,169,71,0.06) 0%, transparent 60%),
+      radial-gradient(ellipse at 20% 20%, rgba(192,57,43,0.04) 0%, transparent 50%),
+      var(--black);
+  }
+
+  .hero-badge {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--gold);
+    border: 1px solid var(--gold);
+    padding: 8px 24px;
+    margin-bottom: 32px;
+    display: inline-block;
+    animation: fadeDown 0.8s ease-out;
+  }
+
+  .hero h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(64px, 11vw, 140px);
+    line-height: 0.9;
+    letter-spacing: 6px;
+    color: var(--white);
+    animation: fadeUp 0.8s ease-out 0.1s both;
+  }
+
+  .hero h1 em {
+    font-style: normal;
+    color: var(--gold);
+    display: block;
+    font-size: 0.45em;
+    letter-spacing: 12px;
+    margin-top: 8px;
+  }
+
+  .hero-tagline {
+    font-family: 'Permanent Marker', cursive;
+    font-size: clamp(18px, 3vw, 28px);
+    color: var(--steel-light);
+    margin-top: 28px;
+    animation: fadeUp 0.8s ease-out 0.3s both;
+    max-width: 700px;
+  }
+
+  .hero-sub {
+    font-family: 'Barlow', sans-serif;
+    font-size: 16px;
+    color: var(--steel);
+    margin-top: 16px;
+    animation: fadeUp 0.8s ease-out 0.4s both;
+  }
+
+  .hero-cta {
+    margin-top: 48px;
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+    animation: fadeUp 0.8s ease-out 0.5s both;
+  }
+
+  .btn-primary {
+    background: var(--gold);
+    color: var(--black);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 15px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    padding: 16px 40px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-decoration: none;
+    display: inline-block;
+  }
+
+  .btn-primary:hover {
+    background: var(--gold-bright);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(212,169,71,0.3);
+  }
+
+  .btn-primary:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+  }
+
+  .btn-secondary {
+    background: transparent;
+    color: var(--white);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 15px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    padding: 16px 40px;
+    border: 1px solid var(--steel);
+    cursor: pointer;
+    transition: all 0.3s;
+    text-decoration: none;
+    display: inline-block;
+  }
+
+  .btn-secondary:hover {
+    border-color: var(--gold);
+    color: var(--gold);
+  }
+
+  /* === SECTION STYLES === */
+  section {
+    padding: 100px 48px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 16px;
+  }
+
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(42px, 6vw, 72px);
+    line-height: 1;
+    letter-spacing: 3px;
+    margin-bottom: 24px;
+  }
+
+  .section-body {
+    font-size: 17px;
+    line-height: 1.8;
+    color: var(--steel-light);
+    max-width: 680px;
+  }
+
+  .divider {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(212,169,71,0.3), transparent);
+  }
+
+  /* === PRODUCT GRID === */
+  .shop-section {
+    text-align: center;
+  }
+
+  .product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 32px;
+    margin-top: 56px;
+  }
+
+  .product-card {
+    background: var(--darker);
+    border: 1px solid rgba(255,255,255,0.05);
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .product-card:hover {
+    border-color: rgba(212,169,71,0.3);
+    transform: translateY(-4px);
+  }
+
+  .product-card.out-of-stock { opacity: 0.6; }
+
+  .product-image {
+    width: 100%;
+    aspect-ratio: 1;
+    background: linear-gradient(135deg, #1e1e1e 0%, #151515 50%, #1e1e1e 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .product-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .product-image-placeholder {
+    font-size: 64px;
+    opacity: 0.3;
+  }
+
+  .product-badge {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 4px 12px;
+    z-index: 2;
+  }
+
+  .badge-new {
+    background: var(--gold);
+    color: var(--black);
+  }
+
+  .badge-hot {
+    background: var(--red);
+    color: var(--white);
+  }
+
+  .badge-oos {
+    background: rgba(0,0,0,0.8);
+    color: var(--steel);
+  }
+
+  .product-info-card {
+    padding: 24px;
+    text-align: left;
+  }
+
+  .product-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    letter-spacing: 2px;
+    color: var(--white);
+    margin-bottom: 4px;
+  }
+
+  .product-desc {
+    font-size: 13px;
+    color: var(--steel);
+    line-height: 1.5;
+    margin-bottom: 16px;
+    min-height: 40px;
+  }
+
+  .product-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .product-price {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    color: var(--gold);
+    letter-spacing: 1px;
+  }
+
+  .product-stock {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--steel);
+  }
+
+  .product-stock.low { color: var(--red); }
+
+  .add-to-cart-btn {
+    width: 100%;
+    margin-top: 16px;
+    background: transparent;
+    border: 1px solid var(--gold-dim);
+    color: var(--gold);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    padding: 14px;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+
+  .add-to-cart-btn:hover {
+    background: var(--gold);
+    color: var(--black);
+    border-color: var(--gold);
+  }
+
+  .add-to-cart-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    border-color: var(--steel);
+    color: var(--steel);
+  }
+
+  .add-to-cart-btn:disabled:hover {
+    background: transparent;
+    color: var(--steel);
+  }
+
+  .add-to-cart-btn.added {
+    background: var(--green);
+    color: var(--white);
+    border-color: var(--green);
+  }
+
+  /* === CATEGORY FILTER === */
+  .category-filter {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 32px;
+  }
+
+  .filter-btn {
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.1);
+    color: var(--steel-light);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    font-size: 13px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 10px 24px;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+
+  .filter-btn:hover, .filter-btn.active {
+    border-color: var(--gold);
+    color: var(--gold);
+    background: rgba(212,169,71,0.08);
+  }
+
+  /* === CART DRAWER === */
+  .cart-overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.7);
+    z-index: 999;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+  }
+
+  .cart-overlay.open { opacity: 1; pointer-events: auto; }
+
+  .cart-drawer {
+    position: fixed;
+    top: 0;
+    right: -480px;
+    width: 480px;
+    max-width: 100vw;
+    height: 100vh;
+    background: var(--dark);
+    border-left: 1px solid var(--gold-dim);
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    transition: right 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  .cart-drawer.open { right: 0; }
+
+  .cart-header {
+    padding: 24px 28px;
+    border-bottom: 1px solid var(--gold-dim);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .cart-header h3 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    letter-spacing: 3px;
+    color: var(--gold);
+  }
+
+  .cart-close {
+    background: none;
+    border: 1px solid rgba(255,255,255,0.1);
+    color: var(--white);
+    width: 40px;
+    height: 40px;
+    font-size: 20px;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .cart-close:hover {
+    border-color: var(--red);
+    color: var(--red);
+  }
+
+  .cart-items {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px 28px;
+  }
+
+  .cart-empty {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--steel);
+  }
+
+  .cart-empty-icon {
+    font-size: 48px;
+    opacity: 0.3;
+    margin-bottom: 16px;
+  }
+
+  .cart-item {
+    display: flex;
+    gap: 16px;
+    padding: 20px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    align-items: center;
+  }
+
+  .cart-item-image {
+    width: 72px;
+    height: 72px;
+    background: var(--darker);
+    border: 1px solid rgba(255,255,255,0.05);
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .cart-item-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .cart-item-details {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .cart-item-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px;
+    letter-spacing: 1px;
+    color: var(--white);
+  }
+
+  .cart-item-price {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--gold);
+    margin-top: 2px;
+  }
+
+  .cart-item-qty {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 8px;
+  }
+
+  .qty-btn {
+    width: 28px;
+    height: 28px;
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.15);
+    color: var(--white);
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+  }
+
+  .qty-btn:hover {
+    border-color: var(--gold);
+    color: var(--gold);
+  }
+
+  .qty-value {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 15px;
+    min-width: 24px;
+    text-align: center;
+  }
+
+  .cart-item-remove {
+    background: none;
+    border: none;
+    color: var(--steel);
+    font-size: 18px;
+    cursor: pointer;
+    padding: 4px;
+    transition: color 0.2s;
+    flex-shrink: 0;
+  }
+
+  .cart-item-remove:hover { color: var(--red); }
+
+  .cart-footer {
+    padding: 24px 28px;
+    border-top: 1px solid var(--gold-dim);
+    background: var(--darker);
+  }
+
+  .cart-summary-row {
+    display: flex;
+    justify-content: space-between;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 14px;
+    letter-spacing: 1px;
+    color: var(--steel-light);
+    margin-bottom: 8px;
+  }
+
+  .cart-summary-row.total {
+    font-size: 20px;
+    color: var(--white);
+    font-weight: 700;
+    letter-spacing: 2px;
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+  }
+
+  .cart-summary-row.total .cart-summary-value {
+    color: var(--gold);
+  }
+
+  .checkout-btn {
+    width: 100%;
+    margin-top: 20px;
+    background: var(--gold);
+    color: var(--black);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 16px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    padding: 18px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+
+  .checkout-btn:hover {
+    background: var(--gold-bright);
+    box-shadow: 0 8px 32px rgba(212,169,71,0.3);
+  }
+
+  /* === CHECKOUT MODAL === */
+  .checkout-overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.85);
+    z-index: 2000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+    padding: 20px;
+  }
+
+  .checkout-overlay.open { opacity: 1; pointer-events: auto; }
+
+  .checkout-modal {
+    background: var(--dark);
+    border: 1px solid var(--gold-dim);
+    width: 100%;
+    max-width: 640px;
+    max-height: 90vh;
+    overflow-y: auto;
+    transform: translateY(20px);
+    transition: transform 0.3s;
+  }
+
+  .checkout-overlay.open .checkout-modal {
+    transform: translateY(0);
+  }
+
+  .checkout-header {
+    padding: 28px 32px;
+    border-bottom: 1px solid var(--gold-dim);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .checkout-header h3 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 32px;
+    letter-spacing: 3px;
+    color: var(--gold);
+  }
+
+  .checkout-body {
+    padding: 32px;
+  }
+
+  .checkout-section-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 20px;
+    margin-top: 32px;
+  }
+
+  .checkout-section-title:first-child { margin-top: 0; }
+
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+
+  .form-row.full {
+    grid-template-columns: 1fr;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .form-group label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--steel-light);
+    margin-bottom: 6px;
+  }
+
+  .form-group input,
+  .form-group select {
+    background: var(--darker);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: var(--white);
+    font-family: 'Barlow', sans-serif;
+    font-size: 15px;
+    padding: 12px 16px;
+    transition: border-color 0.3s;
+    outline: none;
+    border-radius: 0;
+    -webkit-appearance: none;
+  }
+
+  .form-group input:focus,
+  .form-group select:focus {
+    border-color: var(--gold);
+  }
+
+  .form-group input.error,
+  .form-group select.error {
+    border-color: var(--red);
+  }
+
+  .form-group select {
+    cursor: pointer;
+    background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238C8C8C' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    padding-right: 36px;
+  }
+
+  .form-error {
+    font-size: 12px;
+    color: var(--red);
+    margin-top: 4px;
+    display: none;
+  }
+
+  .checkout-order-summary {
+    background: var(--darker);
+    border: 1px solid rgba(255,255,255,0.05);
+    padding: 20px;
+    margin-top: 24px;
+  }
+
+  .checkout-item-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    color: var(--steel-light);
+    padding: 6px 0;
+  }
+
+  .checkout-total-section {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+  }
+
+  .checkout-total-row {
+    display: flex;
+    justify-content: space-between;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 14px;
+    color: var(--steel-light);
+    padding: 4px 0;
+  }
+
+  .checkout-total-row.grand {
+    font-size: 22px;
+    color: var(--white);
+    font-weight: 700;
+    letter-spacing: 2px;
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px solid rgba(212,169,71,0.2);
+  }
+
+  .checkout-total-row.grand span:last-child { color: var(--gold); }
+
+  .place-order-btn {
+    width: 100%;
+    margin-top: 28px;
+    background: var(--gold);
+    color: var(--black);
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 24px;
+    letter-spacing: 4px;
+    padding: 20px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+
+  .place-order-btn:hover {
+    background: var(--gold-bright);
+    box-shadow: 0 8px 32px rgba(212,169,71,0.3);
+  }
+
+  .place-order-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .order-processing {
+    text-align: center;
+    padding: 40px 0;
+    display: none;
+  }
+
+  .order-processing .spinner {
+    width: 48px;
+    height: 48px;
+    border: 3px solid var(--gold-dim);
+    border-top-color: var(--gold);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 20px;
+  }
+
+  .order-success {
+    text-align: center;
+    padding: 40px 20px;
+    display: none;
+  }
+
+  .order-success-icon {
+    font-size: 64px;
+    margin-bottom: 16px;
+  }
+
+  .order-success h4 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 36px;
+    letter-spacing: 3px;
+    color: var(--gold);
+    margin-bottom: 12px;
+  }
+
+  .order-success p {
+    color: var(--steel-light);
+    line-height: 1.6;
+  }
+
+  .order-error {
+    background: rgba(192,57,43,0.1);
+    border: 1px solid rgba(192,57,43,0.3);
+    color: var(--red);
+    padding: 12px 16px;
+    margin-top: 16px;
+    font-size: 14px;
+    display: none;
+  }
+
+  /* === ABOUT / INFO SECTION === */
+  .about-section {
+    text-align: center;
+    background:
+      radial-gradient(ellipse at 50% 50%, rgba(212,169,71,0.04) 0%, transparent 60%),
+      var(--black);
+    padding: 100px 48px;
+  }
+
+  .about-section .section-body {
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 24px;
+    margin-top: 56px;
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .info-card {
+    background: var(--darker);
+    border: 1px solid rgba(212,169,71,0.1);
+    padding: 32px 24px;
+    text-align: center;
+    transition: all 0.3s;
+  }
+
+  .info-card:hover {
+    border-color: var(--gold);
+    transform: translateY(-4px);
+  }
+
+  .info-card-icon {
+    font-size: 36px;
+    margin-bottom: 12px;
+    display: block;
+  }
+
+  .info-card h4 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    letter-spacing: 2px;
+    color: var(--gold);
+    margin-bottom: 8px;
+  }
+
+  .info-card p {
+    font-size: 14px;
+    color: var(--steel);
+    line-height: 1.6;
+  }
+
+  /* === QUOTE BANNER === */
+  .quote-banner {
+    background: var(--gold);
+    color: var(--black);
+    text-align: center;
+    padding: 64px 48px;
+  }
+
+  .quote-text {
+    font-family: 'Permanent Marker', cursive;
+    font-size: clamp(24px, 4vw, 42px);
+    max-width: 800px;
+    margin: 0 auto;
+    line-height: 1.4;
+  }
+
+  .quote-attr {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-top: 20px;
+    opacity: 0.7;
+  }
+
+  /* === FOOTER === */
+  footer {
+    background: var(--dark);
+    border-top: 1px solid rgba(212,169,71,0.1);
+    padding: 60px 48px 40px;
+  }
+
+  .footer-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 40px;
+  }
+
+  .footer-brand p {
+    font-size: 14px;
+    color: var(--steel);
+    max-width: 300px;
+    line-height: 1.6;
+  }
+
+  .footer-links h5 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 16px;
+  }
+
+  .footer-links a {
+    display: block;
+    color: var(--steel);
+    text-decoration: none;
+    font-size: 14px;
+    margin-bottom: 8px;
+    transition: color 0.3s;
+  }
+
+  .footer-links a:hover { color: var(--white); }
+
+  .footer-bottom {
+    max-width: 1200px;
+    margin: 40px auto 0;
+    padding-top: 24px;
+    border-top: 1px solid rgba(255,255,255,0.05);
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .footer-bottom p {
+    font-size: 12px;
+    color: var(--steel);
+  }
+
+  .footer-bottom .legal {
+    font-size: 11px;
+    color: rgba(140,140,140,0.6);
+    max-width: 600px;
+    line-height: 1.5;
+  }
+
+  /* === TOAST NOTIFICATION === */
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: var(--darker);
+    border: 1px solid var(--gold);
+    padding: 16px 24px;
+    z-index: 3000;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transform: translateY(100px);
+    opacity: 0;
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    max-width: 360px;
+  }
+
+  .toast.visible {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  .toast-icon {
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+
+  .toast-text {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    letter-spacing: 1px;
+    color: var(--white);
+  }
+
+  /* === ANIMATIONS === */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+
+  /* === RESPONSIVE === */
+  @media (max-width: 768px) {
+    nav { padding: 16px 24px; }
+    .nav-links { display: none; }
+    .hamburger { display: flex; }
+    .mobile-menu { display: flex; }
+    .nav-brand .nav-logo { font-size: 22px; }
+    .nav-logo span { font-size: 10px; }
+    section { padding: 72px 24px; }
+    .product-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
+    .about-section { padding: 72px 24px; }
+    .hero-cta { flex-direction: column; align-items: center; }
+    .hero-cta .btn-primary, .hero-cta .btn-secondary { width: 100%; max-width: 300px; text-align: center; }
+    .quote-banner { padding: 48px 24px; }
+    footer { padding: 48px 24px 32px; }
+    .cart-drawer { width: 100%; right: -100%; }
+    .form-row { grid-template-columns: 1fr; }
+    .checkout-body { padding: 24px; }
+    .checkout-header { padding: 20px 24px; }
+    .toast { left: 24px; right: 24px; max-width: none; bottom: 16px; }
+    .mobile-cart-btn {
+      display: flex !important;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .product-grid { grid-template-columns: 1fr; }
+    .product-name { font-size: 18px; }
+    .product-price { font-size: 22px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAVIGATION -->
+<nav>
+  <a href="#" class="nav-brand" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;">
+    <div class="nav-logo">
+      FDC STICKERS
+      <span>Firearms Direct Club &bull; Milton, FL</span>
+    </div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#shop">Shop</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#shipping">Shipping</a></li>
+    <li>
+      <button class="cart-btn" onclick="openCart()">
+        Cart <span class="cart-count" id="cartCount">0</span>
+      </button>
+    </li>
+  </ul>
+  <div style="display:flex;gap:12px;align-items:center;">
+    <button class="cart-btn" style="display:none;" id="mobileCartBtn" onclick="openCart()">
+      Cart <span class="cart-count" id="cartCountMobile">0</span>
+    </button>
+    <button class="hamburger" id="hamburger" aria-label="Open menu">
+      <span class="hamburger-bar"></span>
+      <span class="hamburger-bar"></span>
+      <span class="hamburger-bar"></span>
+    </button>
+  </div>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#shop">Shop</a>
+  <a href="#about">About</a>
+  <a href="#shipping">Shipping</a>
+  <a href="#" onclick="openCart();closeMobileMenu();return false;">Cart</a>
+  <div class="mobile-menu-footer">
+    <p>Milton, FL &bull; Est. 2025</p>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-badge">Firearms Direct Club &bull; Milton, FL</div>
+  <h1>
+    FDC
+    <em>STICKERS</em>
+  </h1>
+  <p class="hero-tagline">"Stick it. Everywhere."</p>
+  <p class="hero-sub">Premium vinyl stickers for the 2A community. Designed in Florida. Shipped to your door.</p>
+  <div class="hero-cta">
+    <a href="#shop" class="btn-primary">Shop Stickers</a>
+    <a href="#about" class="btn-secondary">Learn More</a>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- SHOP SECTION -->
+<section class="shop-section" id="shop">
+  <div class="section-label">The Arsenal</div>
+  <div class="section-title">Shop Stickers</div>
+
+  <div class="category-filter" id="categoryFilter">
+    <button class="filter-btn active" onclick="filterProducts('all')">All</button>
+    <!-- Categories will be dynamically populated -->
+  </div>
+
+  <div class="product-grid" id="productGrid">
+    <!-- Products populated by JS -->
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- QUOTE BANNER -->
+<div class="quote-banner">
+  <p class="quote-text">"If your range bag doesn't have at least three FDC stickers on it, are you even a member?"</p>
+  <p class="quote-attr">— Probably Every FDC Member</p>
+</div>
+
+<!-- ABOUT -->
+<section class="about-section" id="about">
+  <div class="section-label">Who We Are</div>
+  <div class="section-title">Born in Florida. Built for the Community.</div>
+  <p class="section-body">
+    FDC Stickers is the official sticker shop of Firearms Direct Club. Every sticker is designed in Milton, Florida by people who actually shoot, carry, and live the 2A lifestyle. We're not a faceless sticker mill — we're your people.
+  </p>
+  <p class="section-body" style="margin-top:16px;">
+    Premium vinyl. Weather-resistant. Dishwasher-safe (we tested it, don't ask). Slap 'em on your range bag, your safe, your truck, your laptop — we don't judge. Okay, we judge a little if it's a Prius.
+  </p>
+
+  <div class="info-grid">
+    <div class="info-card">
+      <span class="info-card-icon">🎯</span>
+      <h4>Premium Vinyl</h4>
+      <p>UV-resistant, waterproof, and built to last longer than your buddy's excuse for missing range day.</p>
+    </div>
+    <div class="info-card">
+      <span class="info-card-icon">🐊</span>
+      <h4>Florida Made</h4>
+      <p>Designed in the Florida Panhandle. If it survives the humidity, it'll survive your bumper.</p>
+    </div>
+    <div class="info-card">
+      <span class="info-card-icon">📦</span>
+      <h4>Fast Shipping</h4>
+      <p>We ship to all lower 48 states. Sorry Alaska and Hawaii — we still love you, we just can't reach you yet.</p>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- SHIPPING INFO -->
+<section id="shipping" style="text-align:center;">
+  <div class="section-label">Shipping & Policy</div>
+  <div class="section-title">The Fine Print (But Not That Fine)</div>
+  <div style="max-width:680px;margin:0 auto;">
+    <p class="section-body" style="text-align:center;margin:0 auto;">
+      We ship to all <strong style="color:var(--white);">lower 48 United States</strong> via USPS. Orders typically ship within 1-2 business days. Florida residents will see a <strong style="color:var(--gold);">7.5% sales tax</strong> applied at checkout because that's what the sunshine state demands.
+    </p>
+    <p class="section-body" style="text-align:center;margin:16px auto 0;">
+      No international orders at this time. No APO/FPO. No carrier pigeons. Just good old-fashioned American mail to your American doorstep.
+    </p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="nav-logo" style="margin-bottom:12px;">
+        FDC STICKERS
+        <span>Firearms Direct Club &bull; Milton, FL</span>
+      </div>
+      <p>The official sticker shop of Firearms Direct Club. Premium vinyl stickers for people who take their 2A rights seriously — and their sticker game even more seriously.</p>
+      <p style="margin-top:12px;"><a href="mailto:stickers@firearmsdirectclub.com" style="color:var(--gold);text-decoration:none;">stickers@firearmsdirectclub.com</a></p>
+    </div>
+    <div class="footer-links">
+      <h5>Shop</h5>
+      <a href="#shop">All Stickers</a>
+      <a href="#about">About Us</a>
+      <a href="#shipping">Shipping Info</a>
+      <a href="admin.html">Admin</a>
+    </div>
+    <div class="footer-links">
+      <h5>Firearms Direct Club</h5>
+      <a href="https://firearmsdirectclub.com" target="_blank" rel="noopener">Main Site</a>
+      <a href="https://bbcsuppressors.com" target="_blank" rel="noopener">BBC Suppressors</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>&copy; 2025 Firearms Direct Club LLC. All rights reserved. FDC Stickers.&trade;</p>
+    <p class="legal">Stickers are for decorative purposes. We are not responsible for any debates your stickers may start at the office, at Thanksgiving dinner, or in your HOA Facebook group.</p>
+  </div>
+</footer>
+
+<!-- CART DRAWER -->
+<div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
+<div class="cart-drawer" id="cartDrawer">
+  <div class="cart-header">
+    <h3>Your Cart</h3>
+    <button class="cart-close" onclick="closeCart()">&times;</button>
+  </div>
+  <div class="cart-items" id="cartItems">
+    <div class="cart-empty" id="cartEmpty">
+      <div class="cart-empty-icon">🎯</div>
+      <p>Your cart is empty.</p>
+      <p style="margin-top:8px;font-size:13px;">Time to stock up on stickers.</p>
+    </div>
+  </div>
+  <div class="cart-footer" id="cartFooter" style="display:none;">
+    <div class="cart-summary-row">
+      <span>Subtotal</span>
+      <span id="cartSubtotal">$0.00</span>
+    </div>
+    <div class="cart-summary-row" id="cartTaxRow" style="display:none;">
+      <span>FL Sales Tax (7.5%)</span>
+      <span id="cartTax">$0.00</span>
+    </div>
+    <div class="cart-summary-row">
+      <span>Shipping</span>
+      <span id="cartShipping">Calculated at checkout</span>
+    </div>
+    <div class="cart-summary-row total">
+      <span>Total</span>
+      <span class="cart-summary-value" id="cartTotal">$0.00</span>
+    </div>
+    <button class="checkout-btn" onclick="openCheckout()">Proceed to Checkout</button>
+  </div>
+</div>
+
+<!-- CHECKOUT MODAL -->
+<div class="checkout-overlay" id="checkoutOverlay">
+  <div class="checkout-modal">
+    <div class="checkout-header">
+      <h3>Checkout</h3>
+      <button class="cart-close" onclick="closeCheckout()">&times;</button>
+    </div>
+    <div class="checkout-body" id="checkoutForm">
+
+      <div class="checkout-section-title">Contact Information</div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="coFirstName">First Name *</label>
+          <input type="text" id="coFirstName" required>
+        </div>
+        <div class="form-group">
+          <label for="coLastName">Last Name *</label>
+          <input type="text" id="coLastName" required>
+        </div>
+      </div>
+      <div class="form-row full">
+        <div class="form-group">
+          <label for="coEmail">Email *</label>
+          <input type="email" id="coEmail" required>
+        </div>
+      </div>
+      <div class="form-row full">
+        <div class="form-group">
+          <label for="coPhone">Phone</label>
+          <input type="tel" id="coPhone" placeholder="Optional">
+        </div>
+      </div>
+
+      <div class="checkout-section-title">Shipping Address</div>
+      <div class="form-row full">
+        <div class="form-group">
+          <label for="coAddress">Street Address *</label>
+          <input type="text" id="coAddress" required>
+        </div>
+      </div>
+      <div class="form-row full">
+        <div class="form-group">
+          <label for="coAddress2">Apt / Suite / Unit</label>
+          <input type="text" id="coAddress2" placeholder="Optional">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="coCity">City *</label>
+          <input type="text" id="coCity" required>
+        </div>
+        <div class="form-group">
+          <label for="coState">State *</label>
+          <select id="coState" required>
+            <option value="">Select State</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="coZip">ZIP Code *</label>
+          <input type="text" id="coZip" required maxlength="10" pattern="[0-9]{5}(-[0-9]{4})?">
+        </div>
+      </div>
+
+      <div class="checkout-section-title">Payment (Authorize.net)</div>
+      <div class="form-row full">
+        <div class="form-group">
+          <label for="coCardNumber">Card Number *</label>
+          <input type="text" id="coCardNumber" required maxlength="19" placeholder="1234 5678 9012 3456" autocomplete="cc-number">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="coExpMonth">Exp Month *</label>
+          <select id="coExpMonth" required>
+            <option value="">MM</option>
+            <option value="01">01</option><option value="02">02</option>
+            <option value="03">03</option><option value="04">04</option>
+            <option value="05">05</option><option value="06">06</option>
+            <option value="07">07</option><option value="08">08</option>
+            <option value="09">09</option><option value="10">10</option>
+            <option value="11">11</option><option value="12">12</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="coExpYear">Exp Year *</label>
+          <select id="coExpYear" required>
+            <option value="">YYYY</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="coCvv">CVV *</label>
+          <input type="text" id="coCvv" required maxlength="4" placeholder="123" autocomplete="cc-csc">
+        </div>
+        <div class="form-group">
+          <label for="coCardZip">Billing ZIP *</label>
+          <input type="text" id="coCardZip" required maxlength="10" placeholder="Same as shipping">
+        </div>
+      </div>
+
+      <!-- ORDER SUMMARY -->
+      <div class="checkout-section-title">Order Summary</div>
+      <div class="checkout-order-summary" id="checkoutSummary">
+        <!-- populated by JS -->
+      </div>
+
+      <div class="order-error" id="orderError"></div>
+
+      <button class="place-order-btn" id="placeOrderBtn" onclick="placeOrder()">
+        Place Order
+      </button>
+    </div>
+
+    <div class="order-processing" id="orderProcessing">
+      <div class="spinner"></div>
+      <p style="font-family:'Barlow Condensed',sans-serif;font-size:16px;letter-spacing:2px;color:var(--steel-light);">PROCESSING YOUR ORDER...</p>
+      <p style="margin-top:8px;font-size:13px;color:var(--steel);">Do not close this window.</p>
+    </div>
+
+    <div class="order-success" id="orderSuccess">
+      <div class="order-success-icon">🎉</div>
+      <h4>Order Confirmed!</h4>
+      <p>Thank you for your order. You'll receive a confirmation email shortly.</p>
+      <p style="margin-top:12px;color:var(--gold);font-family:'Barlow Condensed',sans-serif;letter-spacing:2px;">Order #<span id="orderNumber">—</span></p>
+      <button class="btn-primary" style="margin-top:24px;" onclick="closeCheckout();resetAfterOrder();">Continue Shopping</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast">
+  <span class="toast-icon">✓</span>
+  <span class="toast-text" id="toastText">Added to cart</span>
+</div>
+
+<!-- Authorize.net Accept.js SDK -->
+<!-- PRODUCTION: https://js.authorize.net/v1/Accept.js -->
+<!-- SANDBOX:    https://jstest.authorize.net/v1/Accept.js -->
+<script src="https://jstest.authorize.net/v1/Accept.js" charset="utf-8"></script>
+
+<script>
+// ============================================================
+//  FDC STICKERS — E-COMMERCE ENGINE
+//  Authorize.net Accept.js + Cart + Checkout + Tax
+// ============================================================
+
+// ── CONFIG ──
+const CONFIG = {
+  // Authorize.net API credentials (set these in your env / Vercel dashboard)
+  // These are PUBLIC keys used client-side for Accept.js tokenization
+  AUTHNET_API_LOGIN_ID: '',     // Set via admin or env
+  AUTHNET_CLIENT_KEY: '',       // Set via admin or env
+  AUTHNET_SANDBOX: true,        // Set false for production
+
+  FL_TAX_RATE: 0.075,           // 7.5% Florida sales tax
+  FLAT_SHIPPING: 3.99,          // Flat rate shipping
+  FREE_SHIPPING_THRESHOLD: 25,  // Free shipping over $25
+
+  // Lower 48 states only
+  ALLOWED_STATES: {
+    'AL':'Alabama','AZ':'Arizona','AR':'Arkansas','CA':'California',
+    'CO':'Colorado','CT':'Connecticut','DE':'Delaware','FL':'Florida',
+    'GA':'Georgia','ID':'Idaho','IL':'Illinois','IN':'Indiana',
+    'IA':'Iowa','KS':'Kansas','KY':'Kentucky','LA':'Louisiana',
+    'ME':'Maine','MD':'Maryland','MA':'Massachusetts','MI':'Michigan',
+    'MN':'Minnesota','MS':'Mississippi','MO':'Missouri','MT':'Montana',
+    'NE':'Nebraska','NV':'Nevada','NH':'New Hampshire','NJ':'New Jersey',
+    'NM':'New Mexico','NY':'New York','NC':'North Carolina','ND':'North Dakota',
+    'OH':'Ohio','OK':'Oklahoma','OR':'Oregon','PA':'Pennsylvania',
+    'RI':'Rhode Island','SC':'South Carolina','SD':'South Dakota',
+    'TN':'Tennessee','TX':'Texas','UT':'Utah','VT':'Vermont',
+    'VA':'Virginia','WA':'Washington','WV':'West Virginia',
+    'WI':'Wisconsin','WY':'Wyoming','DC':'District of Columbia'
+  },
+
+  FL_CODES: ['FL']  // States that get taxed
+};
+
+// ── PRODUCT DATA ──
+// In production, this would come from your API / database.
+// For now, manage it here or load from /api/products
+let PRODUCTS = [
+  {
+    id: 'fdc-logo-01',
+    name: 'FDC Classic Logo',
+    description: 'The original Firearms Direct Club logo sticker. 4" vinyl.',
+    price: 4.99,
+    category: 'logos',
+    image: '',
+    badge: 'hot',
+    stock: 50
+  },
+  {
+    id: 'fdc-flag-01',
+    name: 'FDC Patriot Flag',
+    description: 'American flag with FDC crest overlay. 5" die-cut vinyl.',
+    price: 5.99,
+    category: 'flags',
+    image: '',
+    badge: 'new',
+    stock: 40
+  },
+  {
+    id: 'bbc-rooster-01',
+    name: 'BBC Rooster',
+    description: 'The legendary BBC Suppressors rooster. 3.5" vinyl.',
+    price: 4.99,
+    category: 'bbc',
+    image: '',
+    badge: 'hot',
+    stock: 75
+  },
+  {
+    id: 'fdc-2a-01',
+    name: '2A All Day',
+    description: 'Second Amendment lifestyle sticker. 4" matte vinyl.',
+    price: 3.99,
+    category: '2a',
+    image: '',
+    badge: '',
+    stock: 60
+  },
+  {
+    id: 'fdc-florida-01',
+    name: 'Florida Gun State',
+    description: 'Florida silhouette with crosshairs. 4.5" die-cut.',
+    price: 5.49,
+    category: 'flags',
+    image: '',
+    badge: 'new',
+    stock: 35
+  },
+  {
+    id: 'bbc-candingo-01',
+    name: 'Candingo Silhouette',
+    description: 'The Candingo suppressor silhouette. 5" matte black vinyl.',
+    price: 4.99,
+    category: 'bbc',
+    image: '',
+    badge: '',
+    stock: 45
+  },
+  {
+    id: 'fdc-member-01',
+    name: 'FDC Member Badge',
+    description: 'Official FDC Member sticker. Holographic 3" circle.',
+    price: 6.99,
+    category: 'logos',
+    image: '',
+    badge: '',
+    stock: 30
+  },
+  {
+    id: 'fdc-send-it-01',
+    name: 'Send It',
+    description: 'Full send energy. Bold lettering. 4" vinyl.',
+    price: 3.99,
+    category: '2a',
+    image: '',
+    badge: '',
+    stock: 80
+  },
+  {
+    id: 'fdc-molon-01',
+    name: 'Molon Labe',
+    description: 'Come and take it. Classic design. 4" matte vinyl.',
+    price: 4.49,
+    category: '2a',
+    image: '',
+    badge: '',
+    stock: 55
+  },
+  {
+    id: 'bbc-bigblack-01',
+    name: 'Big Black Cans',
+    description: 'The infamous BBC text sticker. 5" vinyl. IYKYK.',
+    price: 4.99,
+    category: 'bbc',
+    image: '',
+    badge: 'hot',
+    stock: 90
+  },
+  {
+    id: 'fdc-pack-01',
+    name: 'FDC Starter Pack (5)',
+    description: 'Five random FDC stickers. Great for sticker-bombing.',
+    price: 14.99,
+    category: 'packs',
+    image: '',
+    badge: 'new',
+    stock: 25
+  },
+  {
+    id: 'fdc-pack-02',
+    name: 'FDC Mega Pack (10)',
+    description: 'Ten stickers from across the collection. Best value.',
+    price: 24.99,
+    category: 'packs',
+    image: '',
+    badge: '',
+    stock: 20
+  }
+];
+
+// ── CART STATE ──
+let cart = JSON.parse(localStorage.getItem('fdc_cart') || '[]');
+
+// ── INITIALIZE ──
+document.addEventListener('DOMContentLoaded', function() {
+  populateStates();
+  populateExpYears();
+  renderProducts('all');
+  buildCategoryFilters();
+  updateCartUI();
+  setupMobileMenu();
+  setupCardFormatting();
+
+  // Load config from localStorage (set via admin panel)
+  const savedConfig = localStorage.getItem('fdc_config');
+  if (savedConfig) {
+    const cfg = JSON.parse(savedConfig);
+    if (cfg.apiLoginId) CONFIG.AUTHNET_API_LOGIN_ID = cfg.apiLoginId;
+    if (cfg.clientKey) CONFIG.AUTHNET_CLIENT_KEY = cfg.clientKey;
+    if (cfg.sandbox !== undefined) CONFIG.AUTHNET_SANDBOX = cfg.sandbox;
+  }
+
+  // Load products from localStorage if admin has updated them
+  const savedProducts = localStorage.getItem('fdc_products');
+  if (savedProducts) {
+    PRODUCTS = JSON.parse(savedProducts);
+    renderProducts('all');
+    buildCategoryFilters();
+  }
+
+  // Show mobile cart button
+  if (window.innerWidth <= 768) {
+    document.getElementById('mobileCartBtn').style.display = 'block';
+  }
+  window.addEventListener('resize', function() {
+    document.getElementById('mobileCartBtn').style.display = window.innerWidth <= 768 ? 'block' : 'none';
+  });
+});
+
+// ── MOBILE MENU ──
+function setupMobileMenu() {
+  var hamburger = document.getElementById('hamburger');
+  var mobileMenu = document.getElementById('mobileMenu');
+
+  hamburger.addEventListener('click', function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    if (mobileMenu.classList.contains('open')) {
+      closeMobileMenu();
+    } else {
+      mobileMenu.classList.add('open');
+      hamburger.classList.add('open');
+      document.body.classList.add('menu-open');
+    }
+  });
+
+  var menuLinks = mobileMenu.querySelectorAll('a');
+  for (var i = 0; i < menuLinks.length; i++) {
+    menuLinks[i].addEventListener('click', function() {
+      closeMobileMenu();
+    });
+  }
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+      closeMobileMenu();
+      closeCart();
+      closeCheckout();
+    }
+  });
+}
+
+function closeMobileMenu() {
+  document.getElementById('mobileMenu').classList.remove('open');
+  document.getElementById('hamburger').classList.remove('open');
+  document.body.classList.remove('menu-open');
+}
+
+// ── PRODUCT RENDERING ──
+function renderProducts(category) {
+  var grid = document.getElementById('productGrid');
+  var filtered = category === 'all' ? PRODUCTS : PRODUCTS.filter(function(p) { return p.category === category; });
+  var html = '';
+  for (var i = 0; i < filtered.length; i++) {
+    var p = filtered[i];
+    var oos = p.stock <= 0;
+    var low = p.stock > 0 && p.stock <= 10;
+    var badgeHtml = '';
+    if (oos) {
+      badgeHtml = '<span class="product-badge badge-oos">Sold Out</span>';
+    } else if (p.badge === 'new') {
+      badgeHtml = '<span class="product-badge badge-new">New</span>';
+    } else if (p.badge === 'hot') {
+      badgeHtml = '<span class="product-badge badge-hot">Hot</span>';
+    }
+
+    var imageHtml = p.image
+      ? '<img src="' + p.image + '" alt="' + p.name + '">'
+      : '<div class="product-image-placeholder">🔫</div>';
+
+    var stockHtml = oos
+      ? '<span class="product-stock" style="color:var(--red);">OUT OF STOCK</span>'
+      : (low ? '<span class="product-stock low">Only ' + p.stock + ' left</span>' : '<span class="product-stock">In Stock</span>');
+
+    html += '<div class="product-card' + (oos ? ' out-of-stock' : '') + '">' +
+      '<div class="product-image">' + badgeHtml + imageHtml + '</div>' +
+      '<div class="product-info-card">' +
+        '<div class="product-name">' + p.name + '</div>' +
+        '<div class="product-desc">' + p.description + '</div>' +
+        '<div class="product-bottom">' +
+          '<div class="product-price">$' + p.price.toFixed(2) + '</div>' +
+          stockHtml +
+        '</div>' +
+        '<button class="add-to-cart-btn" id="atc-' + p.id + '" onclick="addToCart(\'' + p.id + '\')"' + (oos ? ' disabled' : '') + '>' +
+          (oos ? 'Sold Out' : 'Add to Cart') +
+        '</button>' +
+      '</div>' +
+    '</div>';
+  }
+  grid.innerHTML = html;
+}
+
+function buildCategoryFilters() {
+  var cats = {};
+  PRODUCTS.forEach(function(p) { cats[p.category] = true; });
+  var container = document.getElementById('categoryFilter');
+  var html = '<button class="filter-btn active" onclick="filterProducts(\'all\')">All</button>';
+  var catLabels = {
+    'logos': 'Logos', 'flags': 'Flags & Patches', 'bbc': 'BBC Suppressors',
+    '2a': '2A Lifestyle', 'packs': 'Value Packs', 'misc': 'Misc'
+  };
+  Object.keys(cats).forEach(function(cat) {
+    html += '<button class="filter-btn" onclick="filterProducts(\'' + cat + '\')">' + (catLabels[cat] || cat) + '</button>';
+  });
+  container.innerHTML = html;
+}
+
+function filterProducts(category) {
+  var btns = document.querySelectorAll('.filter-btn');
+  btns.forEach(function(b) { b.classList.remove('active'); });
+  event.target.classList.add('active');
+  renderProducts(category);
+}
+
+// ── CART MANAGEMENT ──
+function addToCart(productId) {
+  var product = PRODUCTS.find(function(p) { return p.id === productId; });
+  if (!product || product.stock <= 0) return;
+
+  var existing = cart.find(function(item) { return item.id === productId; });
+  if (existing) {
+    if (existing.qty >= product.stock) {
+      showToast('Maximum stock reached for ' + product.name, '⚠️');
+      return;
+    }
+    existing.qty += 1;
+  } else {
+    cart.push({ id: productId, qty: 1 });
+  }
+
+  saveCart();
+  updateCartUI();
+
+  // Button feedback
+  var btn = document.getElementById('atc-' + productId);
+  if (btn) {
+    btn.classList.add('added');
+    btn.textContent = 'Added ✓';
+    setTimeout(function() {
+      btn.classList.remove('added');
+      btn.textContent = 'Add to Cart';
+    }, 1200);
+  }
+
+  showToast(product.name + ' added to cart');
+}
+
+function removeFromCart(productId) {
+  cart = cart.filter(function(item) { return item.id !== productId; });
+  saveCart();
+  updateCartUI();
+}
+
+function updateQty(productId, delta) {
+  var item = cart.find(function(i) { return i.id === productId; });
+  if (!item) return;
+  var product = PRODUCTS.find(function(p) { return p.id === productId; });
+  var newQty = item.qty + delta;
+  if (newQty <= 0) {
+    removeFromCart(productId);
+    return;
+  }
+  if (product && newQty > product.stock) {
+    showToast('Only ' + product.stock + ' available', '⚠️');
+    return;
+  }
+  item.qty = newQty;
+  saveCart();
+  updateCartUI();
+}
+
+function saveCart() {
+  localStorage.setItem('fdc_cart', JSON.stringify(cart));
+}
+
+function getCartTotals(state) {
+  var subtotal = 0;
+  cart.forEach(function(item) {
+    var product = PRODUCTS.find(function(p) { return p.id === item.id; });
+    if (product) subtotal += product.price * item.qty;
+  });
+
+  var tax = 0;
+  if (state && CONFIG.FL_CODES.indexOf(state) >= 0) {
+    tax = subtotal * CONFIG.FL_TAX_RATE;
+  }
+
+  var shipping = subtotal >= CONFIG.FREE_SHIPPING_THRESHOLD ? 0 : CONFIG.FLAT_SHIPPING;
+  if (cart.length === 0) shipping = 0;
+
+  return {
+    subtotal: subtotal,
+    tax: tax,
+    shipping: shipping,
+    total: subtotal + tax + shipping
+  };
+}
+
+function updateCartUI() {
+  var totalItems = 0;
+  cart.forEach(function(item) { totalItems += item.qty; });
+
+  // Update count badges
+  var counts = document.querySelectorAll('.cart-count');
+  counts.forEach(function(c) {
+    c.textContent = totalItems;
+    c.classList.toggle('visible', totalItems > 0);
+  });
+
+  // Render cart items
+  var container = document.getElementById('cartItems');
+  var emptyEl = document.getElementById('cartEmpty');
+  var footerEl = document.getElementById('cartFooter');
+
+  if (cart.length === 0) {
+    container.innerHTML = '<div class="cart-empty"><div class="cart-empty-icon">🎯</div><p>Your cart is empty.</p><p style="margin-top:8px;font-size:13px;">Time to stock up on stickers.</p></div>';
+    footerEl.style.display = 'none';
+    return;
+  }
+
+  footerEl.style.display = 'block';
+  var html = '';
+  cart.forEach(function(item) {
+    var product = PRODUCTS.find(function(p) { return p.id === item.id; });
+    if (!product) return;
+    var imgHtml = product.image
+      ? '<img src="' + product.image + '" alt="' + product.name + '">'
+      : '<div style="font-size:28px;opacity:0.3;">🔫</div>';
+
+    html += '<div class="cart-item">' +
+      '<div class="cart-item-image">' + imgHtml + '</div>' +
+      '<div class="cart-item-details">' +
+        '<div class="cart-item-name">' + product.name + '</div>' +
+        '<div class="cart-item-price">$' + (product.price * item.qty).toFixed(2) + '</div>' +
+        '<div class="cart-item-qty">' +
+          '<button class="qty-btn" onclick="updateQty(\'' + item.id + '\',-1)">−</button>' +
+          '<span class="qty-value">' + item.qty + '</span>' +
+          '<button class="qty-btn" onclick="updateQty(\'' + item.id + '\',1)">+</button>' +
+        '</div>' +
+      '</div>' +
+      '<button class="cart-item-remove" onclick="removeFromCart(\'' + item.id + '\')" title="Remove">&times;</button>' +
+    '</div>';
+  });
+  container.innerHTML = html;
+
+  // Update totals
+  var totals = getCartTotals(null);
+  document.getElementById('cartSubtotal').textContent = '$' + totals.subtotal.toFixed(2);
+  document.getElementById('cartTotal').textContent = '$' + totals.subtotal.toFixed(2) + '+';
+  document.getElementById('cartShipping').textContent = totals.subtotal >= CONFIG.FREE_SHIPPING_THRESHOLD ? 'FREE' : '$' + CONFIG.FLAT_SHIPPING.toFixed(2);
+}
+
+// ── CART DRAWER ──
+function openCart() {
+  document.getElementById('cartOverlay').classList.add('open');
+  document.getElementById('cartDrawer').classList.add('open');
+  document.body.classList.add('cart-open');
+}
+
+function closeCart() {
+  document.getElementById('cartOverlay').classList.remove('open');
+  document.getElementById('cartDrawer').classList.remove('open');
+  document.body.classList.remove('cart-open');
+}
+
+// ── CHECKOUT ──
+function openCheckout() {
+  if (cart.length === 0) return;
+  closeCart();
+  document.getElementById('checkoutOverlay').classList.add('open');
+  document.body.classList.add('checkout-open');
+
+  // Show form, hide processing/success
+  document.getElementById('checkoutForm').style.display = 'block';
+  document.getElementById('orderProcessing').style.display = 'none';
+  document.getElementById('orderSuccess').style.display = 'none';
+  document.getElementById('orderError').style.display = 'none';
+  document.getElementById('placeOrderBtn').disabled = false;
+
+  // Pre-fill billing zip from shipping
+  var shippingZip = document.getElementById('coZip').value;
+  if (shippingZip && !document.getElementById('coCardZip').value) {
+    document.getElementById('coCardZip').value = shippingZip;
+  }
+
+  updateCheckoutSummary();
+}
+
+function closeCheckout() {
+  document.getElementById('checkoutOverlay').classList.remove('open');
+  document.body.classList.remove('checkout-open');
+}
+
+function updateCheckoutSummary() {
+  var state = document.getElementById('coState').value;
+  var totals = getCartTotals(state);
+  var html = '';
+  cart.forEach(function(item) {
+    var product = PRODUCTS.find(function(p) { return p.id === item.id; });
+    if (!product) return;
+    html += '<div class="checkout-item-row">' +
+      '<span>' + product.name + ' × ' + item.qty + '</span>' +
+      '<span>$' + (product.price * item.qty).toFixed(2) + '</span>' +
+    '</div>';
+  });
+
+  html += '<div class="checkout-total-section">';
+  html += '<div class="checkout-total-row"><span>Subtotal</span><span>$' + totals.subtotal.toFixed(2) + '</span></div>';
+  if (totals.tax > 0) {
+    html += '<div class="checkout-total-row"><span>FL Sales Tax (7.5%)</span><span>$' + totals.tax.toFixed(2) + '</span></div>';
+  }
+  html += '<div class="checkout-total-row"><span>Shipping</span><span>' + (totals.shipping === 0 ? 'FREE' : '$' + totals.shipping.toFixed(2)) + '</span></div>';
+  html += '<div class="checkout-total-row grand"><span>Total</span><span>$' + totals.total.toFixed(2) + '</span></div>';
+  html += '</div>';
+
+  document.getElementById('checkoutSummary').innerHTML = html;
+}
+
+// Listen for state changes to recalculate tax
+document.getElementById('coState').addEventListener('change', updateCheckoutSummary);
+
+// ── PLACE ORDER ──
+function placeOrder() {
+  // Validate form
+  if (!validateCheckoutForm()) return;
+
+  var btn = document.getElementById('placeOrderBtn');
+  btn.disabled = true;
+  document.getElementById('orderError').style.display = 'none';
+
+  // If Authorize.net credentials are configured, use Accept.js
+  if (CONFIG.AUTHNET_API_LOGIN_ID && CONFIG.AUTHNET_CLIENT_KEY) {
+    tokenizeAndCharge();
+  } else {
+    // Demo mode — simulate payment processing
+    simulatePayment();
+  }
+}
+
+function tokenizeAndCharge() {
+  document.getElementById('checkoutForm').style.display = 'none';
+  document.getElementById('orderProcessing').style.display = 'block';
+
+  var authData = {
+    clientKey: CONFIG.AUTHNET_CLIENT_KEY,
+    apiLoginID: CONFIG.AUTHNET_API_LOGIN_ID
+  };
+
+  var cardData = {
+    cardNumber: document.getElementById('coCardNumber').value.replace(/\s/g, ''),
+    month: document.getElementById('coExpMonth').value,
+    year: document.getElementById('coExpYear').value,
+    cardCode: document.getElementById('coCvv').value,
+    zip: document.getElementById('coCardZip').value
+  };
+
+  var secureData = {
+    authData: authData,
+    cardData: cardData
+  };
+
+  // Accept.js will tokenize the card client-side
+  Accept.dispatchData(secureData, function(response) {
+    if (response.messages.resultCode === 'Error') {
+      var errors = response.messages.message.map(function(m) { return m.text; }).join(', ');
+      showOrderError(errors);
+      return;
+    }
+
+    // Got a token (nonce) — send to our server
+    var nonce = response.opaqueData;
+    chargeViaServer(nonce);
+  });
+}
+
+function chargeViaServer(opaqueData) {
+  var state = document.getElementById('coState').value;
+  var totals = getCartTotals(state);
+  var orderData = {
+    opaqueData: opaqueData,
+    amount: totals.total.toFixed(2),
+    tax: totals.tax.toFixed(2),
+    shipping: totals.shipping.toFixed(2),
+    customer: {
+      firstName: document.getElementById('coFirstName').value,
+      lastName: document.getElementById('coLastName').value,
+      email: document.getElementById('coEmail').value,
+      phone: document.getElementById('coPhone').value
+    },
+    shippingAddress: {
+      address: document.getElementById('coAddress').value,
+      address2: document.getElementById('coAddress2').value,
+      city: document.getElementById('coCity').value,
+      state: state,
+      zip: document.getElementById('coZip').value
+    },
+    items: cart.map(function(item) {
+      var product = PRODUCTS.find(function(p) { return p.id === item.id; });
+      return {
+        id: item.id,
+        name: product ? product.name : item.id,
+        price: product ? product.price : 0,
+        qty: item.qty
+      };
+    })
+  };
+
+  fetch('/api/charge', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(orderData)
+  })
+  .then(function(res) { return res.json(); })
+  .then(function(data) {
+    if (data.success) {
+      showOrderSuccess(data.orderId || generateOrderId());
+    } else {
+      showOrderError(data.error || 'Payment failed. Please try again.');
+    }
+  })
+  .catch(function(err) {
+    showOrderError('Network error. Please check your connection and try again.');
+  });
+}
+
+function simulatePayment() {
+  document.getElementById('checkoutForm').style.display = 'none';
+  document.getElementById('orderProcessing').style.display = 'block';
+
+  // Save order locally for admin reports
+  var state = document.getElementById('coState').value;
+  var totals = getCartTotals(state);
+  var orderId = generateOrderId();
+  var order = {
+    id: orderId,
+    date: new Date().toISOString(),
+    customer: {
+      firstName: document.getElementById('coFirstName').value,
+      lastName: document.getElementById('coLastName').value,
+      email: document.getElementById('coEmail').value,
+      phone: document.getElementById('coPhone').value
+    },
+    shippingAddress: {
+      address: document.getElementById('coAddress').value,
+      address2: document.getElementById('coAddress2').value,
+      city: document.getElementById('coCity').value,
+      state: state,
+      zip: document.getElementById('coZip').value
+    },
+    items: cart.map(function(item) {
+      var product = PRODUCTS.find(function(p) { return p.id === item.id; });
+      return {
+        id: item.id,
+        name: product ? product.name : item.id,
+        price: product ? product.price : 0,
+        qty: item.qty
+      };
+    }),
+    subtotal: totals.subtotal,
+    tax: totals.tax,
+    shipping: totals.shipping,
+    total: totals.total,
+    status: 'confirmed',
+    paymentMethod: 'demo'
+  };
+
+  // Save order
+  var orders = JSON.parse(localStorage.getItem('fdc_orders') || '[]');
+  orders.push(order);
+  localStorage.setItem('fdc_orders', JSON.stringify(orders));
+
+  // Update inventory
+  cart.forEach(function(item) {
+    var product = PRODUCTS.find(function(p) { return p.id === item.id; });
+    if (product) {
+      product.stock = Math.max(0, product.stock - item.qty);
+    }
+  });
+  localStorage.setItem('fdc_products', JSON.stringify(PRODUCTS));
+
+  setTimeout(function() {
+    showOrderSuccess(orderId);
+  }, 2000);
+}
+
+function showOrderSuccess(orderId) {
+  document.getElementById('orderProcessing').style.display = 'none';
+  document.getElementById('orderSuccess').style.display = 'block';
+  document.getElementById('orderNumber').textContent = orderId;
+}
+
+function showOrderError(message) {
+  document.getElementById('orderProcessing').style.display = 'none';
+  document.getElementById('checkoutForm').style.display = 'block';
+  document.getElementById('orderError').textContent = message;
+  document.getElementById('orderError').style.display = 'block';
+  document.getElementById('placeOrderBtn').disabled = false;
+}
+
+function resetAfterOrder() {
+  cart = [];
+  saveCart();
+  updateCartUI();
+  renderProducts('all');
+  // Reset form
+  var inputs = document.querySelectorAll('#checkoutForm input, #checkoutForm select');
+  inputs.forEach(function(el) { if (el.tagName === 'SELECT') el.selectedIndex = 0; else el.value = ''; });
+}
+
+function generateOrderId() {
+  return 'FDC-' + Date.now().toString(36).toUpperCase() + '-' + Math.random().toString(36).substr(2, 4).toUpperCase();
+}
+
+// ── FORM VALIDATION ──
+function validateCheckoutForm() {
+  var valid = true;
+  var required = [
+    'coFirstName', 'coLastName', 'coEmail', 'coAddress', 'coCity',
+    'coState', 'coZip', 'coCardNumber', 'coExpMonth', 'coExpYear',
+    'coCvv', 'coCardZip'
+  ];
+
+  required.forEach(function(id) {
+    var el = document.getElementById(id);
+    if (!el.value.trim()) {
+      el.classList.add('error');
+      valid = false;
+    } else {
+      el.classList.remove('error');
+    }
+  });
+
+  // Email validation
+  var email = document.getElementById('coEmail');
+  if (email.value && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value)) {
+    email.classList.add('error');
+    valid = false;
+  }
+
+  // State validation — must be in lower 48
+  var state = document.getElementById('coState').value;
+  if (state && !CONFIG.ALLOWED_STATES[state]) {
+    document.getElementById('coState').classList.add('error');
+    showOrderError('Sorry, we only ship to the lower 48 United States.');
+    valid = false;
+  }
+
+  if (!valid) {
+    showOrderError('Please fill in all required fields.');
+  }
+
+  return valid;
+}
+
+// ── FORM HELPERS ──
+function populateStates() {
+  var select = document.getElementById('coState');
+  Object.keys(CONFIG.ALLOWED_STATES).sort().forEach(function(code) {
+    var opt = document.createElement('option');
+    opt.value = code;
+    opt.textContent = CONFIG.ALLOWED_STATES[code];
+    select.appendChild(opt);
+  });
+}
+
+function populateExpYears() {
+  var select = document.getElementById('coExpYear');
+  var year = new Date().getFullYear();
+  for (var i = 0; i < 12; i++) {
+    var opt = document.createElement('option');
+    opt.value = (year + i).toString();
+    opt.textContent = (year + i).toString();
+    select.appendChild(opt);
+  }
+}
+
+function setupCardFormatting() {
+  var cardInput = document.getElementById('coCardNumber');
+  cardInput.addEventListener('input', function(e) {
+    var val = e.target.value.replace(/\D/g, '').substring(0, 16);
+    var formatted = val.match(/.{1,4}/g);
+    e.target.value = formatted ? formatted.join(' ') : '';
+  });
+}
+
+// ── TOAST ──
+function showToast(message, icon) {
+  var toast = document.getElementById('toast');
+  document.getElementById('toastText').textContent = message;
+  toast.querySelector('.toast-icon').textContent = icon || '✓';
+  toast.classList.add('visible');
+  clearTimeout(toast._timer);
+  toast._timer = setTimeout(function() {
+    toast.classList.remove('visible');
+  }, 2500);
+}
+</script>
+</body>
+</html>

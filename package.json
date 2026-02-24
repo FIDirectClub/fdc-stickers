@@ -1,0 +1,10 @@
+{
+  "name": "fdc-stickers",
+  "version": "1.0.0",
+  "description": "FDC Stickers — Official sticker shop for Firearms Direct Club",
+  "private": true,
+  "scripts": {
+    "dev": "npx serve .",
+    "start": "npx serve ."
+  }
+}
