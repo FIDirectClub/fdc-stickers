@@ -6,35 +6,44 @@
 <title>Loading... — FDC Stickers</title>
 <meta name="description" content="Premium vinyl stickers from Firearms Direct Club.">
 <link rel="icon" type="image/png" href="/favicon.png">
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Permanent+Marker&family=Barlow+Condensed:wght@400;600;700&family=Barlow:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Permanent+Marker&family=Barlow+Condensed:wght@400;600;700&family=Barlow:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root {
-    --gold: #D4A947;
-    --gold-bright: #F5D76E;
-    --gold-dim: rgba(212,169,71,0.15);
-    --black: #0A0A0A;
-    --dark: #111111;
-    --darker: #1a1a1a;
-    --white: #F2F2F2;
-    --red: #C0392B;
-    --green: #27AE60;
-    --steel: #8C8C8C;
-    --steel-light: #B0B0B0;
+    --gold: #FF2D55;
+    --gold-bright: #FF5A7A;
+    --gold-dim: rgba(255,45,85,0.12);
+    --black: #e0ddd5;
+    --dark: #d4d0c8;
+    --darker: rgba(255,255,255,0.55);
+    --white: #1a1a1a;
+    --red: #CC1133;
+    --green: #2ECC40;
+    --steel: #666;
+    --steel-light: #444;
+    --blue: #007AFF;
+    --yellow: #FFCC00;
+    --border: #1a1a1a;
   }
   * { margin:0; padding:0; box-sizing:border-box; }
   html { scroll-behavior:smooth; }
-  body { background:var(--black); color:var(--white); font-family:'Barlow',sans-serif; }
+  body {
+    background:
+      url("data:image/svg+xml,%3Csvg width='300' height='300' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='5' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E"),
+      linear-gradient(135deg, #e0ddd5 0%, #d4d0c8 30%, #c8c4bc 60%, #bdb8af 100%);
+    background-attachment:fixed;
+    color:var(--white); font-family:'Barlow',sans-serif;
+  }
 
   /* === NAV (minimal) === */
   nav {
     position:fixed; top:0; left:0; right:0; z-index:100;
     display:flex; justify-content:space-between; align-items:center;
-    padding:20px 48px; background:rgba(10,10,10,0.9);
-    backdrop-filter:blur(12px); border-bottom:1px solid var(--gold-dim);
+    padding:20px 48px; background:rgba(224,221,213,0.92);
+    backdrop-filter:blur(12px); border-bottom:2px solid var(--border);
   }
   .nav-brand { display:flex; align-items:center; gap:14px; text-decoration:none; }
-  .nav-logo { font-family:'Bebas Neue',sans-serif; font-size:28px; color:var(--gold); letter-spacing:4px; }
-  .nav-logo span { color:var(--white); font-size:12px; letter-spacing:2px; display:block; margin-top:-4px; font-family:'Barlow Condensed',sans-serif; }
+  .nav-logo { font-family:'Bangers',cursive; font-size:28px; color:var(--gold); letter-spacing:3px; text-shadow:2px 2px 0 rgba(0,0,0,0.1); transform:rotate(-2deg); }
+  .nav-logo span { color:var(--steel); font-size:10px; letter-spacing:3px; display:block; margin-top:-2px; font-family:'Barlow Condensed',sans-serif; font-weight:600; text-transform:uppercase; transform:rotate(2deg); }
   .nav-right { display:flex; gap:24px; align-items:center; }
   .nav-right a {
     color:var(--steel-light); text-decoration:none; font-family:'Barlow Condensed',sans-serif;
@@ -42,11 +51,12 @@
   }
   .nav-right a:hover { color:var(--gold); }
   .cart-btn {
-    position:relative; background:none; border:1px solid var(--gold-dim); color:var(--gold);
-    font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:14px; letter-spacing:2px;
+    position:relative; background:none; border:2px solid var(--border); color:var(--white);
+    font-family:'Bangers',cursive; font-size:16px; letter-spacing:2px;
     text-transform:uppercase; padding:10px 20px; cursor:pointer; transition:all 0.3s;
+    box-shadow:2px 2px 0 var(--border);
   }
-  .cart-btn:hover { background:var(--gold); color:var(--black); border-color:var(--gold); }
+  .cart-btn:hover { background:var(--gold); color:#fff; border-color:var(--border); box-shadow:3px 3px 0 var(--border); }
   .cart-count {
     position:absolute; top:-8px; right:-8px; background:var(--red); color:var(--white);
     font-size:11px; font-weight:700; width:20px; height:20px; border-radius:50%;
@@ -71,9 +81,10 @@
 
   /* Image */
   .product-image-main {
-    width:100%; aspect-ratio:1; background:linear-gradient(135deg,#1e1e1e 0%,#151515 50%,#1e1e1e 100%);
-    border:1px solid rgba(255,255,255,0.05); display:flex; align-items:center;
+    width:100%; aspect-ratio:1; background:linear-gradient(135deg,#ccc 0%,#bbb 50%,#ccc 100%);
+    border:2px solid var(--border); display:flex; align-items:center;
     justify-content:center; overflow:hidden; position:relative;
+    box-shadow:4px 4px 0 rgba(0,0,0,0.15);
   }
   .product-image-main img { width:100%; height:100%; object-fit:cover; }
   .product-image-placeholder { font-size:120px; opacity:0.15; }
@@ -81,8 +92,8 @@
     position:absolute; top:16px; left:16px; font-family:'Barlow Condensed',sans-serif;
     font-weight:700; font-size:12px; letter-spacing:2px; text-transform:uppercase; padding:6px 16px;
   }
-  .badge-new { background:var(--gold); color:var(--black); }
-  .badge-hot { background:var(--red); color:var(--white); }
+  .badge-new { background:var(--yellow); color:var(--border); border:2px solid var(--border); }
+  .badge-hot { background:var(--gold); color:#fff; border:2px solid var(--border); }
 
   /* Details */
   .product-details { padding-top:8px; }
@@ -91,14 +102,14 @@
     letter-spacing:4px; text-transform:uppercase; color:var(--gold); margin-bottom:12px;
   }
   .product-title {
-    font-family:'Bebas Neue',sans-serif; font-size:clamp(36px,5vw,56px);
+    font-family:'Bangers',cursive; font-size:clamp(36px,5vw,56px);
     letter-spacing:3px; line-height:1; margin-bottom:8px;
   }
   .product-tagline {
     font-family:'Permanent Marker',cursive; font-size:18px; color:var(--steel-light); margin-bottom:24px;
   }
   .product-price-tag {
-    font-family:'Bebas Neue',sans-serif; font-size:48px; color:var(--gold);
+    font-family:'Bangers',cursive; font-size:48px; color:var(--blue);
     letter-spacing:2px; margin-bottom:8px;
   }
   .product-stock-info {
@@ -112,34 +123,35 @@
   /* Qty + Add to cart */
   .product-actions { display:flex; gap:16px; align-items:center; margin-bottom:32px; }
   .qty-selector {
-    display:flex; align-items:center; gap:0; border:1px solid rgba(255,255,255,0.15);
+    display:flex; align-items:center; gap:0; border:2px solid var(--border);
+    box-shadow:2px 2px 0 rgba(0,0,0,0.1);
   }
   .qty-selector button {
     width:44px; height:48px; background:transparent; border:none; color:var(--white);
     font-size:20px; cursor:pointer; transition:all 0.2s;
     font-family:'Barlow Condensed',sans-serif; font-weight:700;
   }
-  .qty-selector button:hover { color:var(--gold); background:rgba(212,169,71,0.08); }
+  .qty-selector button:hover { color:var(--gold); background:rgba(255,45,85,0.08); }
   .qty-selector input {
-    width:48px; height:48px; background:transparent; border:none; border-left:1px solid rgba(255,255,255,0.1);
-    border-right:1px solid rgba(255,255,255,0.1); color:var(--white); font-family:'Barlow Condensed',sans-serif;
+    width:48px; height:48px; background:rgba(255,255,255,0.4); border:none; border-left:2px solid var(--border);
+    border-right:2px solid var(--border); color:var(--white); font-family:'Barlow Condensed',sans-serif;
     font-size:18px; font-weight:700; text-align:center; outline:none; -moz-appearance:textfield;
   }
   .qty-selector input::-webkit-outer-spin-button,
   .qty-selector input::-webkit-inner-spin-button { -webkit-appearance:none; margin:0; }
   .pdp-add-btn {
-    flex:1; background:var(--gold); color:var(--black); font-family:'Bebas Neue',sans-serif;
-    font-size:22px; letter-spacing:4px; padding:12px 32px; border:none; cursor:pointer;
-    transition:all 0.3s; height:48px;
+    flex:1; background:var(--gold); color:#fff; font-family:'Bangers',cursive;
+    font-size:22px; letter-spacing:4px; padding:12px 32px; border:2px solid var(--border); cursor:pointer;
+    transition:all 0.3s; height:48px; box-shadow:3px 3px 0 var(--border);
   }
-  .pdp-add-btn:hover { background:var(--gold-bright); box-shadow:0 8px 32px rgba(212,169,71,0.3); }
-  .pdp-add-btn:disabled { opacity:0.4; cursor:not-allowed; }
-  .pdp-add-btn.added { background:var(--green); color:var(--white); }
+  .pdp-add-btn:hover { background:var(--gold-bright); transform:translate(-1px,-1px); box-shadow:4px 4px 0 var(--border); }
+  .pdp-add-btn:disabled { opacity:0.4; cursor:not-allowed; box-shadow:none; }
+  .pdp-add-btn.added { background:var(--green); color:#fff; }
 
   /* Description */
   .product-description { margin-bottom:32px; }
   .product-description h3 {
-    font-family:'Bebas Neue',sans-serif; font-size:24px; letter-spacing:2px;
+    font-family:'Bangers',cursive; font-size:24px; letter-spacing:2px;
     color:var(--gold); margin-bottom:12px;
   }
   .product-description p {
@@ -149,47 +161,50 @@
   /* Specs */
   .product-specs {
     display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:32px;
-    background:var(--darker); border:1px solid rgba(255,255,255,0.05); padding:24px;
+    background:rgba(255,255,255,0.5); border:2px solid var(--border); padding:24px;
+    box-shadow:2px 2px 0 rgba(0,0,0,0.1);
   }
-  .spec-item { border-left:2px solid var(--gold); padding-left:14px; }
+  .spec-item { border-left:3px solid var(--gold); padding-left:14px; }
   .spec-label {
     font-family:'Barlow Condensed',sans-serif; font-weight:600; font-size:10px;
     letter-spacing:3px; text-transform:uppercase; color:var(--steel); margin-bottom:2px;
   }
-  .spec-value { font-family:'Bebas Neue',sans-serif; font-size:20px; letter-spacing:1px; }
+  .spec-value { font-family:'Bangers',cursive; font-size:20px; letter-spacing:1px; }
 
   /* Shipping note */
   .shipping-note {
-    background:rgba(212,169,71,0.06); border:1px solid var(--gold-dim); padding:16px 20px;
+    background:rgba(255,204,0,0.12); border:2px solid var(--border); padding:16px 20px;
     font-family:'Barlow Condensed',sans-serif; font-size:13px; letter-spacing:1px;
-    color:var(--steel-light); display:flex; align-items:center; gap:10px;
+    color:var(--steel); display:flex; align-items:center; gap:10px;
   }
 
   /* === RELATED === */
   .related-section { max-width:1200px; margin:0 auto; padding:0 48px 100px; }
   .related-title {
-    font-family:'Bebas Neue',sans-serif; font-size:36px; letter-spacing:3px; margin-bottom:24px;
+    font-family:'Bangers',cursive; font-size:36px; letter-spacing:3px; margin-bottom:24px;
   }
   .related-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:24px; }
   .related-card {
-    background:var(--darker); border:1px solid rgba(255,255,255,0.05);
+    background:rgba(255,255,255,0.65); border:2px solid var(--border);
     transition:all 0.3s; cursor:pointer; text-decoration:none; color:inherit;
+    box-shadow:3px 3px 0 rgba(0,0,0,0.1);
   }
-  .related-card:hover { border-color:rgba(212,169,71,0.3); transform:translateY(-4px); }
+  .related-card:hover { border-color:var(--gold); transform:translate(-2px,-4px); box-shadow:5px 5px 0 rgba(0,0,0,0.15); }
   .related-card-img {
-    width:100%; aspect-ratio:1; background:linear-gradient(135deg,#1e1e1e,#151515,#1e1e1e);
+    width:100%; aspect-ratio:1; background:linear-gradient(135deg,#ccc,#bbb,#ccc);
     display:flex; align-items:center; justify-content:center; overflow:hidden;
+    border-bottom:2px solid var(--border);
   }
   .related-card-img img { width:100%; height:100%; object-fit:cover; }
   .related-card-body { padding:16px; }
   .related-card-name {
-    font-family:'Bebas Neue',sans-serif; font-size:18px; letter-spacing:1px; margin-bottom:4px;
+    font-family:'Bangers',cursive; font-size:18px; letter-spacing:1px; margin-bottom:4px;
   }
-  .related-card-price { font-family:'Bebas Neue',sans-serif; font-size:22px; color:var(--gold); }
+  .related-card-price { font-family:'Bangers',cursive; font-size:22px; color:var(--blue); }
 
   /* === FOOTER === */
   footer {
-    background:var(--dark); border-top:1px solid rgba(212,169,71,0.1); padding:40px 48px;
+    background:rgba(0,0,0,0.06); border-top:2px solid var(--border); padding:40px 48px;
     text-align:center;
   }
   footer p { font-size:12px; color:var(--steel); }
@@ -197,24 +212,25 @@
 
   /* === TOAST === */
   .toast {
-    position:fixed; bottom:24px; right:24px; background:var(--darker);
-    border:1px solid var(--gold); padding:16px 24px; z-index:3000;
+    position:fixed; bottom:24px; right:24px; background:var(--border);
+    border:2px solid var(--gold); padding:16px 24px; z-index:3000;
     display:flex; align-items:center; gap:12px; transform:translateY(100px);
     opacity:0; transition:all 0.4s cubic-bezier(0.25,0.46,0.45,0.94); max-width:360px;
+    box-shadow:3px 3px 0 var(--gold);
   }
   .toast.visible { transform:translateY(0); opacity:1; }
 
   /* === 404 === */
   .not-found { text-align:center; padding:200px 24px 100px; }
-  .not-found h2 { font-family:'Bebas Neue',sans-serif; font-size:64px; letter-spacing:4px; color:var(--gold); }
+  .not-found h2 { font-family:'Bangers',cursive; font-size:64px; letter-spacing:4px; color:var(--gold); }
   .not-found p { color:var(--steel); margin-top:12px; font-size:16px; }
   .not-found a {
-    display:inline-block; margin-top:24px; background:var(--gold); color:var(--black);
-    font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:15px;
+    display:inline-block; margin-top:24px; background:var(--gold); color:#fff;
+    font-family:'Bangers',cursive; font-size:18px;
     letter-spacing:3px; text-transform:uppercase; padding:14px 36px; text-decoration:none;
-    transition:all 0.3s;
+    transition:all 0.3s; border:2px solid var(--border); box-shadow:3px 3px 0 var(--border);
   }
-  .not-found a:hover { background:var(--gold-bright); }
+  .not-found a:hover { background:var(--gold-bright); transform:translate(-1px,-1px); box-shadow:4px 4px 0 var(--border); }
 
   /* === RESPONSIVE === */
   @media(max-width:900px) {
@@ -381,7 +397,7 @@ function addToCartPDP(productId, qty) {
   if (!product || product.stock <= 0) return;
   var existing = cart.find(function(i) { return i.id === productId; });
   if (existing) {
-    if (existing.qty + qty > product.stock) { showToast('Maximum stock reached', '⚠️'); return; }
+    if (existing.qty + qty > product.stock) { showToast('Maximum entries reached', '⚠️'); return; }
     existing.qty += qty;
   } else {
     cart.push({ id: productId, qty: qty });
@@ -422,8 +438,8 @@ function renderProduct(product) {
     : '<div class="product-image-placeholder">🔫</div>';
 
   var stockHtml = oos
-    ? '<span class="stock-out">OUT OF STOCK</span>'
-    : (low ? '<span class="stock-low">Only ' + product.stock + ' left — order soon</span>' : '<span class="stock-in">✓ In Stock — Ships in 1-2 days</span>');
+    ? '<span class="stock-out">ENTRIES CLOSED</span>'
+    : (low ? '<span class="stock-low">Only ' + product.stock + ' entries remaining!</span>' : '<span class="stock-in">✓ ' + product.stock + ' entries remaining — Ships free</span>');
 
   var specsHtml = '';
   if (product.specs) {
@@ -436,10 +452,11 @@ function renderProduct(product) {
   var html = '<div class="product-page"><div class="product-layout">' +
     '<div class="product-image-main">' + badgeHtml + imgHtml + '</div>' +
     '<div class="product-details">' +
-      '<div class="product-category-label">' + (catLabels[product.category] || product.category) + '</div>' +
+      '<div class="product-category-label">' + (catLabels[product.category] || product.category) + ' Giveaway</div>' +
+      (product.prize ? '<div style="background:rgba(255,45,85,0.08);border:2px solid var(--border);padding:12px 16px;margin-bottom:16px;font-family:\'Barlow Condensed\',sans-serif;font-size:14px;letter-spacing:1px;color:var(--gold);box-shadow:2px 2px 0 rgba(0,0,0,0.1);">🏆 <strong>WIN:</strong> ' + product.prize + (product.prizeValue ? ' (ARV $' + product.prizeValue.toLocaleString() + ')' : '') + '</div>' : '') +
       '<h1 class="product-title">' + product.name + '</h1>' +
       (product.tagline ? '<p class="product-tagline">"' + product.tagline + '"</p>' : '') +
-      '<div class="product-price-tag">$' + product.price.toFixed(2) + '</div>' +
+      '<div class="product-price-tag">$' + product.price.toFixed(2) + ' <span style="font-size:18px;color:var(--steel-light);letter-spacing:1px;">/ entry</span></div>' +
       '<div class="product-stock-info">' + stockHtml + '</div>' +
       '<div class="product-actions">' +
         '<div class="qty-selector">' +
@@ -447,11 +464,11 @@ function renderProduct(product) {
           '<input type="number" id="pdpQty" value="1" min="1" max="' + product.stock + '">' +
           '<button onclick="changeQty(1)">+</button>' +
         '</div>' +
-        '<button class="pdp-add-btn" id="pdpAddBtn" onclick="addToCartPDP(\'' + product.id + '\', getQty())"' + (oos ? ' disabled' : '') + '>' + (oos ? 'SOLD OUT' : 'ADD TO CART') + '</button>' +
+        '<button class="pdp-add-btn" id="pdpAddBtn" onclick="addToCartPDP(\'' + product.id + '\', getQty())"' + (oos ? ' disabled' : '') + '>' + (oos ? 'ENTRIES CLOSED' : 'ENTER TO WIN — $' + product.price.toFixed(2) + '/ea') + '</button>' +
       '</div>' +
-      '<div class="product-description"><h3>About This Sticker</h3>' + (product.fullDescription || '<p>' + product.description + '</p>') + '</div>' +
+      '<div class="product-description"><h3>About This Giveaway</h3>' + (product.fullDescription || '<p>' + product.description + '</p>') + '</div>' +
       (specsHtml ? '<div class="product-specs">' + specsHtml + '</div>' : '') +
-      '<div class="shipping-note">📦 Ships to lower 48 US states. FL orders include 7.5% sales tax. Free shipping on orders over $25.</div>' +
+      '<div class="shipping-note">🏆 Each sticker purchased = 1 sweepstakes entry for the prize firearm shown above. Ships free to lower 48. FL orders include 7.5% sales tax. No purchase necessary — <a href="/#rules" style="color:var(--gold);">see Official Rules</a>.</div>' +
     '</div>' +
   '</div></div>';
 

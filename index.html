@@ -3,34 +3,40 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FDC Stickers — Firearms Direct Club | Milton, FL</title>
-<meta name="description" content="FDC Stickers — Official stickers from Firearms Direct Club. Premium vinyl stickers for the 2A community. Milton, Florida.">
-<meta property="og:title" content="FDC Stickers — Firearms Direct Club">
-<meta property="og:description" content="Premium vinyl stickers for the 2A community. Stick it everywhere. Milton, FL.">
+<title>FDC Stickers — Buy a Sticker. Win a Gun. | Firearms Direct Club</title>
+<meta name="description" content="FDC Stickers — Limited edition stickers from Firearms Direct Club. Every sticker purchased is an entry to win the firearm it represents. Milton, Florida.">
+<meta property="og:title" content="FDC Stickers — Buy a Sticker. Win a Gun.">
+<meta property="og:description" content="Limited edition stickers from Firearms Direct Club. Every sticker is a sweepstakes entry. Milton, FL.">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" type="image/png" href="/favicon.png">
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Permanent+Marker&family=Barlow+Condensed:wght@400;600;700&family=Barlow:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Permanent+Marker&family=Barlow+Condensed:wght@400;600;700&family=Barlow:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root {
-    --gold: #D4A947;
-    --gold-bright: #F5D76E;
-    --gold-dim: rgba(212,169,71,0.15);
-    --black: #0A0A0A;
-    --dark: #111111;
-    --darker: #1a1a1a;
-    --white: #F2F2F2;
-    --red: #C0392B;
-    --green: #27AE60;
-    --steel: #8C8C8C;
-    --steel-light: #B0B0B0;
+    --gold: #FF2D55;
+    --gold-bright: #FF5A7A;
+    --gold-dim: rgba(255,45,85,0.12);
+    --black: #e0ddd5;
+    --dark: #d4d0c8;
+    --darker: rgba(255,255,255,0.55);
+    --white: #1a1a1a;
+    --red: #CC1133;
+    --green: #2ECC40;
+    --steel: #666;
+    --steel-light: #444;
+    --blue: #007AFF;
+    --yellow: #FFCC00;
+    --border: #1a1a1a;
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
   html { scroll-behavior: smooth; scroll-padding-top: 80px; overflow-x: hidden; }
 
   body {
-    background: var(--black);
+    background:
+      url("data:image/svg+xml,%3Csvg width='300' height='300' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='5' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E"),
+      linear-gradient(135deg, #e0ddd5 0%, #d4d0c8 30%, #c8c4bc 60%, #bdb8af 100%);
+    background-attachment: fixed;
     color: var(--white);
     font-family: 'Barlow', sans-serif;
     overflow-x: hidden;
@@ -48,9 +54,9 @@
     justify-content: space-between;
     align-items: center;
     padding: 20px 48px;
-    background: rgba(10,10,10,0.9);
+    background: rgba(224,221,213,0.92);
     backdrop-filter: blur(12px);
-    border-bottom: 1px solid var(--gold-dim);
+    border-bottom: 2px solid var(--border);
   }
 
   .nav-brand {
@@ -61,19 +67,24 @@
   }
 
   .nav-logo {
-    font-family: 'Bebas Neue', sans-serif;
+    font-family: 'Bangers', cursive;
     font-size: 28px;
     color: var(--gold);
-    letter-spacing: 4px;
+    letter-spacing: 3px;
+    text-shadow: 2px 2px 0 rgba(0,0,0,0.1);
+    transform: rotate(-2deg);
   }
 
   .nav-logo span {
-    color: var(--white);
-    font-size: 12px;
-    letter-spacing: 2px;
+    color: var(--steel);
+    font-size: 10px;
+    letter-spacing: 3px;
     display: block;
-    margin-top: -4px;
+    margin-top: -2px;
     font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    text-transform: uppercase;
+    transform: rotate(2deg);
   }
 
   .nav-links {
@@ -99,22 +110,24 @@
   .cart-btn {
     position: relative;
     background: none;
-    border: 1px solid var(--gold-dim);
-    color: var(--gold);
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 700;
-    font-size: 14px;
+    border: 2px solid var(--border);
+    color: var(--white);
+    font-family: 'Bangers', cursive;
+    font-size: 16px;
     letter-spacing: 2px;
     text-transform: uppercase;
     padding: 10px 20px;
     cursor: pointer;
     transition: all 0.3s;
+    box-shadow: 2px 2px 0 var(--border);
   }
 
   .cart-btn:hover {
     background: var(--gold);
-    color: var(--black);
-    border-color: var(--gold);
+    color: #fff;
+    border-color: var(--border);
+    box-shadow: 3px 3px 0 var(--border);
+    transform: translate(-1px, -1px);
   }
 
   .cart-count {
@@ -145,7 +158,7 @@
     width: 44px;
     height: 44px;
     background: none;
-    border: 1px solid rgba(212,169,71,0.25);
+    border: 2px solid var(--border);
     cursor: pointer;
     padding: 0;
     gap: 5px;
@@ -160,7 +173,7 @@
     display: block;
     width: 22px;
     height: 2px;
-    background: var(--gold);
+    background: var(--white);
     transition: all 0.3s ease;
     transform-origin: center;
   }
@@ -175,7 +188,7 @@
     position: fixed;
     top: 0; left: 0; right: 0; bottom: 0;
     z-index: 99;
-    background: rgba(10,10,10,0.97);
+    background: rgba(212,208,200,0.97);
     backdrop-filter: blur(20px);
     flex-direction: column;
     justify-content: center;
@@ -190,7 +203,7 @@
   .mobile-menu a {
     color: var(--white);
     text-decoration: none;
-    font-family: 'Bebas Neue', sans-serif;
+    font-family: 'Bangers', cursive;
     font-size: 48px;
     letter-spacing: 6px;
     padding: 16px 0;
@@ -234,10 +247,20 @@
     text-align: center;
     padding: 120px 24px 80px;
     position: relative;
+    background: transparent;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -50%; left: -20%;
+    width: 140%; height: 200%;
     background:
-      radial-gradient(ellipse at 50% 80%, rgba(212,169,71,0.06) 0%, transparent 60%),
-      radial-gradient(ellipse at 20% 20%, rgba(192,57,43,0.04) 0%, transparent 50%),
-      var(--black);
+      radial-gradient(ellipse at 20% 30%, rgba(255,45,85,0.07) 0%, transparent 40%),
+      radial-gradient(ellipse at 80% 60%, rgba(0,122,255,0.06) 0%, transparent 35%),
+      radial-gradient(ellipse at 50% 80%, rgba(255,204,0,0.05) 0%, transparent 30%);
+    pointer-events: none;
   }
 
   .hero-badge {
@@ -246,39 +269,48 @@
     font-size: 13px;
     letter-spacing: 4px;
     text-transform: uppercase;
-    color: var(--gold);
-    border: 1px solid var(--gold);
+    color: var(--white);
+    border: 2px solid var(--border);
     padding: 8px 24px;
     margin-bottom: 32px;
     display: inline-block;
     animation: fadeDown 0.8s ease-out;
+    background: rgba(255,204,0,0.2);
+    box-shadow: 2px 2px 0 var(--border);
   }
 
   .hero h1 {
-    font-family: 'Bebas Neue', sans-serif;
+    font-family: 'Bangers', cursive;
     font-size: clamp(64px, 11vw, 140px);
     line-height: 0.9;
-    letter-spacing: 6px;
+    letter-spacing: 4px;
     color: var(--white);
     animation: fadeUp 0.8s ease-out 0.1s both;
+    transform: rotate(-1deg);
+    text-shadow: 3px 3px 0 rgba(255,45,85,0.2), -1px -1px 0 rgba(0,122,255,0.1);
   }
 
   .hero h1 em {
     font-style: normal;
     color: var(--gold);
     display: block;
-    font-size: 0.45em;
-    letter-spacing: 12px;
-    margin-top: 8px;
+    font-size: 0.55em;
+    letter-spacing: 8px;
+    margin-top: 4px;
+    transform: rotate(1.5deg);
   }
 
   .hero-tagline {
     font-family: 'Permanent Marker', cursive;
     font-size: clamp(18px, 3vw, 28px);
-    color: var(--steel-light);
+    color: var(--steel);
     margin-top: 28px;
     animation: fadeUp 0.8s ease-out 0.3s both;
     max-width: 700px;
+    background: rgba(255,204,0,0.2);
+    display: inline-block;
+    padding: 6px 20px;
+    transform: rotate(0.5deg);
   }
 
   .hero-sub {
@@ -300,24 +332,24 @@
 
   .btn-primary {
     background: var(--gold);
-    color: var(--black);
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 700;
-    font-size: 15px;
+    color: #fff;
+    font-family: 'Bangers', cursive;
+    font-size: 18px;
     letter-spacing: 3px;
     text-transform: uppercase;
     padding: 16px 40px;
-    border: none;
+    border: 2px solid var(--border);
     cursor: pointer;
     transition: all 0.3s;
     text-decoration: none;
     display: inline-block;
+    box-shadow: 3px 3px 0 var(--border);
   }
 
   .btn-primary:hover {
     background: var(--gold-bright);
-    transform: translateY(-2px);
-    box-shadow: 0 8px 32px rgba(212,169,71,0.3);
+    transform: translate(-2px, -2px);
+    box-shadow: 5px 5px 0 var(--border);
   }
 
   .btn-primary:disabled {
@@ -330,22 +362,24 @@
   .btn-secondary {
     background: transparent;
     color: var(--white);
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 700;
-    font-size: 15px;
+    font-family: 'Bangers', cursive;
+    font-size: 18px;
     letter-spacing: 3px;
     text-transform: uppercase;
     padding: 16px 40px;
-    border: 1px solid var(--steel);
+    border: 2px solid var(--border);
     cursor: pointer;
     transition: all 0.3s;
     text-decoration: none;
     display: inline-block;
+    box-shadow: 2px 2px 0 var(--border);
   }
 
   .btn-secondary:hover {
     border-color: var(--gold);
     color: var(--gold);
+    transform: translate(-1px, -1px);
+    box-shadow: 3px 3px 0 var(--border);
   }
 
   /* === SECTION STYLES === */
@@ -366,7 +400,7 @@
   }
 
   .section-title {
-    font-family: 'Bebas Neue', sans-serif;
+    font-family: 'Bangers', cursive;
     font-size: clamp(42px, 6vw, 72px);
     line-height: 1;
     letter-spacing: 3px;
@@ -384,8 +418,8 @@
     width: 100%;
     max-width: 1200px;
     margin: 0 auto;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(212,169,71,0.3), transparent);
+    height: 4px;
+    background: linear-gradient(90deg, #FF2D55, #FF9500, #FFCC00, #34C759, #007AFF, #AF52DE);
   }
 
   /* === PRODUCT GRID === */
@@ -401,16 +435,18 @@
   }
 
   .product-card {
-    background: var(--darker);
-    border: 1px solid rgba(255,255,255,0.05);
+    background: rgba(255,255,255,0.75);
+    border: 2px solid var(--border);
     transition: all 0.3s;
     position: relative;
     overflow: hidden;
+    box-shadow: 4px 4px 0 rgba(0,0,0,0.15);
   }
 
   .product-card:hover {
-    border-color: rgba(212,169,71,0.3);
-    transform: translateY(-4px);
+    border-color: var(--gold);
+    transform: translate(-2px, -6px);
+    box-shadow: 6px 6px 0 rgba(0,0,0,0.2);
   }
 
   .product-card.out-of-stock { opacity: 0.6; }
@@ -418,12 +454,13 @@
   .product-image {
     width: 100%;
     aspect-ratio: 1;
-    background: linear-gradient(135deg, #1e1e1e 0%, #151515 50%, #1e1e1e 100%);
+    background: linear-gradient(135deg, #ccc 0%, #bbb 50%, #ccc 100%);
     display: flex;
     align-items: center;
     justify-content: center;
     position: relative;
     overflow: hidden;
+    border-bottom: 2px solid var(--border);
   }
 
   .product-image img {
@@ -451,18 +488,21 @@
   }
 
   .badge-new {
-    background: var(--gold);
-    color: var(--black);
+    background: var(--yellow);
+    color: var(--border);
+    border: 2px solid var(--border);
   }
 
   .badge-hot {
-    background: var(--red);
-    color: var(--white);
+    background: var(--gold);
+    color: #fff;
+    border: 2px solid var(--border);
   }
 
   .badge-oos {
-    background: rgba(0,0,0,0.8);
-    color: var(--steel);
+    background: rgba(0,0,0,0.75);
+    color: #ccc;
+    border: 2px solid var(--border);
   }
 
   .product-info-card {
@@ -471,9 +511,9 @@
   }
 
   .product-name {
-    font-family: 'Bebas Neue', sans-serif;
+    font-family: 'Bangers', cursive;
     font-size: 22px;
-    letter-spacing: 2px;
+    letter-spacing: 1px;
     color: var(--white);
     margin-bottom: 4px;
   }
@@ -493,9 +533,9 @@
   }
 
   .product-price {
-    font-family: 'Bebas Neue', sans-serif;
+    font-family: 'Bangers', cursive;
     font-size: 28px;
-    color: var(--gold);
+    color: var(--blue);
     letter-spacing: 1px;
   }
 
@@ -512,41 +552,47 @@
   .add-to-cart-btn {
     width: 100%;
     margin-top: 16px;
-    background: transparent;
-    border: 1px solid var(--gold-dim);
-    color: var(--gold);
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 700;
-    font-size: 13px;
+    background: var(--gold);
+    border: 2px solid var(--border);
+    color: #fff;
+    font-family: 'Bangers', cursive;
+    font-size: 16px;
     letter-spacing: 3px;
     text-transform: uppercase;
     padding: 14px;
     cursor: pointer;
     transition: all 0.3s;
+    box-shadow: 2px 2px 0 var(--border);
   }
 
   .add-to-cart-btn:hover {
-    background: var(--gold);
-    color: var(--black);
-    border-color: var(--gold);
+    background: var(--gold-bright);
+    color: #fff;
+    border-color: var(--border);
+    transform: translate(-1px, -1px);
+    box-shadow: 3px 3px 0 var(--border);
   }
 
   .add-to-cart-btn:disabled {
     opacity: 0.4;
     cursor: not-allowed;
-    border-color: var(--steel);
-    color: var(--steel);
+    background: #999;
+    border-color: #666;
+    color: #ccc;
+    box-shadow: none;
   }
 
   .add-to-cart-btn:disabled:hover {
-    background: transparent;
-    color: var(--steel);
+    background: #999;
+    color: #ccc;
+    transform: none;
+    box-shadow: none;
   }
 
   .add-to-cart-btn.added {
     background: var(--green);
-    color: var(--white);
-    border-color: var(--green);
+    color: #fff;
+    border-color: var(--border);
   }
 
   /* === CATEGORY FILTER === */
@@ -560,22 +606,23 @@
 
   .filter-btn {
     background: transparent;
-    border: 1px solid rgba(255,255,255,0.1);
-    color: var(--steel-light);
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 600;
-    font-size: 13px;
+    border: 2px solid var(--border);
+    color: var(--white);
+    font-family: 'Bangers', cursive;
+    font-size: 15px;
     letter-spacing: 2px;
     text-transform: uppercase;
     padding: 10px 24px;
     cursor: pointer;
     transition: all 0.3s;
+    box-shadow: 2px 2px 0 rgba(0,0,0,0.1);
   }
 
   .filter-btn:hover, .filter-btn.active {
     border-color: var(--gold);
-    color: var(--gold);
-    background: rgba(212,169,71,0.08);
+    color: #fff;
+    background: var(--gold);
+    box-shadow: 2px 2px 0 var(--border);
   }
 
   /* === CART DRAWER === */
@@ -598,8 +645,8 @@
     width: 480px;
     max-width: 100vw;
     height: 100vh;
-    background: var(--dark);
-    border-left: 1px solid var(--gold-dim);
+    background: #e8e5dd;
+    border-left: 2px solid var(--border);
     z-index: 1000;
     display: flex;
     flex-direction: column;
@@ -610,14 +657,14 @@
 
   .cart-header {
     padding: 24px 28px;
-    border-bottom: 1px solid var(--gold-dim);
+    border-bottom: 2px solid var(--border);
     display: flex;
     justify-content: space-between;
     align-items: center;
   }
 
   .cart-header h3 {
-    font-family: 'Bebas Neue', sans-serif;
+    font-family: 'Bangers', cursive;
     font-size: 28px;
     letter-spacing: 3px;
     color: var(--gold);
@@ -625,7 +672,7 @@
 
   .cart-close {
     background: none;
-    border: 1px solid rgba(255,255,255,0.1);
+    border: 2px solid var(--border);
     color: var(--white);
     width: 40px;
     height: 40px;
@@ -664,15 +711,15 @@
     display: flex;
     gap: 16px;
     padding: 20px 0;
-    border-bottom: 1px solid rgba(255,255,255,0.05);
+    border-bottom: 1px solid rgba(0,0,0,0.1);
     align-items: center;
   }
 
   .cart-item-image {
     width: 72px;
     height: 72px;
-    background: var(--darker);
-    border: 1px solid rgba(255,255,255,0.05);
+    background: rgba(0,0,0,0.05);
+    border: 2px solid var(--border);
     flex-shrink: 0;
     display: flex;
     align-items: center;
@@ -692,7 +739,7 @@
   }
 
   .cart-item-name {
-    font-family: 'Bebas Neue', sans-serif;
+    font-family: 'Bangers', cursive;
     font-size: 18px;
     letter-spacing: 1px;
     color: var(--white);
@@ -717,7 +764,7 @@
     width: 28px;
     height: 28px;
     background: transparent;
-    border: 1px solid rgba(255,255,255,0.15);
+    border: 2px solid var(--border);
     color: var(--white);
     font-size: 16px;
     cursor: pointer;
@@ -755,8 +802,8 @@
 
   .cart-footer {
     padding: 24px 28px;
-    border-top: 1px solid var(--gold-dim);
-    background: var(--darker);
+    border-top: 2px solid var(--border);
+    background: rgba(255,255,255,0.4);
   }
 
   .cart-summary-row {
@@ -776,32 +823,33 @@
     letter-spacing: 2px;
     margin-top: 12px;
     padding-top: 12px;
-    border-top: 1px solid rgba(255,255,255,0.1);
+    border-top: 2px solid var(--border);
   }
 
   .cart-summary-row.total .cart-summary-value {
-    color: var(--gold);
+    color: var(--blue);
   }
 
   .checkout-btn {
     width: 100%;
     margin-top: 20px;
     background: var(--gold);
-    color: var(--black);
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 700;
-    font-size: 16px;
+    color: #fff;
+    font-family: 'Bangers', cursive;
+    font-size: 18px;
     letter-spacing: 3px;
     text-transform: uppercase;
     padding: 18px;
-    border: none;
+    border: 2px solid var(--border);
     cursor: pointer;
     transition: all 0.3s;
+    box-shadow: 3px 3px 0 var(--border);
   }
 
   .checkout-btn:hover {
     background: var(--gold-bright);
-    box-shadow: 0 8px 32px rgba(212,169,71,0.3);
+    transform: translate(-1px, -1px);
+    box-shadow: 4px 4px 0 var(--border);
   }
 
   /* === CHECKOUT MODAL === */
@@ -822,8 +870,8 @@
   .checkout-overlay.open { opacity: 1; pointer-events: auto; }
 
   .checkout-modal {
-    background: var(--dark);
-    border: 1px solid var(--gold-dim);
+    background: #e8e5dd;
+    border: 2px solid var(--border);
     width: 100%;
     max-width: 640px;
     max-height: 90vh;
@@ -838,14 +886,14 @@
 
   .checkout-header {
     padding: 28px 32px;
-    border-bottom: 1px solid var(--gold-dim);
+    border-bottom: 2px solid var(--border);
     display: flex;
     justify-content: space-between;
     align-items: center;
   }
 
   .checkout-header h3 {
-    font-family: 'Bebas Neue', sans-serif;
+    font-family: 'Bangers', cursive;
     font-size: 32px;
     letter-spacing: 3px;
     color: var(--gold);
@@ -896,8 +944,8 @@
 
   .form-group input,
   .form-group select {
-    background: var(--darker);
-    border: 1px solid rgba(255,255,255,0.1);
+    background: rgba(255,255,255,0.6);
+    border: 2px solid rgba(0,0,0,0.2);
     color: var(--white);
     font-family: 'Barlow', sans-serif;
     font-size: 15px;
@@ -920,7 +968,7 @@
 
   .form-group select {
     cursor: pointer;
-    background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238C8C8C' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23666' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
     background-repeat: no-repeat;
     background-position: right 14px center;
     padding-right: 36px;
@@ -934,8 +982,8 @@
   }
 
   .checkout-order-summary {
-    background: var(--darker);
-    border: 1px solid rgba(255,255,255,0.05);
+    background: rgba(255,255,255,0.4);
+    border: 2px solid var(--border);
     padding: 20px;
     margin-top: 24px;
   }
@@ -951,7 +999,7 @@
   .checkout-total-section {
     margin-top: 12px;
     padding-top: 12px;
-    border-top: 1px solid rgba(255,255,255,0.1);
+    border-top: 2px solid var(--border);
   }
 
   .checkout-total-row {
@@ -970,28 +1018,30 @@
     letter-spacing: 2px;
     margin-top: 8px;
     padding-top: 8px;
-    border-top: 1px solid rgba(212,169,71,0.2);
+    border-top: 2px solid var(--border);
   }
 
-  .checkout-total-row.grand span:last-child { color: var(--gold); }
+  .checkout-total-row.grand span:last-child { color: var(--blue); }
 
   .place-order-btn {
     width: 100%;
     margin-top: 28px;
     background: var(--gold);
-    color: var(--black);
-    font-family: 'Bebas Neue', sans-serif;
+    color: #fff;
+    font-family: 'Bangers', cursive;
     font-size: 24px;
     letter-spacing: 4px;
     padding: 20px;
-    border: none;
+    border: 2px solid var(--border);
     cursor: pointer;
     transition: all 0.3s;
+    box-shadow: 3px 3px 0 var(--border);
   }
 
   .place-order-btn:hover {
     background: var(--gold-bright);
-    box-shadow: 0 8px 32px rgba(212,169,71,0.3);
+    transform: translate(-1px, -1px);
+    box-shadow: 4px 4px 0 var(--border);
   }
 
   .place-order-btn:disabled {
@@ -1027,7 +1077,7 @@
   }
 
   .order-success h4 {
-    font-family: 'Bebas Neue', sans-serif;
+    font-family: 'Bangers', cursive;
     font-size: 36px;
     letter-spacing: 3px;
     color: var(--gold);
@@ -1052,9 +1102,7 @@
   /* === ABOUT / INFO SECTION === */
   .about-section {
     text-align: center;
-    background:
-      radial-gradient(ellipse at 50% 50%, rgba(212,169,71,0.04) 0%, transparent 60%),
-      var(--black);
+    background: transparent;
     padding: 100px 48px;
   }
 
@@ -1074,16 +1122,18 @@
   }
 
   .info-card {
-    background: var(--darker);
-    border: 1px solid rgba(212,169,71,0.1);
+    background: rgba(255,255,255,0.6);
+    border: 2px solid var(--border);
     padding: 32px 24px;
     text-align: center;
     transition: all 0.3s;
+    box-shadow: 3px 3px 0 rgba(0,0,0,0.1);
   }
 
   .info-card:hover {
     border-color: var(--gold);
-    transform: translateY(-4px);
+    transform: translate(-2px, -4px);
+    box-shadow: 5px 5px 0 rgba(0,0,0,0.15);
   }
 
   .info-card-icon {
@@ -1093,7 +1143,7 @@
   }
 
   .info-card h4 {
-    font-family: 'Bebas Neue', sans-serif;
+    font-family: 'Bangers', cursive;
     font-size: 22px;
     letter-spacing: 2px;
     color: var(--gold);
@@ -1108,18 +1158,30 @@
 
   /* === QUOTE BANNER === */
   .quote-banner {
-    background: var(--gold);
-    color: var(--black);
+    background: var(--border);
+    color: #fff;
     text-align: center;
     padding: 64px 48px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .quote-banner::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 6px;
+    background: linear-gradient(90deg, #FF2D55, #FF9500, #FFCC00, #34C759, #007AFF, #AF52DE);
   }
 
   .quote-text {
-    font-family: 'Permanent Marker', cursive;
+    font-family: 'Bangers', cursive;
     font-size: clamp(24px, 4vw, 42px);
     max-width: 800px;
     margin: 0 auto;
     line-height: 1.4;
+    letter-spacing: 2px;
+    transform: rotate(-0.5deg);
   }
 
   .quote-attr {
@@ -1129,13 +1191,13 @@
     letter-spacing: 3px;
     text-transform: uppercase;
     margin-top: 20px;
-    opacity: 0.7;
+    opacity: 0.5;
   }
 
   /* === FOOTER === */
   footer {
-    background: var(--dark);
-    border-top: 1px solid rgba(212,169,71,0.1);
+    background: rgba(0,0,0,0.06);
+    border-top: 2px solid var(--border);
     padding: 60px 48px 40px;
   }
 
@@ -1181,7 +1243,7 @@
     max-width: 1200px;
     margin: 40px auto 0;
     padding-top: 24px;
-    border-top: 1px solid rgba(255,255,255,0.05);
+    border-top: 1px solid rgba(0,0,0,0.1);
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
@@ -1201,6 +1263,107 @@
   }
 
   /* === ADDRESS AUTOCOMPLETE === */
+
+  /* === SWEEPSTAKES T&C CHECKBOX === */
+  .tc-checkbox-wrapper {
+    margin-top: 20px;
+    padding: 16px 20px;
+    background: rgba(255,204,0,0.1);
+    border: 2px solid var(--border);
+  }
+  .tc-checkbox-wrapper label {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    cursor: pointer;
+    font-size: 13px;
+    color: var(--steel-light);
+    line-height: 1.5;
+  }
+  .tc-checkbox-wrapper input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    margin-top: 2px;
+    flex-shrink: 0;
+    accent-color: var(--gold);
+    cursor: pointer;
+  }
+  .tc-checkbox-wrapper a {
+    color: var(--gold);
+    text-decoration: underline;
+    cursor: pointer;
+  }
+  .tc-checkbox-wrapper.error {
+    border-color: var(--red);
+    animation: shake 0.4s ease;
+  }
+
+  /* === RULES MODAL === */
+  .rules-overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.85);
+    z-index: 4000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+    padding: 20px;
+  }
+  .rules-overlay.open { opacity: 1; pointer-events: auto; }
+  .rules-modal {
+    background: #e8e5dd;
+    border: 2px solid var(--border);
+    width: 100%;
+    max-width: 720px;
+    max-height: 85vh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 6px 6px 0 rgba(0,0,0,0.2);
+  }
+  .rules-modal-header {
+    padding: 24px 28px;
+    border-bottom: 2px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-shrink: 0;
+  }
+  .rules-modal-header h3 {
+    font-family: 'Bangers', cursive;
+    font-size: 28px;
+    letter-spacing: 3px;
+    color: var(--gold);
+  }
+  .rules-modal-body {
+    padding: 28px;
+    overflow-y: auto;
+    font-size: 13px;
+    line-height: 1.8;
+    color: var(--steel-light);
+  }
+  .rules-modal-body h4 {
+    font-family: 'Bangers', cursive;
+    font-size: 20px;
+    letter-spacing: 2px;
+    color: var(--white);
+    margin-top: 20px;
+    margin-bottom: 6px;
+  }
+  .rules-modal-body h4:first-child { margin-top: 0; }
+  .rules-modal-body p { margin-bottom: 10px; }
+  .rules-modal-body strong { color: var(--white); }
+
+  @keyframes shake {
+    0%,100% { transform: translateX(0); }
+    15% { transform: translateX(-6px); }
+    30% { transform: translateX(6px); }
+    45% { transform: translateX(-4px); }
+    60% { transform: translateX(4px); }
+    75% { transform: translateX(-2px); }
+  }
   .address-autocomplete-wrapper { position: relative; }
   .address-suggestions {
     position: absolute;
@@ -1208,8 +1371,8 @@
     left: 0;
     right: 0;
     z-index: 500;
-    background: var(--darker);
-    border: 1px solid var(--gold);
+    background: #e8e5dd;
+    border: 2px solid var(--border);
     border-top: none;
     max-height: 240px;
     overflow-y: auto;
@@ -1219,14 +1382,14 @@
   .address-suggestion {
     padding: 12px 16px;
     font-size: 14px;
-    color: var(--steel-light);
+    color: var(--steel);
     cursor: pointer;
-    border-bottom: 1px solid rgba(255,255,255,0.03);
+    border-bottom: 1px solid rgba(0,0,0,0.06);
     transition: background 0.15s;
   }
   .address-suggestion:hover,
   .address-suggestion.active {
-    background: rgba(212,169,71,0.1);
+    background: rgba(255,45,85,0.08);
     color: var(--white);
   }
   .address-suggestion .addr-main {
@@ -1251,8 +1414,8 @@
     position: fixed;
     bottom: 24px;
     right: 24px;
-    background: var(--darker);
-    border: 1px solid var(--gold);
+    background: var(--border);
+    border: 2px solid var(--gold);
     padding: 16px 24px;
     z-index: 3000;
     display: flex;
@@ -1262,6 +1425,7 @@
     opacity: 0;
     transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     max-width: 360px;
+    box-shadow: 3px 3px 0 var(--gold);
   }
 
   .toast.visible {
@@ -1275,11 +1439,10 @@
   }
 
   .toast-text {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 600;
-    font-size: 14px;
+    font-family: 'Bangers', cursive;
+    font-size: 16px;
     letter-spacing: 1px;
-    color: var(--white);
+    color: #fff;
   }
 
   /* === ANIMATIONS === */
@@ -1340,9 +1503,9 @@
     </div>
   </a>
   <ul class="nav-links">
-    <li><a href="#shop">Shop</a></li>
-    <li><a href="#about">About</a></li>
-    <li><a href="#shipping">Shipping</a></li>
+    <li><a href="#shop">Giveaways</a></li>
+    <li><a href="#how">How It Works</a></li>
+    <li><a href="#rules">Rules</a></li>
     <li>
       <button class="cart-btn" onclick="openCart()">
         Cart <span class="cart-count" id="cartCount">0</span>
@@ -1363,9 +1526,9 @@
 
 <!-- MOBILE MENU -->
 <div class="mobile-menu" id="mobileMenu">
-  <a href="#shop">Shop</a>
-  <a href="#about">About</a>
-  <a href="#shipping">Shipping</a>
+  <a href="#shop">Giveaways</a>
+  <a href="#how">How It Works</a>
+  <a href="#rules">Rules</a>
   <a href="#" onclick="openCart();closeMobileMenu();return false;">Cart</a>
   <div class="mobile-menu-footer">
     <p>Milton, FL &bull; Est. 2025</p>
@@ -1374,16 +1537,16 @@
 
 <!-- HERO -->
 <section class="hero">
-  <div class="hero-badge">Firearms Direct Club &bull; Milton, FL</div>
+  <div class="hero-badge">Limited Edition Sweepstakes &bull; Firearms Direct Club</div>
   <h1>
-    FDC
-    <em>STICKERS</em>
+    BUY A STICKER
+    <em>WIN A GUN</em>
   </h1>
-  <p class="hero-tagline">"Stick it. Everywhere."</p>
-  <p class="hero-sub">Premium vinyl stickers for the 2A community. Designed in Florida. Shipped to your door.</p>
+  <p class="hero-tagline">"Every sticker is an entry. Every entry is a chance."</p>
+  <p class="hero-sub">Limited edition FDC stickers — each one is your sweepstakes entry to win the firearm it represents. Free shipping. No purchase necessary to enter.</p>
   <div class="hero-cta">
-    <a href="#shop" class="btn-primary">Shop Stickers</a>
-    <a href="#about" class="btn-secondary">Learn More</a>
+    <a href="#shop" class="btn-primary">Browse Giveaways</a>
+    <a href="#rules" class="btn-secondary">Official Rules</a>
   </div>
 </section>
 
@@ -1391,8 +1554,8 @@
 
 <!-- SHOP SECTION -->
 <section class="shop-section" id="shop">
-  <div class="section-label">The Arsenal</div>
-  <div class="section-title">Shop Stickers</div>
+  <div class="section-label">Active Giveaways</div>
+  <div class="section-title">Buy a Sticker. Enter to Win.</div>
 
   <div class="category-filter" id="categoryFilter">
     <button class="filter-btn active" onclick="filterProducts('all')">All</button>
@@ -1408,36 +1571,36 @@
 
 <!-- QUOTE BANNER -->
 <div class="quote-banner">
-  <p class="quote-text">"If your range bag doesn't have at least three FDC stickers on it, are you even a member?"</p>
-  <p class="quote-attr">— Probably Every FDC Member</p>
+  <p class="quote-text">"Somebody's walking away with a new gun. It might as well be you."</p>
+  <p class="quote-attr">— Firearms Direct Club</p>
 </div>
 
 <!-- ABOUT -->
-<section class="about-section" id="about">
-  <div class="section-label">Who We Are</div>
-  <div class="section-title">Born in Florida. Built for the Community.</div>
+<section class="about-section" id="how">
+  <div class="section-label">The Process</div>
+  <div class="section-title">How It Works</div>
   <p class="section-body">
-    FDC Stickers is the official sticker shop of Firearms Direct Club. Every sticker is designed in Milton, Florida by people who actually shoot, carry, and live the 2A lifestyle. We're not a faceless sticker mill — we're your people.
+    It's simple. Each limited edition FDC sticker is tied to a specific firearm giveaway. Buy the sticker, get an entry. The more stickers you buy, the more entries you get. When the last sticker sells — or the sweepstakes period ends — we draw a winner.
   </p>
   <p class="section-body" style="margin-top:16px;">
-    Premium vinyl. Weather-resistant. Dishwasher-safe (we tested it, don't ask). Slap 'em on your range bag, your safe, your truck, your laptop — we don't judge. Okay, we judge a little if it's a Prius.
+    Stickers ship free to the lower 48 states. No purchase necessary to enter — see the Official Rules for the free mail-in entry method. But let's be real, the stickers are cool too.
   </p>
 
   <div class="info-grid">
     <div class="info-card">
       <span class="info-card-icon">🎯</span>
-      <h4>Premium Vinyl</h4>
-      <p>UV-resistant, waterproof, and built to last longer than your buddy's excuse for missing range day.</p>
+      <h4>1. Pick Your Gun</h4>
+      <p>Browse the active giveaways. Each sticker features a specific firearm as the prize. Pick the one you want to win.</p>
     </div>
     <div class="info-card">
-      <span class="info-card-icon">🐊</span>
-      <h4>Florida Made</h4>
-      <p>Designed in the Florida Panhandle. If it survives the humidity, it'll survive your bumper.</p>
+      <span class="info-card-icon">🛒</span>
+      <h4>2. Buy the Sticker</h4>
+      <p>Purchase the limited edition sticker. Each sticker you buy is another entry into that firearm's sweepstakes. More stickers = more chances.</p>
     </div>
     <div class="info-card">
-      <span class="info-card-icon">📦</span>
-      <h4>Fast Shipping</h4>
-      <p>We ship to all lower 48 states. Sorry Alaska and Hawaii — we still love you, we just can't reach you yet.</p>
+      <span class="info-card-icon">🏆</span>
+      <h4>3. Win the Gun</h4>
+      <p>When entries close, we draw a winner at random. If it's you, we'll ship the firearm to your FFL. Simple as that.</p>
     </div>
   </div>
 </section>
@@ -1445,16 +1608,22 @@
 <div class="divider"></div>
 
 <!-- SHIPPING INFO -->
-<section id="shipping" style="text-align:center;">
-  <div class="section-label">Shipping & Policy</div>
-  <div class="section-title">The Fine Print (But Not That Fine)</div>
+<section id="rules" style="text-align:center;">
+  <div class="section-label">Legal</div>
+  <div class="section-title">Official Sweepstakes Rules</div>
   <div style="max-width:680px;margin:0 auto;">
     <p class="section-body" style="text-align:center;margin:0 auto;">
-      We ship to all <strong style="color:var(--white);">lower 48 United States</strong> via USPS. Orders typically ship within 1-2 business days. Florida residents will see a <strong style="color:var(--gold);">7.5% sales tax</strong> applied at checkout because that's what the sunshine state demands.
+      <strong style="color:var(--white);">NO PURCHASE NECESSARY TO ENTER OR WIN.</strong> Open to legal residents of the lower 48 United States, 21 years or older. Each sticker purchase earns one (1) entry into the corresponding firearm sweepstakes. Free mail-in entry method available — see full rules.
     </p>
     <p class="section-body" style="text-align:center;margin:16px auto 0;">
-      No international orders at this time. No APO/FPO. No carrier pigeons. Just good old-fashioned American mail to your American doorstep.
+      Stickers ship <strong style="color:var(--gold);">free</strong> to the lower 48. Florida residents will see <strong style="color:var(--gold);">7.5% sales tax</strong> applied at checkout. Void where prohibited. Winner must comply with all applicable federal, state, and local firearms laws.
     </p>
+    <p class="section-body" style="text-align:center;margin:16px auto 0;">
+      <strong style="color:var(--white);">Free Mail-In Entry:</strong> Hand-print your full name, address, email, phone, and the sticker name on a 3×5 card. Mail to: Firearms Direct Club, LLC, Attn: Sweepstakes Entry, 409 N. Pace Blvd., Pensacola, FL 32505. One entry per person per sticker.
+    </p>
+    <div style="margin-top:32px;">
+      <a href="#" class="btn-secondary" onclick="openRulesModal();return false;">Read Full Official Rules</a>
+    </div>
   </div>
 </section>
 
@@ -1466,14 +1635,14 @@
         FDC STICKERS
         <span>Firearms Direct Club &bull; Milton, FL</span>
       </div>
-      <p>The official sticker shop of Firearms Direct Club. Premium vinyl stickers for people who take their 2A rights seriously — and their sticker game even more seriously.</p>
+      <p>The official sweepstakes sticker shop of Firearms Direct Club. Buy a limited edition sticker, get entered to win the gun. It's that simple.</p>
       <p style="margin-top:12px;"><a href="mailto:stickers@firearmsdirectclub.com" style="color:var(--gold);text-decoration:none;">stickers@firearmsdirectclub.com</a></p>
     </div>
     <div class="footer-links">
       <h5>Shop</h5>
-      <a href="#shop">All Stickers</a>
-      <a href="#about">About Us</a>
-      <a href="#shipping">Shipping Info</a>
+      <a href="#shop">Active Giveaways</a>
+      <a href="#how">How It Works</a>
+      <a href="#rules">Official Rules</a>
       <a href="admin.html">Admin</a>
     </div>
     <div class="footer-links">
@@ -1484,7 +1653,7 @@
   </div>
   <div class="footer-bottom">
     <p>&copy; 2025 Firearms Direct Club LLC. All rights reserved. FDC Stickers.&trade;</p>
-    <p class="legal">Stickers are for decorative purposes. We are not responsible for any debates your stickers may start at the office, at Thanksgiving dinner, or in your HOA Facebook group.</p>
+    <p class="legal">NO PURCHASE NECESSARY TO ENTER OR WIN. Open to legal residents of the lower 48 US states, 21+. Void where prohibited. See Official Rules for details. Stickers are for decorative purposes. Firearm prizes must be transferred through a licensed FFL in accordance with all applicable laws.</p>
   </div>
 </footer>
 
@@ -1492,14 +1661,14 @@
 <div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
 <div class="cart-drawer" id="cartDrawer">
   <div class="cart-header">
-    <h3>Your Cart</h3>
+    <h3>Your Entries</h3>
     <button class="cart-close" onclick="closeCart()">&times;</button>
   </div>
   <div class="cart-items" id="cartItems">
     <div class="cart-empty" id="cartEmpty">
-      <div class="cart-empty-icon">🎯</div>
-      <p>Your cart is empty.</p>
-      <p style="margin-top:8px;font-size:13px;">Time to stock up on stickers.</p>
+      <div class="cart-empty-icon">🏆</div>
+      <p>No entries yet.</p>
+      <p style="margin-top:8px;font-size:13px;">Pick a giveaway and enter to win.</p>
     </div>
   </div>
   <div class="cart-footer" id="cartFooter" style="display:none;">
@@ -1513,13 +1682,13 @@
     </div>
     <div class="cart-summary-row">
       <span>Shipping</span>
-      <span id="cartShipping">Calculated at checkout</span>
+      <span id="cartShipping" style="color:var(--green);">FREE</span>
     </div>
     <div class="cart-summary-row total">
       <span>Total</span>
       <span class="cart-summary-value" id="cartTotal">$0.00</span>
     </div>
-    <button class="checkout-btn" onclick="openCheckout()">Proceed to Checkout</button>
+    <button class="checkout-btn" onclick="openCheckout()">Proceed to Checkout & Enter</button>
   </div>
 </div>
 
@@ -1633,10 +1802,17 @@
         <!-- populated by JS -->
       </div>
 
+      <div class="tc-checkbox-wrapper" id="tcWrapper">
+        <label>
+          <input type="checkbox" id="coAcceptTC">
+          I am 21 years of age or older, a legal resident of the lower 48 United States, and I have read and agree to the <a href="#" onclick="event.preventDefault();event.stopPropagation();openRulesModal();">Official Sweepstakes Rules</a>. I understand that each sticker purchase constitutes one (1) entry into the corresponding firearm sweepstakes. No purchase necessary to enter.
+        </label>
+      </div>
+
       <div class="order-error" id="orderError"></div>
 
       <button class="place-order-btn" id="placeOrderBtn" onclick="placeOrder()">
-        Place Order
+        Place Order & Enter Sweepstakes
       </button>
     </div>
 
@@ -1648,10 +1824,63 @@
 
     <div class="order-success" id="orderSuccess">
       <div class="order-success-icon">🎉</div>
-      <h4>Order Confirmed!</h4>
-      <p>Thank you for your order. You'll receive a confirmation email shortly.</p>
+      <h4>You're Entered!</h4>
+      <p>Your sticker order is confirmed and your sweepstakes entries are locked in. Stickers ship free — you'll get a confirmation email shortly.</p>
+      <p style="margin-top:12px;">Good luck. Somebody's winning a gun, and it might be you.</p>
       <p style="margin-top:12px;color:var(--gold);font-family:'Barlow Condensed',sans-serif;letter-spacing:2px;">Order #<span id="orderNumber">—</span></p>
-      <button class="btn-primary" style="margin-top:24px;" onclick="closeCheckout();resetAfterOrder();">Continue Shopping</button>
+      <button class="btn-primary" style="margin-top:24px;" onclick="closeCheckout();resetAfterOrder();">Continue Browsing</button>
+    </div>
+  </div>
+</div>
+
+<!-- OFFICIAL RULES MODAL -->
+<div class="rules-overlay" id="rulesOverlay">
+  <div class="rules-modal">
+    <div class="rules-modal-header">
+      <h3>Official Sweepstakes Rules</h3>
+      <button class="cart-close" onclick="closeRulesModal()">&times;</button>
+    </div>
+    <div class="rules-modal-body" id="rulesModalBody">
+      <h4>1. Introduction</h4>
+      <p>By entering any sweepstakes conducted by Firearms Direct Club, LLC ("FDC," "Sponsor"), each participant agrees to be bound by these Official Sweepstakes Rules. <strong>NO PURCHASE OR PAYMENT IS NECESSARY TO ENTER OR WIN. A PURCHASE WILL NOT INCREASE YOUR CHANCES OF WINNING.</strong></p>
+
+      <h4>2. Eligibility</h4>
+      <p>Open only to legal residents of the lower forty-eight (48) United States who are twenty-one (21) years of age or older at the time of entry. Employees of FDC, its parent companies, subsidiaries, affiliates, and their immediate family members and household members are not eligible. Void where prohibited.</p>
+
+      <h4>3. Sweepstakes Period</h4>
+      <p>Each Sweepstakes begins when the corresponding Sticker is posted and ends at the earlier of: (a) when the final available sticker is claimed, or (b) the date specified in the Sticker description.</p>
+
+      <h4>4. How to Enter</h4>
+      <p><strong>Online Entry:</strong> Purchase the applicable Sticker on the Website. One (1) automatic entry per Sticker purchased. Limit one (1) entry per person per Sticker.</p>
+      <p><strong>Free Mail-In Entry:</strong> Hand-print your full legal name, mailing address, email, telephone number, and "[STICKER NAME] SWEEPSTAKES" on a 3" × 5" index card. Mail in a self-addressed, stamped #10 envelope to: <strong>Firearms Direct Club, LLC, Attn: Sweepstakes Entry, 409 N. Pace Blvd., Pensacola, FL 32505.</strong></p>
+      <p>Limit one (1) mail-in entry per person per Sticker. Must be postmarked during the Sweepstakes Period and received within 5 business days after close.</p>
+
+      <h4>5. Drawing and Odds</h4>
+      <p>A random drawing will be conducted within five (5) business days after the final Sticker has been claimed. Odds depend on total eligible entries received.</p>
+
+      <h4>6. Prize Details</h4>
+      <p>Each Sweepstakes will award one (1) Prize as described in the Sticker description, with approximate retail value stated. Prize is awarded "as is." No cash equivalent, transfer, or assignment permitted. Sponsor may substitute a prize of comparable or greater value.</p>
+
+      <h4>7. Winner Notification</h4>
+      <p>Winner will be notified by email or U.S. mail. Must claim the Prize within thirty (30) calendar days. May be required to complete an Affidavit of Eligibility, provide government-issued photo ID, and tax documentation (IRS Form W-9 for prizes valued at $600+).</p>
+
+      <h4>8. Tax Responsibility</h4>
+      <p>All taxes arising from the receipt of any Prize are the sole responsibility of the Winner. Sponsor may report Prize values to the IRS.</p>
+
+      <h4>9. Release and Indemnification</h4>
+      <p>By entering, each Participant agrees to release and hold harmless FDC and its affiliates from any claims, damages, or liabilities arising from participation in the Sweepstakes or use of any Prize.</p>
+
+      <h4>10. Limitation of Liability</h4>
+      <p>Total aggregate liability shall not exceed $500.00. Some jurisdictions do not allow limitation of certain damages; in such jurisdictions, limitations apply to the fullest extent permitted.</p>
+
+      <h4>11. Privacy</h4>
+      <p>FDC will collect and use personal information solely for administering the Sweepstakes. FDC will not sell Participant information to unaffiliated third parties except as required by law.</p>
+
+      <h4>12. Governing Law</h4>
+      <p>These Rules are governed by the laws of the State of Florida. Any disputes shall be resolved exclusively in courts located in Escambia County, Florida.</p>
+
+      <h4>13. Sponsor</h4>
+      <p><strong>Firearms Direct Club, LLC</strong><br>409 N. Pace Blvd., Pensacola, FL 32505<br>sweepstakes-contact@firearmsdirectclub.com</p>
     </div>
   </div>
 </div>
@@ -1687,8 +1916,8 @@ const CONFIG = {
   GOOGLE_MAPS_KEY: '',
 
   FL_TAX_RATE: 0.075,           // 7.5% Florida sales tax
-  FLAT_SHIPPING: 3.99,          // Flat rate shipping
-  FREE_SHIPPING_THRESHOLD: 25,  // Free shipping over $25
+  FLAT_SHIPPING: 0,              // Stickers ship FREE
+  FREE_SHIPPING_THRESHOLD: 0,   // Always free
 
   // Lower 48 states only
   ALLOWED_STATES: {
@@ -1715,78 +1944,73 @@ const CONFIG = {
 // For now, manage it here or load from /api/products
 let PRODUCTS = [
   {
-    id: 'fdc-logo-01', name: 'FDC Classic Logo', price: 4.99, category: 'logos', image: '', badge: 'hot', stock: 50,
-    tagline: 'The one that started it all.',
-    description: 'The original Firearms Direct Club logo sticker — slap it on your range bag day one. 4" premium UV-resistant vinyl that won\'t fade even after a full Florida summer on your bumper.',
-    specs: { size:'4" × 4"', material:'Premium Vinyl', finish:'Gloss', durability:'5+ Years Outdoor' }
+    id: 'glock-19-gen5', name: 'Glock 19 Gen 5 Sticker', price: 9.99, category: 'pistols', image: '', badge: 'hot', stock: 200,
+    tagline: 'America\'s favorite carry gun could be yours.',
+    description: 'Limited edition FDC sticker — your entry to win a Glock 19 Gen 5 (ARV $549). 4" premium vinyl. One sticker = one sweepstakes entry.',
+    prize: 'Glock 19 Gen 5', prizeValue: 549, prizeType: 'Pistol — 9mm',
+    entries: 200, entriesRemaining: 200,
+    specs: { prize:'Glock 19 Gen 5', caliber:'9mm', prizeARV:'$549', stickerSize:'4" × 4"', entries:'200 Max', material:'Premium Vinyl' }
   },
   {
-    id: 'fdc-flag-01', name: 'FDC Patriot Flag', price: 5.99, category: 'flags', image: '', badge: 'new', stock: 40,
-    tagline: 'Red, white, blue, and armed.',
-    description: 'American flag with FDC crest overlay. 5" die-cut vinyl — no background rectangle, just pure flag silhouette that sits flush on any surface.',
-    specs: { size:'5" × 3"', material:'Die-Cut Vinyl', finish:'Matte Laminate', durability:'5+ Years Outdoor' }
+    id: 'sig-p365', name: 'SIG P365 Sticker', price: 9.99, category: 'pistols', image: '', badge: 'new', stock: 150,
+    tagline: 'Macro performance. Micro sticker price.',
+    description: 'Limited edition FDC sticker — your entry to win a SIG Sauer P365 (ARV $499). 4" die-cut vinyl. One sticker = one sweepstakes entry.',
+    prize: 'SIG Sauer P365', prizeValue: 499, prizeType: 'Pistol — 9mm',
+    entries: 150, entriesRemaining: 150,
+    specs: { prize:'SIG Sauer P365', caliber:'9mm', prizeARV:'$499', stickerSize:'4" × 3"', entries:'150 Max', material:'Die-Cut Vinyl' }
   },
   {
-    id: 'bbc-rooster-01', name: 'BBC Rooster', price: 4.99, category: 'bbc', image: '', badge: 'hot', stock: 75,
-    tagline: 'Big Cluck Energy.',
-    description: 'The legendary BBC Suppressors rooster — Hawaiian shirt, gold chain, AR-15 and all. 3.5" of the most armed poultry in firearms history.',
-    specs: { size:'3.5" × 3.5"', material:'Premium Vinyl', finish:'Gloss', durability:'5+ Years Outdoor' }
+    id: 'smith-mp-shield', name: 'M&P Shield Plus Sticker', price: 7.99, category: 'pistols', image: '', badge: '', stock: 250,
+    tagline: 'Shield up. Stack your odds.',
+    description: 'Limited edition FDC sticker — your entry to win a Smith & Wesson M&P Shield Plus (ARV $449). 4" matte vinyl.',
+    prize: 'Smith & Wesson M&P Shield Plus', prizeValue: 449, prizeType: 'Pistol — 9mm',
+    entries: 250, entriesRemaining: 250,
+    specs: { prize:'S&W M&P Shield Plus', caliber:'9mm', prizeARV:'$449', stickerSize:'4" × 4"', entries:'250 Max', material:'Matte Vinyl' }
   },
   {
-    id: 'fdc-2a-01', name: '2A All Day', price: 3.99, category: '2a', image: '', badge: '', stock: 60,
-    tagline: 'Every. Single. Day.',
-    description: 'Clean, bold Second Amendment lifestyle sticker. 4" matte vinyl that works on everything from laptop lids to ammo cans. Professional enough for work, tough enough for the range.',
-    specs: { size:'4" × 2"', material:'Matte Vinyl', finish:'Matte', durability:'4+ Years Outdoor' }
+    id: 'ar15-psa', name: 'PSA AR-15 Sticker', price: 14.99, category: 'rifles', image: '', badge: 'hot', stock: 100,
+    tagline: 'The modern musket. The original freedom stick.',
+    description: 'Limited edition FDC sticker — your entry to win a Palmetto State Armory AR-15 (ARV $699). 5" premium vinyl.',
+    prize: 'PSA PA-15 16" AR-15', prizeValue: 699, prizeType: 'Rifle — 5.56 NATO',
+    entries: 100, entriesRemaining: 100,
+    specs: { prize:'PSA PA-15 AR-15', caliber:'5.56 NATO', prizeARV:'$699', stickerSize:'5" × 2"', entries:'100 Max', material:'Premium Vinyl' }
   },
   {
-    id: 'fdc-florida-01', name: 'Florida Gun State', price: 5.49, category: 'flags', image: '', badge: 'new', stock: 35,
-    tagline: 'The Gunshine State.',
-    description: 'Die-cut Florida silhouette with crosshairs centered on the Panhandle. 4.5" of pure Florida gun culture with matte laminate finish.',
-    specs: { size:'4.5" × 4"', material:'Die-Cut Vinyl', finish:'Matte Laminate', durability:'5+ Years Outdoor' }
+    id: 'henry-lever-action', name: 'Henry Big Boy Sticker', price: 14.99, category: 'rifles', image: '', badge: 'new', stock: 75,
+    tagline: 'Cowboy action meets modern sweepstakes.',
+    description: 'Limited edition FDC sticker — your entry to win a Henry Big Boy Classic .44 Mag (ARV $899). 5" die-cut vinyl.',
+    prize: 'Henry Big Boy Classic .44 Mag', prizeValue: 899, prizeType: 'Lever Action — .44 Mag',
+    entries: 75, entriesRemaining: 75,
+    specs: { prize:'Henry Big Boy Classic', caliber:'.44 Magnum', prizeARV:'$899', stickerSize:'5" × 2"', entries:'75 Max', material:'Die-Cut Vinyl' }
   },
   {
-    id: 'bbc-candingo-01', name: 'Candingo Silhouette', price: 4.99, category: 'bbc', image: '', badge: '', stock: 45,
-    tagline: 'Quiet never looked this good.',
-    description: 'The Candingo suppressor in sleek matte black — a 5" vinyl silhouette that pays tribute to BBC Suppressors\' flagship .36 cal can. Minimalist design, maximum respect.',
-    specs: { size:'5" × 1.5"', material:'Matte Vinyl', finish:'Matte Black', durability:'5+ Years Outdoor' }
+    id: 'mossberg-500', name: 'Mossberg 500 Sticker', price: 9.99, category: 'shotguns', image: '', badge: '', stock: 175,
+    tagline: 'Home defense legend. Sticker entry legend.',
+    description: 'Limited edition FDC sticker — your entry to win a Mossberg 500 Tactical (ARV $479). 4" matte vinyl.',
+    prize: 'Mossberg 500 Tactical', prizeValue: 479, prizeType: 'Shotgun — 12 Gauge',
+    entries: 175, entriesRemaining: 175,
+    specs: { prize:'Mossberg 500 Tactical', caliber:'12 Gauge', prizeARV:'$479', stickerSize:'4" × 4"', entries:'175 Max', material:'Matte Vinyl' }
   },
   {
-    id: 'fdc-member-01', name: 'FDC Member Badge', price: 6.99, category: 'logos', image: '', badge: '', stock: 30,
-    tagline: 'Proof of membership. Proof of taste.',
-    description: 'Official FDC Member holographic sticker. 3" circle with rainbow-shift holographic finish that catches light from every angle. The premium tier.',
-    specs: { size:'3" Circle', material:'Holographic Vinyl', finish:'Rainbow Holographic', durability:'3+ Years Outdoor' }
+    id: 'ruger-1022', name: 'Ruger 10/22 Sticker', price: 7.99, category: 'rifles', image: '', badge: '', stock: 300,
+    tagline: 'Everybody\'s first. Could be your next.',
+    description: 'Limited edition FDC sticker — your entry to win a Ruger 10/22 Carbine (ARV $309). 4" premium vinyl.',
+    prize: 'Ruger 10/22 Carbine', prizeValue: 309, prizeType: 'Rifle — .22 LR',
+    entries: 300, entriesRemaining: 300,
+    specs: { prize:'Ruger 10/22 Carbine', caliber:'.22 LR', prizeARV:'$309', stickerSize:'4" × 3"', entries:'300 Max', material:'Premium Vinyl' }
   },
   {
-    id: 'fdc-send-it-01', name: 'Send It', price: 3.99, category: '2a', image: '', badge: '', stock: 80,
-    tagline: 'No hesitation. Full send.',
-    description: 'Bold lettering, bold attitude. 4" of vinyl motivation for your trigger finger and your life choices. Pops on dark surfaces, built to take abuse.',
-    specs: { size:'4" × 1.5"', material:'Premium Vinyl', finish:'Gloss', durability:'5+ Years Outdoor' }
-  },
-  {
-    id: 'fdc-molon-01', name: 'Molon Labe', price: 4.49, category: '2a', image: '', badge: '', stock: 55,
-    tagline: 'Come and take it. We dare you.',
-    description: 'Classic Molon Labe design with Spartan helmet. 4" matte vinyl — understated, serious tone that matches the gravity of the message. A declaration, not a party sticker.',
-    specs: { size:'4" × 3"', material:'Matte Vinyl', finish:'Matte', durability:'5+ Years Outdoor' }
-  },
-  {
-    id: 'bbc-bigblack-01', name: 'Big Black Cans', price: 4.99, category: 'bbc', image: '', badge: 'hot', stock: 90,
-    tagline: 'IYKYK.',
-    description: 'The infamous BBC text sticker — 5" of double entendre that will make your friends laugh and HR nervous. Premium vinyl. Maximum comedic impact.',
-    specs: { size:'5" × 2"', material:'Premium Vinyl', finish:'Gloss', durability:'5+ Years Outdoor' }
-  },
-  {
-    id: 'fdc-pack-01', name: 'FDC Starter Pack (5)', price: 14.99, category: 'packs', image: '', badge: 'new', stock: 25,
-    tagline: 'Five stickers. One mission. Total coverage.',
-    description: '5 hand-picked stickers from across the collection — logos, 2A lifestyle, and BBC Suppressors. No duplicates, all bangers. The perfect starter kit.',
-    specs: { quantity:'5 Stickers', value:'Save $5+', contents:'Mixed Selection' }
-  },
-  {
-    id: 'fdc-pack-02', name: 'FDC Mega Pack (10)', price: 24.99, category: 'packs', image: '', badge: '', stock: 20,
-    tagline: 'The whole arsenal. One box.',
-    description: 'Ten stickers from every category in the catalog. About $2.50 each — enough to cover your gun case, your truck, your laptop, and still share with friends.',
-    specs: { quantity:'10 Stickers', value:'Save $20+', contents:'Full Collection Mix' }
+    id: 'springfield-hellcat', name: 'Hellcat Pro Sticker', price: 9.99, category: 'pistols', image: '', badge: 'hot', stock: 150,
+    tagline: 'Unleash the Hellcat.',
+    description: 'Limited edition FDC sticker — your entry to win a Springfield Hellcat Pro (ARV $569). 4" holographic vinyl.',
+    prize: 'Springfield Hellcat Pro', prizeValue: 569, prizeType: 'Pistol — 9mm',
+    entries: 150, entriesRemaining: 150,
+    specs: { prize:'Springfield Hellcat Pro', caliber:'9mm', prizeARV:'$569', stickerSize:'4" × 4"', entries:'150 Max', material:'Holographic Vinyl' }
   }
 ];
+
+// Sync entriesRemaining with stock
+PRODUCTS.forEach(function(p) { p.entriesRemaining = p.stock; });
 
 // ── CART STATE ──
 let cart = JSON.parse(localStorage.getItem('fdc_cart') || '[]');
@@ -1878,9 +2102,10 @@ function renderProducts(category) {
     var p = filtered[i];
     var oos = p.stock <= 0;
     var low = p.stock > 0 && p.stock <= 10;
+    var entriesPct = p.entries ? Math.round((p.stock / p.entries) * 100) : 100;
     var badgeHtml = '';
     if (oos) {
-      badgeHtml = '<span class="product-badge badge-oos">Sold Out</span>';
+      badgeHtml = '<span class="product-badge badge-oos">Entries Closed</span>';
     } else if (p.badge === 'new') {
       badgeHtml = '<span class="product-badge badge-new">New</span>';
     } else if (p.badge === 'hot') {
@@ -1891,25 +2116,32 @@ function renderProducts(category) {
       ? '<img src="' + p.image + '" alt="' + p.name + '">'
       : '<div class="product-image-placeholder">🔫</div>';
 
-    var stockHtml = oos
-      ? '<span class="product-stock" style="color:var(--red);">OUT OF STOCK</span>'
-      : (low ? '<span class="product-stock low">Only ' + p.stock + ' left</span>' : '<span class="product-stock">In Stock</span>');
+    var entriesHtml = oos
+      ? '<span class="product-stock" style="color:var(--red);">ENTRIES CLOSED</span>'
+      : (low ? '<span class="product-stock low">' + p.stock + ' entries left!</span>'
+             : '<span class="product-stock">' + p.stock + ' of ' + (p.entries||p.stock) + ' left</span>');
+
+    // Entries progress bar
+    var progressHtml = '<div style="width:100%;height:4px;background:rgba(0,0,0,0.08);margin-top:8px;">' +
+      '<div style="width:' + entriesPct + '%;height:100%;background:' + (entriesPct < 20 ? 'var(--red)' : 'var(--blue)') + ';transition:width 0.3s;"></div></div>';
 
     html += '<div class="product-card' + (oos ? ' out-of-stock' : '') + '">' +
       '<a href="/product?id=' + p.id + '" style="text-decoration:none;color:inherit;display:block;">' +
         '<div class="product-image">' + badgeHtml + imageHtml + '</div>' +
         '<div class="product-info-card">' +
+          (p.prize ? '<div style="font-family:\'Barlow Condensed\',sans-serif;font-weight:700;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:4px;">🏆 Win: ' + p.prize + '</div>' : '') +
           '<div class="product-name">' + p.name + '</div>' +
-          '<div class="product-desc">' + (p.description || '').substring(0, 80) + (p.description && p.description.length > 80 ? '...' : '') + '</div>' +
+          (p.prizeValue ? '<div class="product-desc" style="min-height:auto;margin-bottom:8px;">Prize ARV: <strong style="color:var(--white);">$' + p.prizeValue.toLocaleString() + '</strong> &bull; ' + (p.prizeType || '') + '</div>' : '') +
           '<div class="product-bottom">' +
             '<div class="product-price">$' + p.price.toFixed(2) + '</div>' +
-            stockHtml +
+            entriesHtml +
           '</div>' +
+          progressHtml +
         '</div>' +
       '</a>' +
       '<div style="padding:0 24px 24px;">' +
         '<button class="add-to-cart-btn" id="atc-' + p.id + '" onclick="event.stopPropagation();addToCart(\'' + p.id + '\')"' + (oos ? ' disabled' : '') + '>' +
-          (oos ? 'Sold Out' : 'Add to Cart') +
+          (oos ? 'Entries Closed' : 'Enter to Win — $' + p.price.toFixed(2)) +
         '</button>' +
       '</div>' +
     '</div>';
@@ -1921,10 +2153,10 @@ function buildCategoryFilters() {
   var cats = {};
   PRODUCTS.forEach(function(p) { cats[p.category] = true; });
   var container = document.getElementById('categoryFilter');
-  var html = '<button class="filter-btn active" onclick="filterProducts(\'all\')">All</button>';
+  var html = '<button class="filter-btn active" onclick="filterProducts(\'all\')">All Giveaways</button>';
   var catLabels = {
-    'logos': 'Logos', 'flags': 'Flags & Patches', 'bbc': 'BBC Suppressors',
-    '2a': '2A Lifestyle', 'packs': 'Value Packs', 'misc': 'Misc'
+    'pistols': 'Pistols', 'rifles': 'Rifles', 'shotguns': 'Shotguns',
+    'suppressors': 'Suppressors', 'optics': 'Optics', 'misc': 'Misc'
   };
   Object.keys(cats).forEach(function(cat) {
     html += '<button class="filter-btn" onclick="filterProducts(\'' + cat + '\')">' + (catLabels[cat] || cat) + '</button>';
@@ -1947,7 +2179,7 @@ function addToCart(productId) {
   var existing = cart.find(function(item) { return item.id === productId; });
   if (existing) {
     if (existing.qty >= product.stock) {
-      showToast('Maximum stock reached for ' + product.name, '⚠️');
+      showToast('Maximum entries reached for ' + product.name, '⚠️');
       return;
     }
     existing.qty += 1;
@@ -2040,7 +2272,7 @@ function updateCartUI() {
   var footerEl = document.getElementById('cartFooter');
 
   if (cart.length === 0) {
-    container.innerHTML = '<div class="cart-empty"><div class="cart-empty-icon">🎯</div><p>Your cart is empty.</p><p style="margin-top:8px;font-size:13px;">Time to stock up on stickers.</p></div>';
+    container.innerHTML = '<div class="cart-empty"><div class="cart-empty-icon">🏆</div><p>No entries yet.</p><p style="margin-top:8px;font-size:13px;">Pick a giveaway and enter to win.</p></div>';
     footerEl.style.display = 'none';
     return;
   }
@@ -2058,7 +2290,8 @@ function updateCartUI() {
       '<div class="cart-item-image">' + imgHtml + '</div>' +
       '<div class="cart-item-details">' +
         '<div class="cart-item-name">' + product.name + '</div>' +
-        '<div class="cart-item-price">$' + (product.price * item.qty).toFixed(2) + '</div>' +
+        (product.prize ? '<div style="font-size:11px;color:var(--gold);margin-top:2px;">🏆 ' + product.prize + '</div>' : '') +
+        '<div class="cart-item-price">$' + (product.price * item.qty).toFixed(2) + ' — ' + item.qty + (item.qty === 1 ? ' Entry' : ' Entries') + '</div>' +
         '<div class="cart-item-qty">' +
           '<button class="qty-btn" onclick="updateQty(\'' + item.id + '\',-1)">−</button>' +
           '<span class="qty-value">' + item.qty + '</span>' +
@@ -2074,7 +2307,7 @@ function updateCartUI() {
   var totals = getCartTotals(null);
   document.getElementById('cartSubtotal').textContent = '$' + totals.subtotal.toFixed(2);
   document.getElementById('cartTotal').textContent = '$' + totals.subtotal.toFixed(2) + '+';
-  document.getElementById('cartShipping').textContent = totals.subtotal >= CONFIG.FREE_SHIPPING_THRESHOLD ? 'FREE' : '$' + CONFIG.FLAT_SHIPPING.toFixed(2);
+  document.getElementById('cartShipping').textContent = 'FREE';
 }
 
 // ── CART DRAWER ──
@@ -2150,6 +2383,16 @@ document.getElementById('coState').addEventListener('change', updateCheckoutSumm
 function placeOrder() {
   // Validate form
   if (!validateCheckoutForm()) return;
+
+  // Validate T&C acceptance
+  var tcBox = document.getElementById('coAcceptTC');
+  var tcWrapper = document.getElementById('tcWrapper');
+  if (!tcBox.checked) {
+    tcWrapper.classList.add('error');
+    setTimeout(function() { tcWrapper.classList.remove('error'); }, 600);
+    showOrderError('You must accept the Official Sweepstakes Rules to proceed.');
+    return;
+  }
 
   var btn = document.getElementById('placeOrderBtn');
   btn.disabled = true;
@@ -2605,6 +2848,25 @@ function initGooglePlaces() {
     }
   }
 }
+
+// ── RULES MODAL ──
+function openRulesModal() {
+  document.getElementById('rulesOverlay').classList.add('open');
+}
+
+function closeRulesModal() {
+  document.getElementById('rulesOverlay').classList.remove('open');
+}
+
+// Close rules on Escape
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') closeRulesModal();
+});
+
+// Close rules on overlay click
+document.getElementById('rulesOverlay').addEventListener('click', function(e) {
+  if (e.target === this) closeRulesModal();
+});
 
 // ── TOAST ──
 function showToast(message, icon) {
