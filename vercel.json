@@ -11,7 +11,9 @@
       ]
     }
   ],
-  "rewrites": [],
+  "rewrites": [
+    { "source": "/product", "destination": "/product.html" }
+  ],
   "functions": {
     "api/charge.js": {
       "maxDuration": 30

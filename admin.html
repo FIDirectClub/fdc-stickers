@@ -1000,6 +1000,20 @@
     </div>
 
     <div class="config-section">
+      <h4>Google Places Address Autocomplete</h4>
+      <p>Enter a Google Maps API key to enable address autocomplete at checkout. Requires the "Places API" and "Maps JavaScript API" to be enabled in your Google Cloud Console. Free tier covers ~10,000 sessions/month.</p>
+      <div class="admin-form">
+        <div class="admin-form-row full">
+          <div class="admin-form-group">
+            <label>Google Maps API Key</label>
+            <input type="text" id="cfgGoogleMapsKey" placeholder="AIzaSy... (leave blank to disable)">
+          </div>
+        </div>
+        <p style="font-size:12px;color:var(--steel);margin-top:8px;">Get a key at <a href="https://console.cloud.google.com/apis/credentials" target="_blank" style="color:var(--gold);">console.cloud.google.com</a>. If no key is set, the checkout form works normally without autocomplete.</p>
+      </div>
+    </div>
+
+    <div class="config-section">
       <h4>Transaction Key (Server-side)</h4>
       <p>The Transaction Key is used server-side only and should be set as a Vercel environment variable (<code style="color:var(--gold);">AUTHNET_TRANSACTION_KEY</code>), never stored in the browser. See the README for setup instructions.</p>
     </div>
@@ -1603,6 +1617,7 @@ function loadSettings() {
   var config = JSON.parse(localStorage.getItem('fdc_config') || '{}');
   document.getElementById('cfgApiLoginId').value = config.apiLoginId || '';
   document.getElementById('cfgClientKey').value = config.clientKey || '';
+  document.getElementById('cfgGoogleMapsKey').value = config.googleMapsKey || '';
   var sandbox = config.sandbox !== false;
   var toggle = document.getElementById('cfgSandboxToggle');
   if (sandbox) toggle.classList.add('active'); else toggle.classList.remove('active');
@@ -1619,7 +1634,8 @@ function saveConfig() {
   var config = {
     apiLoginId: document.getElementById('cfgApiLoginId').value.trim(),
     clientKey: document.getElementById('cfgClientKey').value.trim(),
-    sandbox: document.getElementById('cfgSandboxToggle').classList.contains('active')
+    sandbox: document.getElementById('cfgSandboxToggle').classList.contains('active'),
+    googleMapsKey: document.getElementById('cfgGoogleMapsKey').value.trim()
   };
   localStorage.setItem('fdc_config', JSON.stringify(config));
   alert('Configuration saved! Changes will take effect on next page load.');

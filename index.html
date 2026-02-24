@@ -1200,6 +1200,52 @@
     line-height: 1.5;
   }
 
+  /* === ADDRESS AUTOCOMPLETE === */
+  .address-autocomplete-wrapper { position: relative; }
+  .address-suggestions {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 500;
+    background: var(--darker);
+    border: 1px solid var(--gold);
+    border-top: none;
+    max-height: 240px;
+    overflow-y: auto;
+    display: none;
+  }
+  .address-suggestions.open { display: block; }
+  .address-suggestion {
+    padding: 12px 16px;
+    font-size: 14px;
+    color: var(--steel-light);
+    cursor: pointer;
+    border-bottom: 1px solid rgba(255,255,255,0.03);
+    transition: background 0.15s;
+  }
+  .address-suggestion:hover,
+  .address-suggestion.active {
+    background: rgba(212,169,71,0.1);
+    color: var(--white);
+  }
+  .address-suggestion .addr-main {
+    color: var(--white);
+    font-weight: 500;
+  }
+  .address-suggestion .addr-secondary {
+    font-size: 12px;
+    color: var(--steel);
+    margin-top: 2px;
+  }
+  .powered-by-google {
+    padding: 6px 16px;
+    text-align: right;
+    font-size: 10px;
+    color: var(--steel);
+    letter-spacing: 1px;
+  }
+
   /* === TOAST NOTIFICATION === */
   .toast {
     position: fixed;
@@ -1505,16 +1551,17 @@
       </div>
       <div class="form-row full">
         <div class="form-group">
-          <label for="coPhone">Phone</label>
-          <input type="tel" id="coPhone" placeholder="Optional">
+          <label for="coPhone">Phone *</label>
+          <input type="tel" id="coPhone" placeholder="(555) 555-1234" required>
         </div>
       </div>
 
       <div class="checkout-section-title">Shipping Address</div>
       <div class="form-row full">
-        <div class="form-group">
+        <div class="form-group address-autocomplete-wrapper">
           <label for="coAddress">Street Address *</label>
-          <input type="text" id="coAddress" required>
+          <input type="text" id="coAddress" required autocomplete="street-address" placeholder="Start typing to search...">
+          <div class="address-suggestions" id="addressSuggestions"></div>
         </div>
       </div>
       <div class="form-row full">
@@ -1634,6 +1681,11 @@ const CONFIG = {
   AUTHNET_CLIENT_KEY: '',       // Set via admin or env
   AUTHNET_SANDBOX: true,        // Set false for production
 
+  // Google Places API key for address autocomplete (optional)
+  // Get a key at: https://console.cloud.google.com/apis/credentials
+  // Enable "Places API" and "Maps JavaScript API"
+  GOOGLE_MAPS_KEY: '',
+
   FL_TAX_RATE: 0.075,           // 7.5% Florida sales tax
   FLAT_SHIPPING: 3.99,          // Flat rate shipping
   FREE_SHIPPING_THRESHOLD: 25,  // Free shipping over $25
@@ -1663,124 +1715,76 @@ const CONFIG = {
 // For now, manage it here or load from /api/products
 let PRODUCTS = [
   {
-    id: 'fdc-logo-01',
-    name: 'FDC Classic Logo',
-    description: 'The original Firearms Direct Club logo sticker. 4" vinyl.',
-    price: 4.99,
-    category: 'logos',
-    image: '',
-    badge: 'hot',
-    stock: 50
+    id: 'fdc-logo-01', name: 'FDC Classic Logo', price: 4.99, category: 'logos', image: '', badge: 'hot', stock: 50,
+    tagline: 'The one that started it all.',
+    description: 'The original Firearms Direct Club logo sticker — slap it on your range bag day one. 4" premium UV-resistant vinyl that won\'t fade even after a full Florida summer on your bumper.',
+    specs: { size:'4" × 4"', material:'Premium Vinyl', finish:'Gloss', durability:'5+ Years Outdoor' }
   },
   {
-    id: 'fdc-flag-01',
-    name: 'FDC Patriot Flag',
-    description: 'American flag with FDC crest overlay. 5" die-cut vinyl.',
-    price: 5.99,
-    category: 'flags',
-    image: '',
-    badge: 'new',
-    stock: 40
+    id: 'fdc-flag-01', name: 'FDC Patriot Flag', price: 5.99, category: 'flags', image: '', badge: 'new', stock: 40,
+    tagline: 'Red, white, blue, and armed.',
+    description: 'American flag with FDC crest overlay. 5" die-cut vinyl — no background rectangle, just pure flag silhouette that sits flush on any surface.',
+    specs: { size:'5" × 3"', material:'Die-Cut Vinyl', finish:'Matte Laminate', durability:'5+ Years Outdoor' }
   },
   {
-    id: 'bbc-rooster-01',
-    name: 'BBC Rooster',
-    description: 'The legendary BBC Suppressors rooster. 3.5" vinyl.',
-    price: 4.99,
-    category: 'bbc',
-    image: '',
-    badge: 'hot',
-    stock: 75
+    id: 'bbc-rooster-01', name: 'BBC Rooster', price: 4.99, category: 'bbc', image: '', badge: 'hot', stock: 75,
+    tagline: 'Big Cluck Energy.',
+    description: 'The legendary BBC Suppressors rooster — Hawaiian shirt, gold chain, AR-15 and all. 3.5" of the most armed poultry in firearms history.',
+    specs: { size:'3.5" × 3.5"', material:'Premium Vinyl', finish:'Gloss', durability:'5+ Years Outdoor' }
   },
   {
-    id: 'fdc-2a-01',
-    name: '2A All Day',
-    description: 'Second Amendment lifestyle sticker. 4" matte vinyl.',
-    price: 3.99,
-    category: '2a',
-    image: '',
-    badge: '',
-    stock: 60
+    id: 'fdc-2a-01', name: '2A All Day', price: 3.99, category: '2a', image: '', badge: '', stock: 60,
+    tagline: 'Every. Single. Day.',
+    description: 'Clean, bold Second Amendment lifestyle sticker. 4" matte vinyl that works on everything from laptop lids to ammo cans. Professional enough for work, tough enough for the range.',
+    specs: { size:'4" × 2"', material:'Matte Vinyl', finish:'Matte', durability:'4+ Years Outdoor' }
   },
   {
-    id: 'fdc-florida-01',
-    name: 'Florida Gun State',
-    description: 'Florida silhouette with crosshairs. 4.5" die-cut.',
-    price: 5.49,
-    category: 'flags',
-    image: '',
-    badge: 'new',
-    stock: 35
+    id: 'fdc-florida-01', name: 'Florida Gun State', price: 5.49, category: 'flags', image: '', badge: 'new', stock: 35,
+    tagline: 'The Gunshine State.',
+    description: 'Die-cut Florida silhouette with crosshairs centered on the Panhandle. 4.5" of pure Florida gun culture with matte laminate finish.',
+    specs: { size:'4.5" × 4"', material:'Die-Cut Vinyl', finish:'Matte Laminate', durability:'5+ Years Outdoor' }
   },
   {
-    id: 'bbc-candingo-01',
-    name: 'Candingo Silhouette',
-    description: 'The Candingo suppressor silhouette. 5" matte black vinyl.',
-    price: 4.99,
-    category: 'bbc',
-    image: '',
-    badge: '',
-    stock: 45
+    id: 'bbc-candingo-01', name: 'Candingo Silhouette', price: 4.99, category: 'bbc', image: '', badge: '', stock: 45,
+    tagline: 'Quiet never looked this good.',
+    description: 'The Candingo suppressor in sleek matte black — a 5" vinyl silhouette that pays tribute to BBC Suppressors\' flagship .36 cal can. Minimalist design, maximum respect.',
+    specs: { size:'5" × 1.5"', material:'Matte Vinyl', finish:'Matte Black', durability:'5+ Years Outdoor' }
   },
   {
-    id: 'fdc-member-01',
-    name: 'FDC Member Badge',
-    description: 'Official FDC Member sticker. Holographic 3" circle.',
-    price: 6.99,
-    category: 'logos',
-    image: '',
-    badge: '',
-    stock: 30
+    id: 'fdc-member-01', name: 'FDC Member Badge', price: 6.99, category: 'logos', image: '', badge: '', stock: 30,
+    tagline: 'Proof of membership. Proof of taste.',
+    description: 'Official FDC Member holographic sticker. 3" circle with rainbow-shift holographic finish that catches light from every angle. The premium tier.',
+    specs: { size:'3" Circle', material:'Holographic Vinyl', finish:'Rainbow Holographic', durability:'3+ Years Outdoor' }
   },
   {
-    id: 'fdc-send-it-01',
-    name: 'Send It',
-    description: 'Full send energy. Bold lettering. 4" vinyl.',
-    price: 3.99,
-    category: '2a',
-    image: '',
-    badge: '',
-    stock: 80
+    id: 'fdc-send-it-01', name: 'Send It', price: 3.99, category: '2a', image: '', badge: '', stock: 80,
+    tagline: 'No hesitation. Full send.',
+    description: 'Bold lettering, bold attitude. 4" of vinyl motivation for your trigger finger and your life choices. Pops on dark surfaces, built to take abuse.',
+    specs: { size:'4" × 1.5"', material:'Premium Vinyl', finish:'Gloss', durability:'5+ Years Outdoor' }
   },
   {
-    id: 'fdc-molon-01',
-    name: 'Molon Labe',
-    description: 'Come and take it. Classic design. 4" matte vinyl.',
-    price: 4.49,
-    category: '2a',
-    image: '',
-    badge: '',
-    stock: 55
+    id: 'fdc-molon-01', name: 'Molon Labe', price: 4.49, category: '2a', image: '', badge: '', stock: 55,
+    tagline: 'Come and take it. We dare you.',
+    description: 'Classic Molon Labe design with Spartan helmet. 4" matte vinyl — understated, serious tone that matches the gravity of the message. A declaration, not a party sticker.',
+    specs: { size:'4" × 3"', material:'Matte Vinyl', finish:'Matte', durability:'5+ Years Outdoor' }
   },
   {
-    id: 'bbc-bigblack-01',
-    name: 'Big Black Cans',
-    description: 'The infamous BBC text sticker. 5" vinyl. IYKYK.',
-    price: 4.99,
-    category: 'bbc',
-    image: '',
-    badge: 'hot',
-    stock: 90
+    id: 'bbc-bigblack-01', name: 'Big Black Cans', price: 4.99, category: 'bbc', image: '', badge: 'hot', stock: 90,
+    tagline: 'IYKYK.',
+    description: 'The infamous BBC text sticker — 5" of double entendre that will make your friends laugh and HR nervous. Premium vinyl. Maximum comedic impact.',
+    specs: { size:'5" × 2"', material:'Premium Vinyl', finish:'Gloss', durability:'5+ Years Outdoor' }
   },
   {
-    id: 'fdc-pack-01',
-    name: 'FDC Starter Pack (5)',
-    description: 'Five random FDC stickers. Great for sticker-bombing.',
-    price: 14.99,
-    category: 'packs',
-    image: '',
-    badge: 'new',
-    stock: 25
+    id: 'fdc-pack-01', name: 'FDC Starter Pack (5)', price: 14.99, category: 'packs', image: '', badge: 'new', stock: 25,
+    tagline: 'Five stickers. One mission. Total coverage.',
+    description: '5 hand-picked stickers from across the collection — logos, 2A lifestyle, and BBC Suppressors. No duplicates, all bangers. The perfect starter kit.',
+    specs: { quantity:'5 Stickers', value:'Save $5+', contents:'Mixed Selection' }
   },
   {
-    id: 'fdc-pack-02',
-    name: 'FDC Mega Pack (10)',
-    description: 'Ten stickers from across the collection. Best value.',
-    price: 24.99,
-    category: 'packs',
-    image: '',
-    badge: '',
-    stock: 20
+    id: 'fdc-pack-02', name: 'FDC Mega Pack (10)', price: 24.99, category: 'packs', image: '', badge: '', stock: 20,
+    tagline: 'The whole arsenal. One box.',
+    description: 'Ten stickers from every category in the catalog. About $2.50 each — enough to cover your gun case, your truck, your laptop, and still share with friends.',
+    specs: { quantity:'10 Stickers', value:'Save $20+', contents:'Full Collection Mix' }
   }
 ];
 
@@ -1796,6 +1800,8 @@ document.addEventListener('DOMContentLoaded', function() {
   updateCartUI();
   setupMobileMenu();
   setupCardFormatting();
+  setupPhoneFormatting();
+  initAddressAutocomplete();
 
   // Load config from localStorage (set via admin panel)
   const savedConfig = localStorage.getItem('fdc_config');
@@ -1804,6 +1810,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (cfg.apiLoginId) CONFIG.AUTHNET_API_LOGIN_ID = cfg.apiLoginId;
     if (cfg.clientKey) CONFIG.AUTHNET_CLIENT_KEY = cfg.clientKey;
     if (cfg.sandbox !== undefined) CONFIG.AUTHNET_SANDBOX = cfg.sandbox;
+    if (cfg.googleMapsKey) CONFIG.GOOGLE_MAPS_KEY = cfg.googleMapsKey;
   }
 
   // Load products from localStorage if admin has updated them
@@ -1889,15 +1896,19 @@ function renderProducts(category) {
       : (low ? '<span class="product-stock low">Only ' + p.stock + ' left</span>' : '<span class="product-stock">In Stock</span>');
 
     html += '<div class="product-card' + (oos ? ' out-of-stock' : '') + '">' +
-      '<div class="product-image">' + badgeHtml + imageHtml + '</div>' +
-      '<div class="product-info-card">' +
-        '<div class="product-name">' + p.name + '</div>' +
-        '<div class="product-desc">' + p.description + '</div>' +
-        '<div class="product-bottom">' +
-          '<div class="product-price">$' + p.price.toFixed(2) + '</div>' +
-          stockHtml +
+      '<a href="/product?id=' + p.id + '" style="text-decoration:none;color:inherit;display:block;">' +
+        '<div class="product-image">' + badgeHtml + imageHtml + '</div>' +
+        '<div class="product-info-card">' +
+          '<div class="product-name">' + p.name + '</div>' +
+          '<div class="product-desc">' + (p.description || '').substring(0, 80) + (p.description && p.description.length > 80 ? '...' : '') + '</div>' +
+          '<div class="product-bottom">' +
+            '<div class="product-price">$' + p.price.toFixed(2) + '</div>' +
+            stockHtml +
+          '</div>' +
         '</div>' +
-        '<button class="add-to-cart-btn" id="atc-' + p.id + '" onclick="addToCart(\'' + p.id + '\')"' + (oos ? ' disabled' : '') + '>' +
+      '</a>' +
+      '<div style="padding:0 24px 24px;">' +
+        '<button class="add-to-cart-btn" id="atc-' + p.id + '" onclick="event.stopPropagation();addToCart(\'' + p.id + '\')"' + (oos ? ' disabled' : '') + '>' +
           (oos ? 'Sold Out' : 'Add to Cart') +
         '</button>' +
       '</div>' +
@@ -2331,7 +2342,7 @@ function generateOrderId() {
 function validateCheckoutForm() {
   var valid = true;
   var required = [
-    'coFirstName', 'coLastName', 'coEmail', 'coAddress', 'coCity',
+    'coFirstName', 'coLastName', 'coEmail', 'coPhone', 'coAddress', 'coCity',
     'coState', 'coZip', 'coCardNumber', 'coExpMonth', 'coExpYear',
     'coCvv', 'coCardZip'
   ];
@@ -2350,6 +2361,14 @@ function validateCheckoutForm() {
   var email = document.getElementById('coEmail');
   if (email.value && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value)) {
     email.classList.add('error');
+    valid = false;
+  }
+
+  // Phone validation (must be 10 digits)
+  var phone = document.getElementById('coPhone');
+  var phoneDigits = phone.value.replace(/\D/g, '');
+  if (phoneDigits.length < 10) {
+    phone.classList.add('error');
     valid = false;
   }
 
@@ -2397,6 +2416,194 @@ function setupCardFormatting() {
     var formatted = val.match(/.{1,4}/g);
     e.target.value = formatted ? formatted.join(' ') : '';
   });
+}
+
+function setupPhoneFormatting() {
+  var phoneInput = document.getElementById('coPhone');
+  phoneInput.addEventListener('input', function(e) {
+    var val = e.target.value.replace(/\D/g, '').substring(0, 10);
+    if (val.length >= 7) {
+      e.target.value = '(' + val.substring(0,3) + ') ' + val.substring(3,6) + '-' + val.substring(6);
+    } else if (val.length >= 4) {
+      e.target.value = '(' + val.substring(0,3) + ') ' + val.substring(3);
+    } else if (val.length > 0) {
+      e.target.value = '(' + val;
+    }
+  });
+}
+
+// ── ADDRESS AUTOCOMPLETE (Google Places) ──
+function initAddressAutocomplete() {
+  // Load Google Maps key from config
+  var key = CONFIG.GOOGLE_MAPS_KEY;
+  if (!key) {
+    // No API key — skip autocomplete, form works normally
+    console.log('FDC: No Google Maps API key configured. Address autocomplete disabled.');
+    return;
+  }
+
+  // Load Google Maps Places library
+  var script = document.createElement('script');
+  script.src = 'https://maps.googleapis.com/maps/api/js?key=' + key + '&libraries=places&callback=initGooglePlaces';
+  script.async = true;
+  script.defer = true;
+  document.head.appendChild(script);
+}
+
+// Called by Google Maps API when loaded
+function initGooglePlaces() {
+  var input = document.getElementById('coAddress');
+  var suggestionsEl = document.getElementById('addressSuggestions');
+  var autocompleteService = new google.maps.places.AutocompleteService();
+  var placesService = new google.maps.places.PlacesService(document.createElement('div'));
+  var debounceTimer = null;
+  var currentSuggestions = [];
+  var activeIndex = -1;
+
+  // Restrict to US addresses
+  var requestOptions = {
+    componentRestrictions: { country: 'us' },
+    types: ['address']
+  };
+
+  input.addEventListener('input', function() {
+    var query = input.value.trim();
+    clearTimeout(debounceTimer);
+
+    if (query.length < 3) {
+      closeSuggestions();
+      return;
+    }
+
+    debounceTimer = setTimeout(function() {
+      autocompleteService.getPlacePredictions(
+        Object.assign({ input: query }, requestOptions),
+        function(predictions, status) {
+          if (status !== google.maps.places.PlacesServiceStatus.OK || !predictions) {
+            closeSuggestions();
+            return;
+          }
+
+          currentSuggestions = predictions;
+          activeIndex = -1;
+          renderSuggestions(predictions);
+        }
+      );
+    }, 250);
+  });
+
+  input.addEventListener('keydown', function(e) {
+    if (!suggestionsEl.classList.contains('open')) return;
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      activeIndex = Math.min(activeIndex + 1, currentSuggestions.length - 1);
+      highlightSuggestion();
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      activeIndex = Math.max(activeIndex - 1, 0);
+      highlightSuggestion();
+    } else if (e.key === 'Enter') {
+      e.preventDefault();
+      if (activeIndex >= 0) selectSuggestion(currentSuggestions[activeIndex]);
+    } else if (e.key === 'Escape') {
+      closeSuggestions();
+    }
+  });
+
+  input.addEventListener('blur', function() {
+    setTimeout(closeSuggestions, 200);
+  });
+
+  function renderSuggestions(predictions) {
+    var html = '';
+    predictions.forEach(function(p, i) {
+      var main = p.structured_formatting ? p.structured_formatting.main_text : p.description;
+      var secondary = p.structured_formatting ? p.structured_formatting.secondary_text : '';
+      html += '<div class="address-suggestion" data-index="' + i + '" onmousedown="event.preventDefault()" onclick="selectAddressSuggestion(' + i + ')">' +
+        '<div class="addr-main">' + main + '</div>' +
+        (secondary ? '<div class="addr-secondary">' + secondary + '</div>' : '') +
+      '</div>';
+    });
+    html += '<div class="powered-by-google">Powered by Google</div>';
+    suggestionsEl.innerHTML = html;
+    suggestionsEl.classList.add('open');
+  }
+
+  function highlightSuggestion() {
+    var items = suggestionsEl.querySelectorAll('.address-suggestion');
+    items.forEach(function(el, i) {
+      el.classList.toggle('active', i === activeIndex);
+    });
+  }
+
+  function closeSuggestions() {
+    suggestionsEl.classList.remove('open');
+    suggestionsEl.innerHTML = '';
+    currentSuggestions = [];
+    activeIndex = -1;
+  }
+
+  function selectSuggestion(prediction) {
+    closeSuggestions();
+    // Get place details to parse address components
+    placesService.getDetails(
+      { placeId: prediction.place_id, fields: ['address_components', 'formatted_address'] },
+      function(place, status) {
+        if (status !== google.maps.places.PlacesServiceStatus.OK || !place) {
+          input.value = prediction.description;
+          return;
+        }
+        fillAddressFromPlace(place);
+      }
+    );
+  }
+
+  // Expose for onclick
+  window.selectAddressSuggestion = function(index) {
+    if (currentSuggestions[index]) selectSuggestion(currentSuggestions[index]);
+  };
+
+  function fillAddressFromPlace(place) {
+    var streetNumber = '';
+    var route = '';
+    var city = '';
+    var state = '';
+    var zip = '';
+    var apt = '';
+
+    place.address_components.forEach(function(c) {
+      var types = c.types;
+      if (types.indexOf('street_number') >= 0) streetNumber = c.long_name;
+      if (types.indexOf('route') >= 0) route = c.long_name;
+      if (types.indexOf('locality') >= 0) city = c.long_name;
+      if (types.indexOf('sublocality_level_1') >= 0 && !city) city = c.long_name;
+      if (types.indexOf('administrative_area_level_1') >= 0) state = c.short_name;
+      if (types.indexOf('postal_code') >= 0) zip = c.long_name;
+      if (types.indexOf('subpremise') >= 0) apt = c.long_name;
+    });
+
+    // Populate fields
+    input.value = (streetNumber + ' ' + route).trim();
+    if (apt) document.getElementById('coAddress2').value = apt;
+    if (city) document.getElementById('coCity').value = city;
+    if (zip) {
+      document.getElementById('coZip').value = zip;
+      document.getElementById('coCardZip').value = zip;
+    }
+
+    // Set state if it's in our allowed list
+    if (state && CONFIG.ALLOWED_STATES[state]) {
+      document.getElementById('coState').value = state;
+      updateCheckoutSummary(); // Recalculate tax
+    }
+
+    // Focus next empty field
+    if (!document.getElementById('coAddress2').value) {
+      document.getElementById('coAddress2').focus();
+    } else if (!document.getElementById('coCity').value) {
+      document.getElementById('coCity').focus();
+    }
+  }
 }
 
 // ── TOAST ──

@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Loading... — FDC Stickers</title>
+<meta name="description" content="Premium vinyl stickers from Firearms Direct Club.">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Permanent+Marker&family=Barlow+Condensed:wght@400;600;700&family=Barlow:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #D4A947;
+    --gold-bright: #F5D76E;
+    --gold-dim: rgba(212,169,71,0.15);
+    --black: #0A0A0A;
+    --dark: #111111;
+    --darker: #1a1a1a;
+    --white: #F2F2F2;
+    --red: #C0392B;
+    --green: #27AE60;
+    --steel: #8C8C8C;
+    --steel-light: #B0B0B0;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  body { background:var(--black); color:var(--white); font-family:'Barlow',sans-serif; }
+
+  /* === NAV (minimal) === */
+  nav {
+    position:fixed; top:0; left:0; right:0; z-index:100;
+    display:flex; justify-content:space-between; align-items:center;
+    padding:20px 48px; background:rgba(10,10,10,0.9);
+    backdrop-filter:blur(12px); border-bottom:1px solid var(--gold-dim);
+  }
+  .nav-brand { display:flex; align-items:center; gap:14px; text-decoration:none; }
+  .nav-logo { font-family:'Bebas Neue',sans-serif; font-size:28px; color:var(--gold); letter-spacing:4px; }
+  .nav-logo span { color:var(--white); font-size:12px; letter-spacing:2px; display:block; margin-top:-4px; font-family:'Barlow Condensed',sans-serif; }
+  .nav-right { display:flex; gap:24px; align-items:center; }
+  .nav-right a {
+    color:var(--steel-light); text-decoration:none; font-family:'Barlow Condensed',sans-serif;
+    font-weight:600; font-size:14px; letter-spacing:2px; text-transform:uppercase; transition:color 0.3s;
+  }
+  .nav-right a:hover { color:var(--gold); }
+  .cart-btn {
+    position:relative; background:none; border:1px solid var(--gold-dim); color:var(--gold);
+    font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:14px; letter-spacing:2px;
+    text-transform:uppercase; padding:10px 20px; cursor:pointer; transition:all 0.3s;
+  }
+  .cart-btn:hover { background:var(--gold); color:var(--black); border-color:var(--gold); }
+  .cart-count {
+    position:absolute; top:-8px; right:-8px; background:var(--red); color:var(--white);
+    font-size:11px; font-weight:700; width:20px; height:20px; border-radius:50%;
+    display:none; align-items:center; justify-content:center;
+  }
+  .cart-count.visible { display:flex; }
+
+  /* === BREADCRUMB === */
+  .breadcrumb {
+    padding:100px 48px 0; max-width:1200px; margin:0 auto;
+    font-family:'Barlow Condensed',sans-serif; font-size:13px; letter-spacing:2px;
+    text-transform:uppercase; color:var(--steel);
+  }
+  .breadcrumb a { color:var(--gold); text-decoration:none; transition:color 0.3s; }
+  .breadcrumb a:hover { color:var(--gold-bright); }
+
+  /* === PRODUCT LAYOUT === */
+  .product-page { max-width:1200px; margin:0 auto; padding:32px 48px 80px; }
+  .product-layout {
+    display:grid; grid-template-columns:1fr 1fr; gap:64px; align-items:start;
+  }
+
+  /* Image */
+  .product-image-main {
+    width:100%; aspect-ratio:1; background:linear-gradient(135deg,#1e1e1e 0%,#151515 50%,#1e1e1e 100%);
+    border:1px solid rgba(255,255,255,0.05); display:flex; align-items:center;
+    justify-content:center; overflow:hidden; position:relative;
+  }
+  .product-image-main img { width:100%; height:100%; object-fit:cover; }
+  .product-image-placeholder { font-size:120px; opacity:0.15; }
+  .product-image-badge {
+    position:absolute; top:16px; left:16px; font-family:'Barlow Condensed',sans-serif;
+    font-weight:700; font-size:12px; letter-spacing:2px; text-transform:uppercase; padding:6px 16px;
+  }
+  .badge-new { background:var(--gold); color:var(--black); }
+  .badge-hot { background:var(--red); color:var(--white); }
+
+  /* Details */
+  .product-details { padding-top:8px; }
+  .product-category-label {
+    font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:11px;
+    letter-spacing:4px; text-transform:uppercase; color:var(--gold); margin-bottom:12px;
+  }
+  .product-title {
+    font-family:'Bebas Neue',sans-serif; font-size:clamp(36px,5vw,56px);
+    letter-spacing:3px; line-height:1; margin-bottom:8px;
+  }
+  .product-tagline {
+    font-family:'Permanent Marker',cursive; font-size:18px; color:var(--steel-light); margin-bottom:24px;
+  }
+  .product-price-tag {
+    font-family:'Bebas Neue',sans-serif; font-size:48px; color:var(--gold);
+    letter-spacing:2px; margin-bottom:8px;
+  }
+  .product-stock-info {
+    font-family:'Barlow Condensed',sans-serif; font-size:13px; letter-spacing:2px;
+    text-transform:uppercase; margin-bottom:28px;
+  }
+  .stock-in { color:var(--green); }
+  .stock-low { color:var(--red); }
+  .stock-out { color:var(--steel); }
+
+  /* Qty + Add to cart */
+  .product-actions { display:flex; gap:16px; align-items:center; margin-bottom:32px; }
+  .qty-selector {
+    display:flex; align-items:center; gap:0; border:1px solid rgba(255,255,255,0.15);
+  }
+  .qty-selector button {
+    width:44px; height:48px; background:transparent; border:none; color:var(--white);
+    font-size:20px; cursor:pointer; transition:all 0.2s;
+    font-family:'Barlow Condensed',sans-serif; font-weight:700;
+  }
+  .qty-selector button:hover { color:var(--gold); background:rgba(212,169,71,0.08); }
+  .qty-selector input {
+    width:48px; height:48px; background:transparent; border:none; border-left:1px solid rgba(255,255,255,0.1);
+    border-right:1px solid rgba(255,255,255,0.1); color:var(--white); font-family:'Barlow Condensed',sans-serif;
+    font-size:18px; font-weight:700; text-align:center; outline:none; -moz-appearance:textfield;
+  }
+  .qty-selector input::-webkit-outer-spin-button,
+  .qty-selector input::-webkit-inner-spin-button { -webkit-appearance:none; margin:0; }
+  .pdp-add-btn {
+    flex:1; background:var(--gold); color:var(--black); font-family:'Bebas Neue',sans-serif;
+    font-size:22px; letter-spacing:4px; padding:12px 32px; border:none; cursor:pointer;
+    transition:all 0.3s; height:48px;
+  }
+  .pdp-add-btn:hover { background:var(--gold-bright); box-shadow:0 8px 32px rgba(212,169,71,0.3); }
+  .pdp-add-btn:disabled { opacity:0.4; cursor:not-allowed; }
+  .pdp-add-btn.added { background:var(--green); color:var(--white); }
+
+  /* Description */
+  .product-description { margin-bottom:32px; }
+  .product-description h3 {
+    font-family:'Bebas Neue',sans-serif; font-size:24px; letter-spacing:2px;
+    color:var(--gold); margin-bottom:12px;
+  }
+  .product-description p {
+    font-size:16px; line-height:1.8; color:var(--steel-light); margin-bottom:12px;
+  }
+
+  /* Specs */
+  .product-specs {
+    display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:32px;
+    background:var(--darker); border:1px solid rgba(255,255,255,0.05); padding:24px;
+  }
+  .spec-item { border-left:2px solid var(--gold); padding-left:14px; }
+  .spec-label {
+    font-family:'Barlow Condensed',sans-serif; font-weight:600; font-size:10px;
+    letter-spacing:3px; text-transform:uppercase; color:var(--steel); margin-bottom:2px;
+  }
+  .spec-value { font-family:'Bebas Neue',sans-serif; font-size:20px; letter-spacing:1px; }
+
+  /* Shipping note */
+  .shipping-note {
+    background:rgba(212,169,71,0.06); border:1px solid var(--gold-dim); padding:16px 20px;
+    font-family:'Barlow Condensed',sans-serif; font-size:13px; letter-spacing:1px;
+    color:var(--steel-light); display:flex; align-items:center; gap:10px;
+  }
+
+  /* === RELATED === */
+  .related-section { max-width:1200px; margin:0 auto; padding:0 48px 100px; }
+  .related-title {
+    font-family:'Bebas Neue',sans-serif; font-size:36px; letter-spacing:3px; margin-bottom:24px;
+  }
+  .related-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:24px; }
+  .related-card {
+    background:var(--darker); border:1px solid rgba(255,255,255,0.05);
+    transition:all 0.3s; cursor:pointer; text-decoration:none; color:inherit;
+  }
+  .related-card:hover { border-color:rgba(212,169,71,0.3); transform:translateY(-4px); }
+  .related-card-img {
+    width:100%; aspect-ratio:1; background:linear-gradient(135deg,#1e1e1e,#151515,#1e1e1e);
+    display:flex; align-items:center; justify-content:center; overflow:hidden;
+  }
+  .related-card-img img { width:100%; height:100%; object-fit:cover; }
+  .related-card-body { padding:16px; }
+  .related-card-name {
+    font-family:'Bebas Neue',sans-serif; font-size:18px; letter-spacing:1px; margin-bottom:4px;
+  }
+  .related-card-price { font-family:'Bebas Neue',sans-serif; font-size:22px; color:var(--gold); }
+
+  /* === FOOTER === */
+  footer {
+    background:var(--dark); border-top:1px solid rgba(212,169,71,0.1); padding:40px 48px;
+    text-align:center;
+  }
+  footer p { font-size:12px; color:var(--steel); }
+  footer a { color:var(--gold); text-decoration:none; }
+
+  /* === TOAST === */
+  .toast {
+    position:fixed; bottom:24px; right:24px; background:var(--darker);
+    border:1px solid var(--gold); padding:16px 24px; z-index:3000;
+    display:flex; align-items:center; gap:12px; transform:translateY(100px);
+    opacity:0; transition:all 0.4s cubic-bezier(0.25,0.46,0.45,0.94); max-width:360px;
+  }
+  .toast.visible { transform:translateY(0); opacity:1; }
+
+  /* === 404 === */
+  .not-found { text-align:center; padding:200px 24px 100px; }
+  .not-found h2 { font-family:'Bebas Neue',sans-serif; font-size:64px; letter-spacing:4px; color:var(--gold); }
+  .not-found p { color:var(--steel); margin-top:12px; font-size:16px; }
+  .not-found a {
+    display:inline-block; margin-top:24px; background:var(--gold); color:var(--black);
+    font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:15px;
+    letter-spacing:3px; text-transform:uppercase; padding:14px 36px; text-decoration:none;
+    transition:all 0.3s;
+  }
+  .not-found a:hover { background:var(--gold-bright); }
+
+  /* === RESPONSIVE === */
+  @media(max-width:900px) {
+    .product-layout { grid-template-columns:1fr; gap:32px; }
+    .related-grid { grid-template-columns:1fr 1fr; }
+    nav { padding:16px 24px; }
+    .breadcrumb { padding:88px 24px 0; }
+    .product-page { padding:24px 24px 60px; }
+    .related-section { padding:0 24px 60px; }
+  }
+  @media(max-width:480px) {
+    .product-specs { grid-template-columns:1fr; }
+    .related-grid { grid-template-columns:1fr; }
+    .product-actions { flex-direction:column; }
+    .pdp-add-btn { width:100%; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="nav-brand">
+    <div class="nav-logo">FDC STICKERS<span>Firearms Direct Club &bull; Milton, FL</span></div>
+  </a>
+  <div class="nav-right">
+    <a href="/#shop">Shop</a>
+    <a href="/#about">About</a>
+    <button class="cart-btn" onclick="window.location.href='/#shop'">
+      Cart <span class="cart-count" id="cartCount">0</span>
+    </button>
+  </div>
+</nav>
+
+<div class="breadcrumb" id="breadcrumb">
+  <a href="/">Home</a> &rsaquo; <a href="/#shop">Shop</a> &rsaquo; <span id="breadcrumbName">...</span>
+</div>
+
+<!-- PRODUCT CONTENT (populated by JS) -->
+<div id="productContent"></div>
+
+<!-- TOAST -->
+<div class="toast" id="toast">
+  <span>✓</span>
+  <span id="toastText">Added to cart</span>
+</div>
+
+<footer>
+  <p>&copy; 2025 Firearms Direct Club LLC. All rights reserved. <a href="/">FDC Stickers</a>&trade;</p>
+</footer>
+
+<script>
+// ── PRODUCT DATABASE ──
+// Matches index.html — extended with full descriptions and specs
+var PRODUCTS = [];
+
+function loadProducts() {
+  var saved = localStorage.getItem('fdc_products');
+  if (saved) { PRODUCTS = JSON.parse(saved); return; }
+  PRODUCTS = getDefaultProducts();
+}
+
+function getDefaultProducts() {
+  return [
+    {
+      id:'fdc-logo-01', name:'FDC Classic Logo', category:'logos', price:4.99, stock:50, badge:'hot',
+      image:'', tagline:'The one that started it all.',
+      description:'The original Firearms Direct Club logo sticker — the one you slap on your range bag day one and never regret. Printed on premium 4-inch vinyl with UV-resistant ink that won\'t fade even after a full Florida summer on your truck bumper. This is the sticker that says "I\'m in the club" without you having to say a word.',
+      fullDescription:'<p>This is the flagship FDC sticker and the cornerstone of any self-respecting member\'s collection. The design features the iconic Firearms Direct Club emblem in full color on a clean background that pops on any surface.</p><p>Whether it\'s your gun safe, your cooler, your toolbox, or the back of your phone case — this sticker was designed to look good everywhere and last even longer. We\'re talking UV-resistant, waterproof, dishwasher-safe (yes, we tested it) vinyl that laughs at rain, sun, and that one friend who always tries to peel your stickers off.</p>',
+      specs: { size:'4" × 4"', material:'Premium Vinyl', finish:'Gloss', durability:'5+ Years Outdoor', adhesive:'Permanent', waterproof:'Yes' }
+    },
+    {
+      id:'fdc-flag-01', name:'FDC Patriot Flag', category:'flags', price:5.99, stock:40, badge:'new',
+      image:'', tagline:'Red, white, blue, and armed.',
+      description:'The American flag with the FDC crest overlaid — because nothing says "I love my country and my Second Amendment rights" quite like a 5-inch die-cut vinyl flag on the back of your truck. Premium outdoor-grade vinyl built to survive everything from road trips to range days.',
+      fullDescription:'<p>This die-cut patriot flag sticker combines the stars and stripes with the Firearms Direct Club identity in a design that turns heads at every stoplight, parking lot, and shooting range in America.</p><p>Die-cut to the flag silhouette (no background rectangle), this sticker sits flush on any surface for a clean, professional look. The UV-resistant laminate means the colors stay vibrant through years of sun, rain, and the occasional pressure wash.</p>',
+      specs: { size:'5" × 3"', material:'Die-Cut Vinyl', finish:'Matte Laminate', durability:'5+ Years Outdoor', adhesive:'Permanent', waterproof:'Yes' }
+    },
+    {
+      id:'bbc-rooster-01', name:'BBC Rooster', category:'bbc', price:4.99, stock:75, badge:'hot',
+      image:'', tagline:'Big Cluck Energy.',
+      description:'The legendary BBC Suppressors rooster — Hawaiian shirt, gold chain, AR-15 and all. This 3.5-inch vinyl sticker captures the most armed poultry in the history of the firearms industry. If you know, you know. If you don\'t, you\'re about to.',
+      fullDescription:'<p>Meet the unofficial mascot of the entire Florida firearms community: a massive black rooster in a Hawaiian shirt, rocking a gold chain, and packing an AR-15. He\'s got more swagger than your entire gun safe, and he does NOT care what your HOA thinks.</p><p>This sticker is a conversation starter, an ice breaker, and a statement of intent all rolled into 3.5 inches of premium vinyl. People will ask about it. You will enjoy explaining it. Everyone wins.</p>',
+      specs: { size:'3.5" × 3.5"', material:'Premium Vinyl', finish:'Gloss', durability:'5+ Years Outdoor', adhesive:'Permanent', waterproof:'Yes' }
+    },
+    {
+      id:'fdc-2a-01', name:'2A All Day', category:'2a', price:3.99, stock:60, badge:'',
+      image:'', tagline:'Every. Single. Day.',
+      description:'A clean, bold Second Amendment lifestyle sticker for people who don\'t just support the 2A on weekends. 4-inch matte vinyl with a design that works on everything from laptop lids to ammo cans.',
+      fullDescription:'<p>"2A All Day" isn\'t just a slogan — it\'s a way of life. This sticker features bold, unapologetic typography on a matte finish that looks professional enough for your work laptop but tough enough for your range bag.</p><p>The matte vinyl resists fingerprints and glare, making it one of the most versatile stickers in the lineup. It\'s the perfect sticker for people who want to make a statement without shouting.</p>',
+      specs: { size:'4" × 2"', material:'Matte Vinyl', finish:'Matte', durability:'4+ Years Outdoor', adhesive:'Permanent', waterproof:'Yes' }
+    },
+    {
+      id:'fdc-florida-01', name:'Florida Gun State', category:'flags', price:5.49, stock:35, badge:'new',
+      image:'', tagline:'The Gunshine State.',
+      description:'A die-cut Florida silhouette with crosshairs centered right on the Panhandle — because that\'s where the real action is. 4.5 inches of pure Florida gun culture, printed on premium vinyl with a matte laminate finish.',
+      fullDescription:'<p>This is the sticker for people who don\'t just live in Florida — they <em>are</em> Florida. The state silhouette with tactical crosshairs is an instant badge of honor for anyone from the Gunshine State.</p><p>The crosshairs center on the Panhandle (Milton, FL represent), because that\'s where FDC calls home. Die-cut to the Florida shape for a clean, borderless look on any surface. Matte laminate keeps it looking sharp even after your truck survives another hurricane season.</p>',
+      specs: { size:'4.5" × 4"', material:'Die-Cut Vinyl', finish:'Matte Laminate', durability:'5+ Years Outdoor', adhesive:'Permanent', waterproof:'Yes' }
+    },
+    {
+      id:'bbc-candingo-01', name:'Candingo Silhouette', category:'bbc', price:4.99, stock:45, badge:'',
+      image:'', tagline:'Quiet never looked this good.',
+      description:'The Candingo suppressor rendered in sleek matte black — a 5-inch vinyl silhouette sticker that pays tribute to BBC Suppressors\' flagship product. Minimalist design, maximum respect.',
+      fullDescription:'<p>For those who appreciate the engineering beauty of a well-designed suppressor, this sticker is your quiet flex. The Candingo silhouette captures the clean lines and profile of BBC Suppressors\' flagship .36 cal multi-purpose can.</p><p>Printed in matte black on premium vinyl, this sticker has a tactical, understated look that fits in anywhere — gun cases, safes, tool boxes, or the inside of your locker door where only you and your closest range buddies will see it.</p>',
+      specs: { size:'5" × 1.5"', material:'Matte Vinyl', finish:'Matte Black', durability:'5+ Years Outdoor', adhesive:'Permanent', waterproof:'Yes' }
+    },
+    {
+      id:'fdc-member-01', name:'FDC Member Badge', category:'logos', price:6.99, stock:30, badge:'',
+      image:'', tagline:'Proof of membership. Proof of taste.',
+      description:'The official FDC Member holographic sticker — a 3-inch circle with a rainbow-shift holographic finish that catches light like it catches attention. For verified members only. Well, technically anyone can buy it, but the honor system applies.',
+      fullDescription:'<p>This is the premium tier of FDC stickers. The holographic finish shifts colors as you move, catching light from every angle and making every other sticker on your gear jealous. The circular die-cut format gives it a badge-like presence.</p><p>At 3 inches in diameter, it\'s the perfect size for center-of-attention placement. Laptop lids, water bottles, the center of your gun safe door — wherever you put it, people will notice and ask about it. That\'s the point.</p>',
+      specs: { size:'3" Circle', material:'Holographic Vinyl', finish:'Rainbow Holographic', durability:'3+ Years Outdoor', adhesive:'Permanent', waterproof:'Yes' }
+    },
+    {
+      id:'fdc-send-it-01', name:'Send It', category:'2a', price:3.99, stock:80, badge:'',
+      image:'', tagline:'No hesitation. Full send.',
+      description:'Bold lettering. Bold attitude. The "Send It" sticker is for people who don\'t overthink — they just act. 4 inches of vinyl motivation for your trigger finger and your life choices.',
+      fullDescription:'<p>"Send it" — two words that apply to everything from your first shot of the day to your decision to buy that fourth gun this month. This sticker embodies the full-send lifestyle in bold, unapologetic typography.</p><p>The aggressive lettering pops on dark surfaces and the vinyl construction means it won\'t peel, crack, or fade when you inevitably put it somewhere that gets a lot of sun and abuse. Which, let\'s be honest, is everywhere you\'d want this sticker.</p>',
+      specs: { size:'4" × 1.5"', material:'Premium Vinyl', finish:'Gloss', durability:'5+ Years Outdoor', adhesive:'Permanent', waterproof:'Yes' }
+    },
+    {
+      id:'fdc-molon-01', name:'Molon Labe', category:'2a', price:4.49, stock:55, badge:'',
+      image:'', tagline:'Come and take it. We dare you.',
+      description:'The classic Molon Labe design — "Come and take them" in the original Greek, paired with a Spartan helmet. 4 inches of defiance on premium matte vinyl. History never gets old.',
+      fullDescription:'<p>Molon Labe — "Come and take them." King Leonidas said it to the Persians at Thermopylae. Gun owners have been saying it to everyone else ever since. This sticker features the iconic phrase in Greek lettering alongside a Spartan helmet design.</p><p>Matte vinyl finish gives it an understated, serious tone that matches the gravity of the message. This isn\'t a party sticker — it\'s a declaration. And declarations look best on matte vinyl with a permanent adhesive backing.</p>',
+      specs: { size:'4" × 3"', material:'Matte Vinyl', finish:'Matte', durability:'5+ Years Outdoor', adhesive:'Permanent', waterproof:'Yes' }
+    },
+    {
+      id:'bbc-bigblack-01', name:'Big Black Cans', category:'bbc', price:4.99, stock:90, badge:'hot',
+      image:'', tagline:'IYKYK.',
+      description:'The infamous "Big Black Cans" text sticker — 5 inches of double entendre that will make your friends laugh and your HR department nervous. Premium vinyl. Maximum comedic impact.',
+      fullDescription:'<p>If you have to explain the joke, it wasn\'t meant for you. But if you\'re reading this, you already get it. The "Big Black Cans" sticker is the crown jewel of the BBC Suppressors line — bold text, zero subtlety, and enough comedic energy to fuel an entire range day.</p><p>This is the sticker that starts conversations, ends awkward silences, and occasionally gets people called into HR. We accept no responsibility for any of those outcomes, but we\'re proud of all of them. Premium vinyl ensures your comedic genius is preserved for years.</p>',
+      specs: { size:'5" × 2"', material:'Premium Vinyl', finish:'Gloss', durability:'5+ Years Outdoor', adhesive:'Permanent', waterproof:'Yes' }
+    },
+    {
+      id:'fdc-pack-01', name:'FDC Starter Pack (5)', category:'packs', price:14.99, stock:25, badge:'new',
+      image:'', tagline:'Five stickers. One mission. Total coverage.',
+      description:'Can\'t pick just one? Neither could we. The FDC Starter Pack includes 5 hand-picked stickers from across the collection — a perfect mix of logos, 2A lifestyle, and BBC Suppressors. Sticker-bomb your gear on day one.',
+      fullDescription:'<p>The FDC Starter Pack is curated for maximum sticker coverage. You\'ll get a mix of 5 different stickers from across the full catalog — logos, flags, 2A lifestyle, and BBC Suppressors designs. No duplicates, all bangers.</p><p>This is the move for new FDC members who want to hit the ground running, or for veterans who want to restock and redistribute. Great for sharing with range buddies, stuffing in Christmas stockings, or just having backups for when your first sticker eventually needs company.</p>',
+      specs: { size:'Mixed Sizes', material:'Mixed Vinyl', finish:'Mixed', quantity:'5 Stickers', value:'Save $5+', waterproof:'Yes' }
+    },
+    {
+      id:'fdc-pack-02', name:'FDC Mega Pack (10)', category:'packs', price:24.99, stock:20, badge:'',
+      image:'', tagline:'The whole arsenal. One box.',
+      description:'Ten stickers from across the entire FDC collection. The best value in the shop — you\'re saving over $20 compared to buying individually. For people who don\'t do anything halfway.',
+      fullDescription:'<p>The Mega Pack is for people who take their sticker game as seriously as their range game. Ten stickers from across every category in the catalog — that\'s enough to cover your gun case, your truck, your laptop, AND still have some left to hand out to friends who ask where you got them.</p><p>At $24.99 for 10 stickers, you\'re paying about $2.50 each — a massive discount from the individual price. This is the "buy once, sticker everything" option, and it\'s the best value we offer.</p>',
+      specs: { size:'Mixed Sizes', material:'Mixed Vinyl', finish:'Mixed', quantity:'10 Stickers', value:'Save $20+', waterproof:'Yes' }
+    }
+  ];
+}
+
+// ── CART ──
+var cart = JSON.parse(localStorage.getItem('fdc_cart') || '[]');
+function saveCart() { localStorage.setItem('fdc_cart', JSON.stringify(cart)); }
+function updateCartCount() {
+  var total = 0;
+  cart.forEach(function(i) { total += i.qty; });
+  var el = document.getElementById('cartCount');
+  el.textContent = total;
+  el.classList.toggle('visible', total > 0);
+}
+
+function addToCartPDP(productId, qty) {
+  var product = PRODUCTS.find(function(p) { return p.id === productId; });
+  if (!product || product.stock <= 0) return;
+  var existing = cart.find(function(i) { return i.id === productId; });
+  if (existing) {
+    if (existing.qty + qty > product.stock) { showToast('Maximum stock reached', '⚠️'); return; }
+    existing.qty += qty;
+  } else {
+    cart.push({ id: productId, qty: qty });
+  }
+  saveCart();
+  updateCartCount();
+  var btn = document.getElementById('pdpAddBtn');
+  btn.classList.add('added');
+  btn.textContent = 'ADDED ✓';
+  setTimeout(function() { btn.classList.remove('added'); btn.textContent = 'ADD TO CART'; }, 1500);
+  showToast(product.name + ' added to cart');
+}
+
+function showToast(msg, icon) {
+  var t = document.getElementById('toast');
+  document.getElementById('toastText').textContent = msg;
+  t.querySelector('span:first-child').textContent = icon || '✓';
+  t.classList.add('visible');
+  clearTimeout(t._timer);
+  t._timer = setTimeout(function() { t.classList.remove('visible'); }, 2500);
+}
+
+// ── RENDER ──
+function renderProduct(product) {
+  document.title = product.name + ' — FDC Stickers';
+  document.getElementById('breadcrumbName').textContent = product.name;
+
+  var catLabels = { logos:'Logos', flags:'Flags & Patches', bbc:'BBC Suppressors', '2a':'2A Lifestyle', packs:'Value Packs', misc:'Misc' };
+  var oos = product.stock <= 0;
+  var low = product.stock > 0 && product.stock <= 10;
+
+  var badgeHtml = '';
+  if (product.badge === 'new') badgeHtml = '<div class="product-image-badge badge-new">New</div>';
+  else if (product.badge === 'hot') badgeHtml = '<div class="product-image-badge badge-hot">Hot</div>';
+
+  var imgHtml = product.image
+    ? '<img src="' + product.image + '" alt="' + product.name + '">'
+    : '<div class="product-image-placeholder">🔫</div>';
+
+  var stockHtml = oos
+    ? '<span class="stock-out">OUT OF STOCK</span>'
+    : (low ? '<span class="stock-low">Only ' + product.stock + ' left — order soon</span>' : '<span class="stock-in">✓ In Stock — Ships in 1-2 days</span>');
+
+  var specsHtml = '';
+  if (product.specs) {
+    var keys = Object.keys(product.specs);
+    for (var i = 0; i < keys.length; i++) {
+      specsHtml += '<div class="spec-item"><div class="spec-label">' + keys[i].replace(/([A-Z])/g,' $1').trim() + '</div><div class="spec-value">' + product.specs[keys[i]] + '</div></div>';
+    }
+  }
+
+  var html = '<div class="product-page"><div class="product-layout">' +
+    '<div class="product-image-main">' + badgeHtml + imgHtml + '</div>' +
+    '<div class="product-details">' +
+      '<div class="product-category-label">' + (catLabels[product.category] || product.category) + '</div>' +
+      '<h1 class="product-title">' + product.name + '</h1>' +
+      (product.tagline ? '<p class="product-tagline">"' + product.tagline + '"</p>' : '') +
+      '<div class="product-price-tag">$' + product.price.toFixed(2) + '</div>' +
+      '<div class="product-stock-info">' + stockHtml + '</div>' +
+      '<div class="product-actions">' +
+        '<div class="qty-selector">' +
+          '<button onclick="changeQty(-1)">−</button>' +
+          '<input type="number" id="pdpQty" value="1" min="1" max="' + product.stock + '">' +
+          '<button onclick="changeQty(1)">+</button>' +
+        '</div>' +
+        '<button class="pdp-add-btn" id="pdpAddBtn" onclick="addToCartPDP(\'' + product.id + '\', getQty())"' + (oos ? ' disabled' : '') + '>' + (oos ? 'SOLD OUT' : 'ADD TO CART') + '</button>' +
+      '</div>' +
+      '<div class="product-description"><h3>About This Sticker</h3>' + (product.fullDescription || '<p>' + product.description + '</p>') + '</div>' +
+      (specsHtml ? '<div class="product-specs">' + specsHtml + '</div>' : '') +
+      '<div class="shipping-note">📦 Ships to lower 48 US states. FL orders include 7.5% sales tax. Free shipping on orders over $25.</div>' +
+    '</div>' +
+  '</div></div>';
+
+  // Related products
+  var related = PRODUCTS.filter(function(p) { return p.id !== product.id; });
+  related.sort(function() { return 0.5 - Math.random(); });
+  related = related.slice(0, 4);
+
+  html += '<div class="related-section"><h2 class="related-title">You Might Also Like</h2><div class="related-grid">';
+  related.forEach(function(r) {
+    var rImg = r.image ? '<img src="' + r.image + '" alt="' + r.name + '">' : '<div style="font-size:48px;opacity:0.15;">🔫</div>';
+    html += '<a class="related-card" href="/product?id=' + r.id + '"><div class="related-card-img">' + rImg + '</div><div class="related-card-body"><div class="related-card-name">' + r.name + '</div><div class="related-card-price">$' + r.price.toFixed(2) + '</div></div></a>';
+  });
+  html += '</div></div>';
+
+  document.getElementById('productContent').innerHTML = html;
+}
+
+function render404() {
+  document.title = 'Product Not Found — FDC Stickers';
+  document.getElementById('breadcrumbName').textContent = 'Not Found';
+  document.getElementById('productContent').innerHTML =
+    '<div class="not-found"><h2>Product Not Found</h2><p>This sticker doesn\'t exist. Yet. Maybe suggest it to us.</p><a href="/#shop">Back to Shop</a></div>';
+}
+
+function getQty() { return parseInt(document.getElementById('pdpQty').value) || 1; }
+function changeQty(d) {
+  var input = document.getElementById('pdpQty');
+  var v = parseInt(input.value) || 1;
+  var max = parseInt(input.max) || 999;
+  v = Math.max(1, Math.min(max, v + d));
+  input.value = v;
+}
+
+// ── INIT ──
+loadProducts();
+updateCartCount();
+
+var params = new URLSearchParams(window.location.search);
+var productId = params.get('id');
+if (productId) {
+  var product = PRODUCTS.find(function(p) { return p.id === productId; });
+  if (product) renderProduct(product);
+  else render404();
+} else {
+  render404();
+}
+</script>
+</body>
+</html>

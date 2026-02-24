@@ -7,6 +7,7 @@ Official sticker shop for **Firearms Direct Club**. Built for Vercel deployment 
 ```
 fdc-stickers/
 ├── index.html          # Main storefront (catalog, cart, checkout)
+├── product.html        # Product detail page template (/product?id=xxx)
 ├── admin.html          # Admin panel (login-gated, inventory, orders, reports)
 ├── api/
 │   ├── auth.js         # Vercel serverless function for admin authentication
@@ -100,28 +101,47 @@ In your Vercel project dashboard → **Settings** → **Environment Variables**,
 
 ### Storefront (`index.html`)
 - Responsive product catalog with category filtering
+- Product cards link to individual detail pages
 - Shopping cart with quantity management
 - Full checkout flow with form validation
+- **Address autocomplete** via Google Places API (optional — works without it)
+- **Phone number required** with auto-formatting
 - Authorize.net Accept.js integration for secure payments
 - Florida sales tax (7.5%) auto-applied for FL addresses
 - Shipping restricted to lower 48 US states
 - Flat rate shipping ($3.99) with free shipping over $25
 - Demo mode works without Authorize.net credentials
 
+### Product Pages (`product.html`)
+- Individual product detail pages at `/product?id=xxx`
+- Rich descriptions, taglines, and spec grids per product
+- Quantity selector with add-to-cart
+- Related products section (randomized)
+- Full breadcrumb navigation
+
 ### Admin Panel (`admin.html`)
+- **Login-gated** — server-side auth with signed session tokens
 - **Dashboard:** Revenue, orders, inventory overview
 - **Products:** Add/edit/delete products, inline stock editing (max 100 items)
 - **Orders:** Full order history with status management, customer details
 - **Reports:** Date-filtered sales reports with breakdowns by product, customer, and state
-- **Settings:** Authorize.net configuration, data import/export/reset
+- **Settings:** Authorize.net config, Google Maps API key, data import/export/reset
 - CSV and JSON export for orders and reports
 
 ### Payment Processing (`api/charge.js`)
-- Vercel serverless function
+- Vercel serverless function (CommonJS compatible)
 - Authorize.net `authCaptureTransaction`
 - BOM handling for Authorize.net responses
 - Proper error handling and validation
 - State restriction enforcement
+
+### Address Autocomplete
+- Powered by Google Places API (optional)
+- Set your Google Maps API key in Admin → Settings
+- Auto-populates: street, city, state, ZIP
+- Restricts to US addresses only
+- Falls back gracefully — checkout works normally without it
+- Get a key at [console.cloud.google.com](https://console.cloud.google.com/apis/credentials) (free tier: ~10,000 sessions/month)
 
 ## 🏷 Tax & Shipping Rules
 
