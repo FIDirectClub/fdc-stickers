@@ -885,7 +885,7 @@
   }
 
   .checkout-header {
-    padding: 28px 32px;
+    padding: 24px 32px;
     border-bottom: 2px solid var(--border);
     display: flex;
     justify-content: space-between;
@@ -894,13 +894,13 @@
 
   .checkout-header h3 {
     font-family: 'Bangers', cursive;
-    font-size: 32px;
+    font-size: 28px;
     letter-spacing: 3px;
     color: var(--gold);
   }
 
   .checkout-body {
-    padding: 32px 32px 40px;
+    padding: 28px 32px 36px;
   }
 
   .checkout-section-title {
@@ -910,8 +910,8 @@
     letter-spacing: 4px;
     text-transform: uppercase;
     color: var(--gold);
-    margin-bottom: 20px;
-    margin-top: 40px;
+    margin-bottom: 16px;
+    margin-top: 32px;
   }
 
   .checkout-section-title:first-child { margin-top: 0; }
@@ -919,8 +919,8 @@
   .form-row {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 16px;
-    margin-bottom: 16px;
+    gap: 14px;
+    margin-bottom: 14px;
   }
 
   .form-row.full {
@@ -949,7 +949,7 @@
     color: var(--white);
     font-family: 'Barlow', sans-serif;
     font-size: 15px;
-    padding: 12px 16px;
+    padding: 10px 14px;
     transition: border-color 0.3s;
     outline: none;
     border-radius: 0;
@@ -984,8 +984,8 @@
   .checkout-order-summary {
     background: rgba(255,255,255,0.4);
     border: 2px solid var(--border);
-    padding: 24px;
-    margin-top: 32px;
+    padding: 20px;
+    margin-top: 0;
   }
 
   .checkout-item-row {
@@ -993,12 +993,12 @@
     justify-content: space-between;
     font-size: 14px;
     color: var(--steel-light);
-    padding: 8px 0;
+    padding: 6px 0;
   }
 
   .checkout-total-section {
-    margin-top: 16px;
-    padding-top: 16px;
+    margin-top: 12px;
+    padding-top: 12px;
     border-top: 2px solid var(--border);
   }
 
@@ -1008,16 +1008,16 @@
     font-family: 'Barlow Condensed', sans-serif;
     font-size: 14px;
     color: var(--steel-light);
-    padding: 6px 0;
+    padding: 4px 0;
   }
 
   .checkout-total-row.grand {
-    font-size: 22px;
+    font-size: 20px;
     color: var(--white);
     font-weight: 700;
     letter-spacing: 2px;
-    margin-top: 12px;
-    padding-top: 12px;
+    margin-top: 8px;
+    padding-top: 8px;
     border-top: 2px solid var(--border);
   }
 
@@ -1025,13 +1025,13 @@
 
   .place-order-btn {
     width: 100%;
-    margin-top: 32px;
+    margin-top: 24px;
     background: var(--gold);
     color: #fff;
     font-family: 'Bangers', cursive;
-    font-size: 24px;
+    font-size: 22px;
     letter-spacing: 4px;
-    padding: 20px;
+    padding: 18px;
     border: 2px solid var(--border);
     cursor: pointer;
     transition: all 0.3s;
@@ -1045,8 +1045,13 @@
   }
 
   .place-order-btn:disabled {
-    opacity: 0.5;
+    opacity: 0.4;
     cursor: not-allowed;
+    background: #999;
+    color: #ccc;
+    border-color: #777;
+    box-shadow: none;
+    transform: none;
   }
 
   .order-processing {
@@ -1090,12 +1095,13 @@
   }
 
   .order-error {
-    background: rgba(192,57,43,0.1);
-    border: 1px solid rgba(192,57,43,0.3);
+    background: rgba(204,17,51,0.08);
+    border: 2px solid var(--red);
     color: var(--red);
     padding: 12px 16px;
     margin-top: 16px;
     font-size: 14px;
+    font-weight: 500;
     display: none;
   }
 
@@ -1266,8 +1272,8 @@
 
   /* === SWEEPSTAKES T&C CHECKBOX === */
   .tc-checkbox-wrapper {
-    margin-top: 28px;
-    padding: 20px 24px;
+    margin-top: 24px;
+    padding: 16px 20px;
     background: rgba(255,204,0,0.1);
     border: 2px solid var(--border);
   }
@@ -1891,10 +1897,7 @@
   <span class="toast-text" id="toastText">Added to cart</span>
 </div>
 
-<!-- Authorize.net Accept.js SDK -->
-<!-- PRODUCTION: https://js.authorize.net/v1/Accept.js -->
-<!-- SANDBOX:    https://jstest.authorize.net/v1/Accept.js -->
-<script src="https://jstest.authorize.net/v1/Accept.js" charset="utf-8"></script>
+<!-- Authorize.net Accept.js SDK — loaded dynamically by loadAcceptJS() based on sandbox config -->
 
 <script>
 // ============================================================
@@ -2015,19 +2018,30 @@ PRODUCTS.forEach(function(p) { p.entriesRemaining = p.stock; });
 // ── CART STATE ──
 let cart = JSON.parse(localStorage.getItem('fdc_cart') || '[]');
 
+// ── LOAD ACCEPT.JS DYNAMICALLY ──
+var acceptJSLoaded = false;
+function loadAcceptJS() {
+  if (acceptJSLoaded) return;
+  var isSandbox = CONFIG.AUTHNET_SANDBOX;
+  var scriptUrl = isSandbox
+    ? 'https://jstest.authorize.net/v1/Accept.js'
+    : 'https://js.authorize.net/v1/Accept.js';
+  var script = document.createElement('script');
+  script.src = scriptUrl;
+  script.charset = 'utf-8';
+  script.onload = function() {
+    acceptJSLoaded = true;
+    console.log('FDC: Accept.js loaded (' + (isSandbox ? 'SANDBOX' : 'PRODUCTION') + ')');
+  };
+  script.onerror = function() {
+    console.error('FDC: Failed to load Accept.js from ' + scriptUrl);
+  };
+  document.head.appendChild(script);
+}
+
 // ── INITIALIZE ──
 document.addEventListener('DOMContentLoaded', function() {
-  populateStates();
-  populateExpYears();
-  renderProducts('all');
-  buildCategoryFilters();
-  updateCartUI();
-  setupMobileMenu();
-  setupCardFormatting();
-  setupPhoneFormatting();
-  initAddressAutocomplete();
-
-  // Load config from localStorage (set via admin panel)
+  // Load config from localStorage FIRST (set via admin panel)
   const savedConfig = localStorage.getItem('fdc_config');
   if (savedConfig) {
     const cfg = JSON.parse(savedConfig);
@@ -2036,6 +2050,21 @@ document.addEventListener('DOMContentLoaded', function() {
     if (cfg.sandbox !== undefined) CONFIG.AUTHNET_SANDBOX = cfg.sandbox;
     if (cfg.googleMapsKey) CONFIG.GOOGLE_MAPS_KEY = cfg.googleMapsKey;
   }
+
+  // Load Accept.js dynamically based on sandbox config
+  loadAcceptJS();
+
+  populateStates();
+  populateExpYears();
+  renderProducts('all');
+  buildCategoryFilters();
+  updateCartUI();
+  setupMobileMenu();
+  setupCardFormatting();
+  setupPhoneFormatting();
+
+  // Now init autocomplete AFTER config is loaded
+  initAddressAutocomplete();
 
   // Load products from localStorage if admin has updated them
   const savedProducts = localStorage.getItem('fdc_products');
@@ -2335,7 +2364,12 @@ function openCheckout() {
   document.getElementById('orderProcessing').style.display = 'none';
   document.getElementById('orderSuccess').style.display = 'none';
   document.getElementById('orderError').style.display = 'none';
-  document.getElementById('placeOrderBtn').disabled = false;
+
+  // Place order button starts disabled until T&C accepted
+  var tcBox = document.getElementById('coAcceptTC');
+  var orderBtn = document.getElementById('placeOrderBtn');
+  tcBox.checked = false;
+  orderBtn.disabled = true;
 
   // Pre-fill billing zip from shipping
   var shippingZip = document.getElementById('coZip').value;
@@ -2379,6 +2413,11 @@ function updateCheckoutSummary() {
 // Listen for state changes to recalculate tax
 document.getElementById('coState').addEventListener('change', updateCheckoutSummary);
 
+// Toggle Place Order button based on T&C checkbox
+document.getElementById('coAcceptTC').addEventListener('change', function() {
+  document.getElementById('placeOrderBtn').disabled = !this.checked;
+});
+
 // ── PLACE ORDER ──
 function placeOrder() {
   // Validate form
@@ -2400,14 +2439,24 @@ function placeOrder() {
 
   // If Authorize.net credentials are configured, use Accept.js
   if (CONFIG.AUTHNET_API_LOGIN_ID && CONFIG.AUTHNET_CLIENT_KEY) {
+    console.log('FDC: Processing real payment via Authorize.net (' + (CONFIG.AUTHNET_SANDBOX ? 'SANDBOX' : 'PRODUCTION') + ')');
+    console.log('FDC: API Login ID: ' + CONFIG.AUTHNET_API_LOGIN_ID.substring(0, 3) + '***');
     tokenizeAndCharge();
   } else {
     // Demo mode — simulate payment processing
+    console.log('FDC: No Authorize.net credentials found — running in DEMO mode');
     simulatePayment();
   }
 }
 
 function tokenizeAndCharge() {
+  // Check if Accept.js is loaded
+  if (typeof Accept === 'undefined') {
+    showOrderError('Payment system is still loading. Please wait a moment and try again.');
+    document.getElementById('placeOrderBtn').disabled = false;
+    return;
+  }
+
   document.getElementById('checkoutForm').style.display = 'none';
   document.getElementById('orderProcessing').style.display = 'block';
 
@@ -2433,6 +2482,10 @@ function tokenizeAndCharge() {
   Accept.dispatchData(secureData, function(response) {
     if (response.messages.resultCode === 'Error') {
       var errors = response.messages.message.map(function(m) { return m.text; }).join(', ');
+      console.error('FDC: Accept.js tokenization error:', errors);
+      document.getElementById('checkoutForm').style.display = 'block';
+      document.getElementById('orderProcessing').style.display = 'none';
+      document.getElementById('placeOrderBtn').disabled = false;
       showOrderError(errors);
       return;
     }
@@ -2485,10 +2538,16 @@ function chargeViaServer(opaqueData) {
     if (data.success) {
       showOrderSuccess(data.orderId || generateOrderId());
     } else {
+      document.getElementById('checkoutForm').style.display = 'block';
+      document.getElementById('orderProcessing').style.display = 'none';
+      document.getElementById('placeOrderBtn').disabled = false;
       showOrderError(data.error || 'Payment failed. Please try again.');
     }
   })
   .catch(function(err) {
+    document.getElementById('checkoutForm').style.display = 'block';
+    document.getElementById('orderProcessing').style.display = 'none';
+    document.getElementById('placeOrderBtn').disabled = false;
     showOrderError('Network error. Please check your connection and try again.');
   });
 }
@@ -2554,9 +2613,67 @@ function simulatePayment() {
 }
 
 function showOrderSuccess(orderId) {
+  // Collect order data BEFORE resetting cart
+  var state = document.getElementById('coState').value;
+  var totals = getCartTotals(state);
+  var emailData = {
+    orderId: orderId,
+    customer: {
+      firstName: document.getElementById('coFirstName').value,
+      lastName: document.getElementById('coLastName').value,
+      email: document.getElementById('coEmail').value,
+      phone: document.getElementById('coPhone').value
+    },
+    shippingAddress: {
+      address: document.getElementById('coAddress').value,
+      address2: document.getElementById('coAddress2').value,
+      city: document.getElementById('coCity').value,
+      state: state,
+      zip: document.getElementById('coZip').value
+    },
+    items: cart.map(function(item) {
+      var product = PRODUCTS.find(function(p) { return p.id === item.id; });
+      return {
+        id: item.id,
+        name: product ? product.name : item.id,
+        price: product ? product.price : 0,
+        qty: item.qty,
+        prize: product ? product.prize : ''
+      };
+    }),
+    subtotal: totals.subtotal,
+    tax: totals.tax,
+    shipping: totals.shipping,
+    total: totals.total
+  };
+
+  // Show success screen
   document.getElementById('orderProcessing').style.display = 'none';
   document.getElementById('orderSuccess').style.display = 'block';
   document.getElementById('orderNumber').textContent = orderId;
+  resetAfterOrder();
+
+  // Fire off confirmation email (non-blocking)
+  sendConfirmationEmail(emailData);
+}
+
+function sendConfirmationEmail(emailData) {
+  fetch('/api/send-email', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(emailData)
+  })
+  .then(function(res) { return res.json(); })
+  .then(function(data) {
+    if (data.success) {
+      console.log('FDC: Confirmation email sent to ' + emailData.customer.email);
+    } else {
+      console.log('FDC: Email not sent — ' + (data.reason || data.error || 'unknown'));
+    }
+  })
+  .catch(function(err) {
+    console.log('FDC: Email send failed — ' + err.message);
+  });
 }
 
 function showOrderError(message) {
