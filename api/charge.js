@@ -30,7 +30,10 @@ module.exports = async function handler(req, res) {
     var TRANSACTION_KEY = process.env.AUTHNET_TRANSACTION_KEY;
     var IS_SANDBOX = process.env.AUTHNET_SANDBOX === 'true';
 
+    console.log('FDC charge.js: Sandbox=' + IS_SANDBOX + ', LoginID=' + (API_LOGIN_ID ? API_LOGIN_ID.substring(0, 3) + '***' : 'MISSING') + ', TxnKey=' + (TRANSACTION_KEY ? '***set***' : 'MISSING'));
+
     if (!API_LOGIN_ID || !TRANSACTION_KEY) {
+      console.error('FDC charge.js: Missing AUTHNET_API_LOGIN_ID or AUTHNET_TRANSACTION_KEY env vars');
       return res.status(500).json({ error: 'Payment gateway not configured.' });
     }
 
@@ -89,6 +92,8 @@ module.exports = async function handler(req, res) {
     var responseText = await response.text();
     if (responseText.charCodeAt(0) === 0xFEFF) responseText = responseText.substring(1);
     var data = JSON.parse(responseText);
+
+    console.log('FDC charge.js: Authorize.net response resultCode=' + (data.messages ? data.messages.resultCode : 'unknown'));
 
     if (data.messages && data.messages.resultCode === 'Ok') {
       var tr = data.transactionResponse;
