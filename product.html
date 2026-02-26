@@ -286,97 +286,97 @@
 // Matches index.html — extended with full descriptions and specs
 var PRODUCTS = [];
 
-function loadProducts() {
+async function loadProducts() {
+  // Try deployed products.json first (works for all visitors)
+  try {
+    var resp = await fetch('/products.json?t=' + Date.now());
+    if (resp.ok) {
+      var deployed = await resp.json();
+      if (Array.isArray(deployed) && deployed.length > 0) {
+        PRODUCTS = deployed;
+        localStorage.setItem('fdc_products', JSON.stringify(PRODUCTS));
+        return;
+      }
+    }
+  } catch(e) {}
+
+  // Then try localStorage (admin on same browser)
   var saved = localStorage.getItem('fdc_products');
-  if (saved) { PRODUCTS = JSON.parse(saved); return; }
+  if (saved) {
+    var parsed = JSON.parse(saved);
+    if (parsed.length > 0) { PRODUCTS = parsed; return; }
+  }
+
+  // Final fallback: hardcoded defaults
   PRODUCTS = getDefaultProducts();
+  localStorage.setItem('fdc_products', JSON.stringify(PRODUCTS));
 }
 
 function getDefaultProducts() {
   return [
     {
-      id:'fdc-logo-01', name:'FDC Classic Logo', category:'logos', price:4.99, stock:50, badge:'hot',
-      image:'', tagline:'The one that started it all.',
-      description:'The original Firearms Direct Club logo sticker — the one you slap on your range bag day one and never regret. Printed on premium 4-inch vinyl with UV-resistant ink that won\'t fade even after a full Florida summer on your truck bumper. This is the sticker that says "I\'m in the club" without you having to say a word.',
-      fullDescription:'<p>This is the flagship FDC sticker and the cornerstone of any self-respecting member\'s collection. The design features the iconic Firearms Direct Club emblem in full color on a clean background that pops on any surface.</p><p>Whether it\'s your gun safe, your cooler, your toolbox, or the back of your phone case — this sticker was designed to look good everywhere and last even longer. We\'re talking UV-resistant, waterproof, dishwasher-safe (yes, we tested it) vinyl that laughs at rain, sun, and that one friend who always tries to peel your stickers off.</p>',
-      specs: { size:'4" × 4"', material:'Premium Vinyl', finish:'Gloss', durability:'5+ Years Outdoor', adhesive:'Permanent', waterproof:'Yes' }
+      id:'glock-19-gen5', name:'Glock 19 Gen 5 Sticker', price:9.99, category:'pistols', image:'', badge:'hot', stock:200,
+      tagline:'America\'s favorite carry gun could be yours.',
+      description:'Limited edition FDC sticker — includes a free entry to win a Glock 19 Gen 5 (ARV $549). 4" premium vinyl. Includes free sweepstakes entry.',
+      fullDescription:'<p>The Glock 19 Gen 5 needs no introduction. It\'s the gold standard of concealed carry, trusted by law enforcement and civilians worldwide. And now, one lucky FDC Stickers customer is going to win one — for the price of a sticker.</p><p>This limited edition 4-inch premium vinyl sticker features a custom FDC design and your purchase includes one free entry into the Glock 19 Gen 5 sweepstakes. The more stickers you buy, the more entries you get.</p>',
+      prize:'Glock 19 Gen 5', prizeValue:549, prizeType:'Pistol — 9mm', entries:200, entriesRemaining:200,
+      specs:{ prize:'Glock 19 Gen 5', caliber:'9mm', prizeARV:'$549', stickerSize:'4" × 4"', entries:'200 Max', material:'Premium Vinyl' }
     },
     {
-      id:'fdc-flag-01', name:'FDC Patriot Flag', category:'flags', price:5.99, stock:40, badge:'new',
-      image:'', tagline:'Red, white, blue, and armed.',
-      description:'The American flag with the FDC crest overlaid — because nothing says "I love my country and my Second Amendment rights" quite like a 5-inch die-cut vinyl flag on the back of your truck. Premium outdoor-grade vinyl built to survive everything from road trips to range days.',
-      fullDescription:'<p>This die-cut patriot flag sticker combines the stars and stripes with the Firearms Direct Club identity in a design that turns heads at every stoplight, parking lot, and shooting range in America.</p><p>Die-cut to the flag silhouette (no background rectangle), this sticker sits flush on any surface for a clean, professional look. The UV-resistant laminate means the colors stay vibrant through years of sun, rain, and the occasional pressure wash.</p>',
-      specs: { size:'5" × 3"', material:'Die-Cut Vinyl', finish:'Matte Laminate', durability:'5+ Years Outdoor', adhesive:'Permanent', waterproof:'Yes' }
+      id:'sig-p365', name:'SIG P365 Sticker', price:9.99, category:'pistols', image:'', badge:'new', stock:150,
+      tagline:'Macro performance. Micro sticker price.',
+      description:'Limited edition FDC sticker — includes a free entry to win a SIG Sauer P365 (ARV $499). 4" die-cut vinyl. Includes free sweepstakes entry.',
+      fullDescription:'<p>The SIG P365 redefined what a micro-compact pistol could be. High capacity, smooth shooting, and endlessly reliable — this is the gun that changed the CCW game forever.</p><p>Pick up this limited edition die-cut vinyl sticker and you\'re automatically entered to win a SIG Sauer P365. Each sticker = one free entry. Stack your odds.</p>',
+      prize:'SIG Sauer P365', prizeValue:499, prizeType:'Pistol — 9mm', entries:150, entriesRemaining:150,
+      specs:{ prize:'SIG Sauer P365', caliber:'9mm', prizeARV:'$499', stickerSize:'4" × 3"', entries:'150 Max', material:'Die-Cut Vinyl' }
     },
     {
-      id:'bbc-rooster-01', name:'BBC Rooster', category:'bbc', price:4.99, stock:75, badge:'hot',
-      image:'', tagline:'Big Cluck Energy.',
-      description:'The legendary BBC Suppressors rooster — Hawaiian shirt, gold chain, AR-15 and all. This 3.5-inch vinyl sticker captures the most armed poultry in the history of the firearms industry. If you know, you know. If you don\'t, you\'re about to.',
-      fullDescription:'<p>Meet the unofficial mascot of the entire Florida firearms community: a massive black rooster in a Hawaiian shirt, rocking a gold chain, and packing an AR-15. He\'s got more swagger than your entire gun safe, and he does NOT care what your HOA thinks.</p><p>This sticker is a conversation starter, an ice breaker, and a statement of intent all rolled into 3.5 inches of premium vinyl. People will ask about it. You will enjoy explaining it. Everyone wins.</p>',
-      specs: { size:'3.5" × 3.5"', material:'Premium Vinyl', finish:'Gloss', durability:'5+ Years Outdoor', adhesive:'Permanent', waterproof:'Yes' }
+      id:'smith-mp-shield', name:'M&P Shield Plus Sticker', price:7.99, category:'pistols', image:'', badge:'', stock:250,
+      tagline:'Shield up. Stack your odds.',
+      description:'Limited edition FDC sticker — includes a free entry to win a Smith & Wesson M&P Shield Plus (ARV $449). 4" matte vinyl.',
+      fullDescription:'<p>The M&P Shield Plus is Smith & Wesson\'s answer to the modern concealed carry question. Slim, reliable, and with a capacity that punches above its weight class.</p><p>This 4-inch matte vinyl sticker looks great on any surface and your purchase includes a free entry to win the real thing.</p>',
+      prize:'Smith & Wesson M&P Shield Plus', prizeValue:449, prizeType:'Pistol — 9mm', entries:250, entriesRemaining:250,
+      specs:{ prize:'S&W M&P Shield Plus', caliber:'9mm', prizeARV:'$449', stickerSize:'4" × 4"', entries:'250 Max', material:'Matte Vinyl' }
     },
     {
-      id:'fdc-2a-01', name:'2A All Day', category:'2a', price:3.99, stock:60, badge:'',
-      image:'', tagline:'Every. Single. Day.',
-      description:'A clean, bold Second Amendment lifestyle sticker for people who don\'t just support the 2A on weekends. 4-inch matte vinyl with a design that works on everything from laptop lids to ammo cans.',
-      fullDescription:'<p>"2A All Day" isn\'t just a slogan — it\'s a way of life. This sticker features bold, unapologetic typography on a matte finish that looks professional enough for your work laptop but tough enough for your range bag.</p><p>The matte vinyl resists fingerprints and glare, making it one of the most versatile stickers in the lineup. It\'s the perfect sticker for people who want to make a statement without shouting.</p>',
-      specs: { size:'4" × 2"', material:'Matte Vinyl', finish:'Matte', durability:'4+ Years Outdoor', adhesive:'Permanent', waterproof:'Yes' }
+      id:'ar15-psa', name:'PSA AR-15 Sticker', price:14.99, category:'rifles', image:'', badge:'hot', stock:100,
+      tagline:'The modern musket. The original freedom stick.',
+      description:'Limited edition FDC sticker — includes a free entry to win a Palmetto State Armory AR-15 (ARV $699). 5" premium vinyl.',
+      fullDescription:'<p>The AR-15 is America\'s most popular rifle for a reason. This Palmetto State Armory PA-15 is a rock-solid, no-frills build that runs like a sewing machine and looks good doing it.</p><p>This 5-inch premium vinyl sticker features a custom FDC rifle design. Each purchase includes one free entry into the AR-15 sweepstakes draw.</p>',
+      prize:'PSA PA-15 16" AR-15', prizeValue:699, prizeType:'Rifle — 5.56 NATO', entries:100, entriesRemaining:100,
+      specs:{ prize:'PSA PA-15 AR-15', caliber:'5.56 NATO', prizeARV:'$699', stickerSize:'5" × 2"', entries:'100 Max', material:'Premium Vinyl' }
     },
     {
-      id:'fdc-florida-01', name:'Florida Gun State', category:'flags', price:5.49, stock:35, badge:'new',
-      image:'', tagline:'The Gunshine State.',
-      description:'A die-cut Florida silhouette with crosshairs centered right on the Panhandle — because that\'s where the real action is. 4.5 inches of pure Florida gun culture, printed on premium vinyl with a matte laminate finish.',
-      fullDescription:'<p>This is the sticker for people who don\'t just live in Florida — they <em>are</em> Florida. The state silhouette with tactical crosshairs is an instant badge of honor for anyone from the Gunshine State.</p><p>The crosshairs center on the Panhandle (Milton, FL represent), because that\'s where FDC calls home. Die-cut to the Florida shape for a clean, borderless look on any surface. Matte laminate keeps it looking sharp even after your truck survives another hurricane season.</p>',
-      specs: { size:'4.5" × 4"', material:'Die-Cut Vinyl', finish:'Matte Laminate', durability:'5+ Years Outdoor', adhesive:'Permanent', waterproof:'Yes' }
+      id:'henry-lever-action', name:'Henry Big Boy Sticker', price:14.99, category:'rifles', image:'', badge:'new', stock:75,
+      tagline:'Cowboy action meets modern sweepstakes.',
+      description:'Limited edition FDC sticker — includes a free entry to win a Henry Big Boy Classic .44 Mag (ARV $899). 5" die-cut vinyl.',
+      fullDescription:'<p>The Henry Big Boy Classic in .44 Magnum is a lever-action work of art. Brass receiver, American walnut stock, and the smoothest action in the business.</p><p>This 5-inch die-cut sticker captures the spirit of the American West. One purchase = one free sweepstakes entry. The highest prize value in the shop.</p>',
+      prize:'Henry Big Boy Classic .44 Mag', prizeValue:899, prizeType:'Lever Action — .44 Mag', entries:75, entriesRemaining:75,
+      specs:{ prize:'Henry Big Boy Classic', caliber:'.44 Magnum', prizeARV:'$899', stickerSize:'5" × 2"', entries:'75 Max', material:'Die-Cut Vinyl' }
     },
     {
-      id:'bbc-candingo-01', name:'Candingo Silhouette', category:'bbc', price:4.99, stock:45, badge:'',
-      image:'', tagline:'Quiet never looked this good.',
-      description:'The Candingo suppressor rendered in sleek matte black — a 5-inch vinyl silhouette sticker that pays tribute to BBC Suppressors\' flagship product. Minimalist design, maximum respect.',
-      fullDescription:'<p>For those who appreciate the engineering beauty of a well-designed suppressor, this sticker is your quiet flex. The Candingo silhouette captures the clean lines and profile of BBC Suppressors\' flagship .36 cal multi-purpose can.</p><p>Printed in matte black on premium vinyl, this sticker has a tactical, understated look that fits in anywhere — gun cases, safes, tool boxes, or the inside of your locker door where only you and your closest range buddies will see it.</p>',
-      specs: { size:'5" × 1.5"', material:'Matte Vinyl', finish:'Matte Black', durability:'5+ Years Outdoor', adhesive:'Permanent', waterproof:'Yes' }
+      id:'mossberg-500', name:'Mossberg 500 Sticker', price:9.99, category:'shotguns', image:'', badge:'', stock:175,
+      tagline:'Home defense legend. Sticker game legend.',
+      description:'Limited edition FDC sticker — includes a free entry to win a Mossberg 500 Tactical (ARV $479). 4" matte vinyl.',
+      fullDescription:'<p>The Mossberg 500 Tactical is the shotgun that needs no introduction. Pump-action reliability, tactical versatility, and a reputation earned across decades of service.</p><p>This 4-inch matte vinyl sticker comes with a free entry to win the Mossberg 500 Tactical. Home defense meets sticker defense.</p>',
+      prize:'Mossberg 500 Tactical', prizeValue:479, prizeType:'Shotgun — 12 Gauge', entries:175, entriesRemaining:175,
+      specs:{ prize:'Mossberg 500 Tactical', caliber:'12 Gauge', prizeARV:'$479', stickerSize:'4" × 4"', entries:'175 Max', material:'Matte Vinyl' }
     },
     {
-      id:'fdc-member-01', name:'FDC Member Badge', category:'logos', price:6.99, stock:30, badge:'',
-      image:'', tagline:'Proof of membership. Proof of taste.',
-      description:'The official FDC Member holographic sticker — a 3-inch circle with a rainbow-shift holographic finish that catches light like it catches attention. For verified members only. Well, technically anyone can buy it, but the honor system applies.',
-      fullDescription:'<p>This is the premium tier of FDC stickers. The holographic finish shifts colors as you move, catching light from every angle and making every other sticker on your gear jealous. The circular die-cut format gives it a badge-like presence.</p><p>At 3 inches in diameter, it\'s the perfect size for center-of-attention placement. Laptop lids, water bottles, the center of your gun safe door — wherever you put it, people will notice and ask about it. That\'s the point.</p>',
-      specs: { size:'3" Circle', material:'Holographic Vinyl', finish:'Rainbow Holographic', durability:'3+ Years Outdoor', adhesive:'Permanent', waterproof:'Yes' }
+      id:'ruger-1022', name:'Ruger 10/22 Sticker', price:7.99, category:'rifles', image:'', badge:'', stock:300,
+      tagline:'Everybody\'s first. Could be your next.',
+      description:'Limited edition FDC sticker — includes a free entry to win a Ruger 10/22 Carbine (ARV $309). 4" premium vinyl.',
+      fullDescription:'<p>The Ruger 10/22 is the rifle that taught America to shoot. Lightweight, reliable, and endlessly customizable — it\'s the perfect first gun, the perfect plinking gun, and the perfect prize.</p><p>This sticker purchase includes a free sweepstakes entry. With 300 max entries, the odds are better than most giveaways you\'ll find.</p>',
+      prize:'Ruger 10/22 Carbine', prizeValue:309, prizeType:'Rifle — .22 LR', entries:300, entriesRemaining:300,
+      specs:{ prize:'Ruger 10/22 Carbine', caliber:'.22 LR', prizeARV:'$309', stickerSize:'4" × 3"', entries:'300 Max', material:'Premium Vinyl' }
     },
     {
-      id:'fdc-send-it-01', name:'Send It', category:'2a', price:3.99, stock:80, badge:'',
-      image:'', tagline:'No hesitation. Full send.',
-      description:'Bold lettering. Bold attitude. The "Send It" sticker is for people who don\'t overthink — they just act. 4 inches of vinyl motivation for your trigger finger and your life choices.',
-      fullDescription:'<p>"Send it" — two words that apply to everything from your first shot of the day to your decision to buy that fourth gun this month. This sticker embodies the full-send lifestyle in bold, unapologetic typography.</p><p>The aggressive lettering pops on dark surfaces and the vinyl construction means it won\'t peel, crack, or fade when you inevitably put it somewhere that gets a lot of sun and abuse. Which, let\'s be honest, is everywhere you\'d want this sticker.</p>',
-      specs: { size:'4" × 1.5"', material:'Premium Vinyl', finish:'Gloss', durability:'5+ Years Outdoor', adhesive:'Permanent', waterproof:'Yes' }
-    },
-    {
-      id:'fdc-molon-01', name:'Molon Labe', category:'2a', price:4.49, stock:55, badge:'',
-      image:'', tagline:'Come and take it. We dare you.',
-      description:'The classic Molon Labe design — "Come and take them" in the original Greek, paired with a Spartan helmet. 4 inches of defiance on premium matte vinyl. History never gets old.',
-      fullDescription:'<p>Molon Labe — "Come and take them." King Leonidas said it to the Persians at Thermopylae. Gun owners have been saying it to everyone else ever since. This sticker features the iconic phrase in Greek lettering alongside a Spartan helmet design.</p><p>Matte vinyl finish gives it an understated, serious tone that matches the gravity of the message. This isn\'t a party sticker — it\'s a declaration. And declarations look best on matte vinyl with a permanent adhesive backing.</p>',
-      specs: { size:'4" × 3"', material:'Matte Vinyl', finish:'Matte', durability:'5+ Years Outdoor', adhesive:'Permanent', waterproof:'Yes' }
-    },
-    {
-      id:'bbc-bigblack-01', name:'Big Black Cans', category:'bbc', price:4.99, stock:90, badge:'hot',
-      image:'', tagline:'IYKYK.',
-      description:'The infamous "Big Black Cans" text sticker — 5 inches of double entendre that will make your friends laugh and your HR department nervous. Premium vinyl. Maximum comedic impact.',
-      fullDescription:'<p>If you have to explain the joke, it wasn\'t meant for you. But if you\'re reading this, you already get it. The "Big Black Cans" sticker is the crown jewel of the BBC Suppressors line — bold text, zero subtlety, and enough comedic energy to fuel an entire range day.</p><p>This is the sticker that starts conversations, ends awkward silences, and occasionally gets people called into HR. We accept no responsibility for any of those outcomes, but we\'re proud of all of them. Premium vinyl ensures your comedic genius is preserved for years.</p>',
-      specs: { size:'5" × 2"', material:'Premium Vinyl', finish:'Gloss', durability:'5+ Years Outdoor', adhesive:'Permanent', waterproof:'Yes' }
-    },
-    {
-      id:'fdc-pack-01', name:'FDC Starter Pack (5)', category:'packs', price:14.99, stock:25, badge:'new',
-      image:'', tagline:'Five stickers. One mission. Total coverage.',
-      description:'Can\'t pick just one? Neither could we. The FDC Starter Pack includes 5 hand-picked stickers from across the collection — a perfect mix of logos, 2A lifestyle, and BBC Suppressors. Sticker-bomb your gear on day one.',
-      fullDescription:'<p>The FDC Starter Pack is curated for maximum sticker coverage. You\'ll get a mix of 5 different stickers from across the full catalog — logos, flags, 2A lifestyle, and BBC Suppressors designs. No duplicates, all bangers.</p><p>This is the move for new FDC members who want to hit the ground running, or for veterans who want to restock and redistribute. Great for sharing with range buddies, stuffing in Christmas stockings, or just having backups for when your first sticker eventually needs company.</p>',
-      specs: { size:'Mixed Sizes', material:'Mixed Vinyl', finish:'Mixed', quantity:'5 Stickers', value:'Save $5+', waterproof:'Yes' }
-    },
-    {
-      id:'fdc-pack-02', name:'FDC Mega Pack (10)', category:'packs', price:24.99, stock:20, badge:'',
-      image:'', tagline:'The whole arsenal. One box.',
-      description:'Ten stickers from across the entire FDC collection. The best value in the shop — you\'re saving over $20 compared to buying individually. For people who don\'t do anything halfway.',
-      fullDescription:'<p>The Mega Pack is for people who take their sticker game as seriously as their range game. Ten stickers from across every category in the catalog — that\'s enough to cover your gun case, your truck, your laptop, AND still have some left to hand out to friends who ask where you got them.</p><p>At $24.99 for 10 stickers, you\'re paying about $2.50 each — a massive discount from the individual price. This is the "buy once, sticker everything" option, and it\'s the best value we offer.</p>',
-      specs: { size:'Mixed Sizes', material:'Mixed Vinyl', finish:'Mixed', quantity:'10 Stickers', value:'Save $20+', waterproof:'Yes' }
+      id:'springfield-hellcat', name:'Hellcat Pro Sticker', price:9.99, category:'pistols', image:'', badge:'hot', stock:150,
+      tagline:'Unleash the Hellcat.',
+      description:'Limited edition FDC sticker — includes a free entry to win a Springfield Hellcat Pro (ARV $569). 4" holographic vinyl.',
+      fullDescription:'<p>The Springfield Hellcat Pro packs 15+1 rounds of 9mm into a micro-compact frame that disappears on your belt. It\'s the pistol that proves you don\'t have to sacrifice capacity for concealment.</p><p>This holographic vinyl sticker catches light like it catches attention. Every purchase includes a free entry to win the Hellcat Pro.</p>',
+      prize:'Springfield Hellcat Pro', prizeValue:569, prizeType:'Pistol — 9mm', entries:150, entriesRemaining:150,
+      specs:{ prize:'Springfield Hellcat Pro', caliber:'9mm', prizeARV:'$569', stickerSize:'4" × 4"', entries:'150 Max', material:'Holographic Vinyl' }
     }
   ];
 }
@@ -504,18 +504,20 @@ function changeQty(d) {
 }
 
 // ── INIT ──
-loadProducts();
-updateCartCount();
+(async function() {
+  await loadProducts();
+  updateCartCount();
 
-var params = new URLSearchParams(window.location.search);
-var productId = params.get('id');
-if (productId) {
-  var product = PRODUCTS.find(function(p) { return p.id === productId; });
-  if (product) renderProduct(product);
-  else render404();
-} else {
-  render404();
-}
+  var params = new URLSearchParams(window.location.search);
+  var productId = params.get('id');
+  if (productId) {
+    var product = PRODUCTS.find(function(p) { return p.id === productId; });
+    if (product) renderProduct(product);
+    else render404();
+  } else {
+    render404();
+  }
+})();
 </script>
 </body>
 </html>

@@ -548,6 +548,87 @@
     flex-wrap: wrap;
   }
 
+  .report-controls .control-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  /* Fulfillment badges */
+  .status-badge {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    display: inline-block;
+  }
+  .status-confirmed { background: rgba(212,169,71,0.15); color: var(--gold); }
+  .status-fulfilled { background: rgba(46,204,64,0.15); color: #2ECC40; }
+  .status-shipped { background: rgba(0,122,255,0.15); color: #007AFF; }
+  .status-pending { background: rgba(140,140,140,0.15); color: var(--steel-light); }
+
+  /* Bulk action bar */
+  .bulk-bar {
+    display: none;
+    background: rgba(212,169,71,0.08);
+    border: 1px solid var(--gold-dim);
+    padding: 12px 20px;
+    margin-bottom: 16px;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .bulk-bar.visible { display: flex; }
+  .bulk-bar span {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    letter-spacing: 1px;
+    color: var(--gold);
+  }
+  .bulk-bar button {
+    font-size: 11px;
+    padding: 6px 14px;
+  }
+
+  /* Checkbox column */
+  .admin-table th.chk-col,
+  .admin-table td.chk-col {
+    width: 36px;
+    text-align: center;
+    padding: 8px 4px;
+  }
+  .admin-table input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    accent-color: var(--gold);
+    cursor: pointer;
+  }
+
+  /* Print styles */
+  @media print {
+    body * { visibility: hidden; }
+    #printArea, #printArea * { visibility: visible; }
+    #printArea {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      padding: 20px;
+      background: #fff;
+      color: #000;
+    }
+    #printArea h2 { font-size: 24px; margin-bottom: 4px; color: #000; }
+    #printArea .print-subtitle { font-size: 14px; color: #666; margin-bottom: 16px; }
+    #printArea table { width: 100%; border-collapse: collapse; font-size: 12px; }
+    #printArea th { background: #f0f0f0; color: #000; border: 1px solid #ccc; padding: 8px; text-align: left; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; }
+    #printArea td { border: 1px solid #ddd; padding: 6px 8px; color: #222; }
+    #printArea .fulfilled-check { color: #2ECC40; font-weight: bold; }
+    #printArea .unfulfilled-check { color: #ccc; }
+  }
+
   .report-controls label {
     font-family: 'Barlow Condensed', sans-serif;
     font-weight: 600;
@@ -850,38 +931,62 @@
         <tbody id="productsBody"></tbody>
       </table>
     </div>
+
+    <div class="export-btn-row" style="margin-top:24px;">
+      <button class="admin-btn" onclick="publishProducts()" title="Download products.json — place in your project root and redeploy to update the store for all visitors">📤 Publish Products (Download JSON)</button>
+      <button class="admin-btn secondary" onclick="resetProductsToDefaults()">↩ Reset to Defaults</button>
+    </div>
+    <div style="font-size:12px;color:var(--steel);margin-top:8px;line-height:1.5;">
+      <strong>How product sync works:</strong> Changes made here update your browser instantly. To update the live site for all visitors, click "Publish Products" to download <code>products.json</code>, place it in your project root folder (next to <code>index.html</code>), and redeploy to Vercel.
+    </div>
   </div>
 
   <!-- ORDERS TAB -->
   <div class="tab-panel" id="tab-orders">
     <div class="admin-section-title">All Orders</div>
-    <div class="admin-section-desc">Complete order history with customer details</div>
+    <div class="admin-section-desc">Complete order history with fulfillment tracking</div>
 
     <div class="report-controls">
-      <div>
-        <label>Status Filter:</label>
+      <div class="control-group">
+        <label>Status:</label>
         <select id="orderStatusFilter" onchange="renderOrders()">
           <option value="all">All</option>
           <option value="confirmed">Confirmed</option>
+          <option value="fulfilled">Fulfilled</option>
           <option value="shipped">Shipped</option>
           <option value="pending">Pending</option>
         </select>
       </div>
+      <div class="control-group">
+        <label>Sticker:</label>
+        <select id="orderProductFilter" onchange="renderOrders()">
+          <option value="all">All Stickers</option>
+        </select>
+      </div>
+      <button class="admin-btn" style="margin-top:0;padding:8px 16px;font-size:11px;" onclick="printOrderList()">🖨 Print List</button>
+    </div>
+
+    <!-- Bulk action bar -->
+    <div class="bulk-bar" id="bulkBar">
+      <span id="bulkCount">0 selected</span>
+      <button class="admin-btn" style="margin-top:0;" onclick="bulkSetStatus('fulfilled')">✓ Mark Fulfilled</button>
+      <button class="admin-btn secondary" style="margin-top:0;" onclick="bulkSetStatus('shipped')">📦 Mark Shipped</button>
+      <button class="admin-btn secondary" style="margin-top:0;" onclick="bulkSetStatus('confirmed')">↩ Reset to Confirmed</button>
+      <button class="admin-btn danger" style="margin-top:0;" onclick="bulkDeleteOrders()">🗑 Delete Selected</button>
+      <button class="admin-btn secondary" style="margin-top:0;" onclick="clearSelection()">Cancel</button>
     </div>
 
     <div class="admin-table-wrapper">
       <table class="admin-table">
         <thead>
           <tr>
+            <th class="chk-col"><input type="checkbox" id="selectAllOrders" onchange="toggleSelectAll(this)"></th>
             <th>Order ID</th>
             <th>Date</th>
             <th>Customer</th>
             <th>Email</th>
             <th>Address</th>
             <th>Items</th>
-            <th>Subtotal</th>
-            <th>Tax</th>
-            <th>Shipping</th>
             <th>Total</th>
             <th>Status</th>
             <th>Actions</th>
@@ -896,6 +1001,9 @@
       <button class="admin-btn secondary" onclick="exportOrders('json')">Export JSON</button>
     </div>
   </div>
+
+  <!-- Print area (hidden, used for window.print) -->
+  <div id="printArea" style="display:none;"></div>
 
   <!-- REPORTS TAB -->
   <div class="tab-panel" id="tab-reports">
@@ -963,6 +1071,39 @@
         <tbody id="stateBreakdownBody"></tbody>
       </table>
     </div>
+
+    <!-- Per-Sticker Order Lists -->
+    <div class="admin-section-title" style="margin-top:32px;">Orders by Sticker</div>
+    <div class="admin-section-desc">View all orders per sticker — useful for drawing winners and fulfillment</div>
+    <div class="report-controls" style="margin-top:16px;">
+      <div class="control-group">
+        <label>Select Sticker:</label>
+        <select id="reportStickerFilter" onchange="renderStickerOrders()">
+          <option value="">— Choose a sticker —</option>
+        </select>
+      </div>
+      <button class="admin-btn" style="margin-top:0;padding:8px 16px;font-size:11px;" onclick="printStickerOrders()">🖨 Print This List</button>
+      <button class="admin-btn secondary" style="margin-top:0;padding:8px 16px;font-size:11px;" onclick="exportStickerOrders()">📥 Export CSV</button>
+    </div>
+    <div class="admin-table-wrapper">
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Order ID</th>
+            <th>Date</th>
+            <th>Customer</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>City, State</th>
+            <th>Qty</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="stickerOrdersBody"></tbody>
+      </table>
+    </div>
+    <div id="stickerOrdersSummary" style="margin-top:8px;font-family:'Barlow Condensed',sans-serif;font-size:13px;letter-spacing:1px;color:var(--steel);"></div>
 
     <div class="export-btn-row">
       <button class="admin-btn" onclick="exportReport()">Export Full Report (CSV)</button>
@@ -1162,7 +1303,10 @@ function unlockAdmin(username) {
   document.getElementById('adminApp').classList.add('unlocked');
   document.getElementById('sessionUser').textContent = username || 'Admin';
 
-  // Initialize admin panel
+  // Initialize admin panel — seed products to localStorage if first time
+  if (!localStorage.getItem('fdc_products')) {
+    saveProducts(getProducts());
+  }
   renderDashboard();
   var now = new Date();
   var thirtyDaysAgo = new Date(now - 30 * 24 * 60 * 60 * 1000);
@@ -1210,20 +1354,49 @@ function checkLocalFallback(token) {
 function getProducts() {
   var saved = localStorage.getItem('fdc_products');
   if (saved) return JSON.parse(saved);
-  // Default products (same as storefront)
+  // Default products — matches storefront index.html hardcoded defaults
+  // These only show if localStorage has never been seeded
   return [
-    { id:'fdc-logo-01', name:'FDC Classic Logo', description:'The original Firearms Direct Club logo sticker. 4" vinyl.', price:4.99, category:'logos', image:'', badge:'hot', stock:50 },
-    { id:'fdc-flag-01', name:'FDC Patriot Flag', description:'American flag with FDC crest overlay. 5" die-cut vinyl.', price:5.99, category:'flags', image:'', badge:'new', stock:40 },
-    { id:'bbc-rooster-01', name:'BBC Rooster', description:'The legendary BBC Suppressors rooster. 3.5" vinyl.', price:4.99, category:'bbc', image:'', badge:'hot', stock:75 },
-    { id:'fdc-2a-01', name:'2A All Day', description:'Second Amendment lifestyle sticker. 4" matte vinyl.', price:3.99, category:'2a', image:'', badge:'', stock:60 },
-    { id:'fdc-florida-01', name:'Florida Gun State', description:'Florida silhouette with crosshairs. 4.5" die-cut.', price:5.49, category:'flags', image:'', badge:'new', stock:35 },
-    { id:'bbc-candingo-01', name:'Candingo Silhouette', description:'The Candingo suppressor silhouette. 5" matte black vinyl.', price:4.99, category:'bbc', image:'', badge:'', stock:45 },
-    { id:'fdc-member-01', name:'FDC Member Badge', description:'Official FDC Member sticker. Holographic 3" circle.', price:6.99, category:'logos', image:'', badge:'', stock:30 },
-    { id:'fdc-send-it-01', name:'Send It', description:'Full send energy. Bold lettering. 4" vinyl.', price:3.99, category:'2a', image:'', badge:'', stock:80 },
-    { id:'fdc-molon-01', name:'Molon Labe', description:'Come and take it. Classic design. 4" matte vinyl.', price:4.49, category:'2a', image:'', badge:'', stock:55 },
-    { id:'bbc-bigblack-01', name:'Big Black Cans', description:'The infamous BBC text sticker. 5" vinyl. IYKYK.', price:4.99, category:'bbc', image:'', badge:'hot', stock:90 },
-    { id:'fdc-pack-01', name:'FDC Starter Pack (5)', description:'Five random FDC stickers. Great for sticker-bombing.', price:14.99, category:'packs', image:'', badge:'new', stock:25 },
-    { id:'fdc-pack-02', name:'FDC Mega Pack (10)', description:'Ten stickers from across the collection. Best value.', price:24.99, category:'packs', image:'', badge:'', stock:20 }
+    { id:'glock-19-gen5', name:'Glock 19 Gen 5 Sticker', price:9.99, category:'pistols', image:'', badge:'hot', stock:200,
+      tagline:'America\'s favorite carry gun could be yours.',
+      description:'Limited edition FDC sticker — includes a free entry to win a Glock 19 Gen 5 (ARV $549). 4" premium vinyl.',
+      prize:'Glock 19 Gen 5', prizeValue:549, prizeType:'Pistol — 9mm', entries:200, entriesRemaining:200,
+      specs:{ prize:'Glock 19 Gen 5', caliber:'9mm', prizeARV:'$549', stickerSize:'4" × 4"', entries:'200 Max', material:'Premium Vinyl' } },
+    { id:'sig-p365', name:'SIG P365 Sticker', price:9.99, category:'pistols', image:'', badge:'new', stock:150,
+      tagline:'Macro performance. Micro sticker price.',
+      description:'Limited edition FDC sticker — includes a free entry to win a SIG Sauer P365 (ARV $499). 4" die-cut vinyl.',
+      prize:'SIG Sauer P365', prizeValue:499, prizeType:'Pistol — 9mm', entries:150, entriesRemaining:150,
+      specs:{ prize:'SIG Sauer P365', caliber:'9mm', prizeARV:'$499', stickerSize:'4" × 3"', entries:'150 Max', material:'Die-Cut Vinyl' } },
+    { id:'smith-mp-shield', name:'M&P Shield Plus Sticker', price:7.99, category:'pistols', image:'', badge:'', stock:250,
+      tagline:'Shield up. Stack your odds.',
+      description:'Limited edition FDC sticker — includes a free entry to win a Smith & Wesson M&P Shield Plus (ARV $449). 4" matte vinyl.',
+      prize:'Smith & Wesson M&P Shield Plus', prizeValue:449, prizeType:'Pistol — 9mm', entries:250, entriesRemaining:250,
+      specs:{ prize:'S&W M&P Shield Plus', caliber:'9mm', prizeARV:'$449', stickerSize:'4" × 4"', entries:'250 Max', material:'Matte Vinyl' } },
+    { id:'ar15-psa', name:'PSA AR-15 Sticker', price:14.99, category:'rifles', image:'', badge:'hot', stock:100,
+      tagline:'The modern musket. The original freedom stick.',
+      description:'Limited edition FDC sticker — includes a free entry to win a Palmetto State Armory AR-15 (ARV $699). 5" premium vinyl.',
+      prize:'PSA PA-15 16" AR-15', prizeValue:699, prizeType:'Rifle — 5.56 NATO', entries:100, entriesRemaining:100,
+      specs:{ prize:'PSA PA-15 AR-15', caliber:'5.56 NATO', prizeARV:'$699', stickerSize:'5" × 2"', entries:'100 Max', material:'Premium Vinyl' } },
+    { id:'henry-lever-action', name:'Henry Big Boy Sticker', price:14.99, category:'rifles', image:'', badge:'new', stock:75,
+      tagline:'Cowboy action meets modern sweepstakes.',
+      description:'Limited edition FDC sticker — includes a free entry to win a Henry Big Boy Classic .44 Mag (ARV $899). 5" die-cut vinyl.',
+      prize:'Henry Big Boy Classic .44 Mag', prizeValue:899, prizeType:'Lever Action — .44 Mag', entries:75, entriesRemaining:75,
+      specs:{ prize:'Henry Big Boy Classic', caliber:'.44 Magnum', prizeARV:'$899', stickerSize:'5" × 2"', entries:'75 Max', material:'Die-Cut Vinyl' } },
+    { id:'mossberg-500', name:'Mossberg 500 Sticker', price:9.99, category:'shotguns', image:'', badge:'', stock:175,
+      tagline:'Home defense legend. Sticker game legend.',
+      description:'Limited edition FDC sticker — includes a free entry to win a Mossberg 500 Tactical (ARV $479). 4" matte vinyl.',
+      prize:'Mossberg 500 Tactical', prizeValue:479, prizeType:'Shotgun — 12 Gauge', entries:175, entriesRemaining:175,
+      specs:{ prize:'Mossberg 500 Tactical', caliber:'12 Gauge', prizeARV:'$479', stickerSize:'4" × 4"', entries:'175 Max', material:'Matte Vinyl' } },
+    { id:'ruger-1022', name:'Ruger 10/22 Sticker', price:7.99, category:'rifles', image:'', badge:'', stock:300,
+      tagline:'Everybody\'s first. Could be your next.',
+      description:'Limited edition FDC sticker — includes a free entry to win a Ruger 10/22 Carbine (ARV $309). 4" premium vinyl.',
+      prize:'Ruger 10/22 Carbine', prizeValue:309, prizeType:'Rifle — .22 LR', entries:300, entriesRemaining:300,
+      specs:{ prize:'Ruger 10/22 Carbine', caliber:'.22 LR', prizeARV:'$309', stickerSize:'4" × 3"', entries:'300 Max', material:'Premium Vinyl' } },
+    { id:'springfield-hellcat', name:'Hellcat Pro Sticker', price:9.99, category:'pistols', image:'', badge:'hot', stock:150,
+      tagline:'Unleash the Hellcat.',
+      description:'Limited edition FDC sticker — includes a free entry to win a Springfield Hellcat Pro (ARV $569). 4" holographic vinyl.',
+      prize:'Springfield Hellcat Pro', prizeValue:569, prizeType:'Pistol — 9mm', entries:150, entriesRemaining:150,
+      specs:{ prize:'Springfield Hellcat Pro', caliber:'9mm', prizeARV:'$569', stickerSize:'4" × 4"', entries:'150 Max', material:'Holographic Vinyl' } }
   ];
 }
 
@@ -1248,8 +1421,8 @@ function switchTab(tab) {
 
   if (tab === 'dashboard') renderDashboard();
   if (tab === 'products') renderProducts();
-  if (tab === 'orders') renderOrders();
-  if (tab === 'reports') generateReport();
+  if (tab === 'orders') { populateOrderProductFilter(); renderOrders(); }
+  if (tab === 'reports') { populateReportStickerFilter(); generateReport(); }
   if (tab === 'settings') loadSettings();
 }
 
@@ -1419,33 +1592,82 @@ function deleteProduct(productId) {
   renderProducts();
 }
 
-// ── ORDERS ──
-function renderOrders() {
-  var orders = getOrders();
-  var filter = document.getElementById('orderStatusFilter').value;
-  if (filter !== 'all') {
-    orders = orders.filter(function(o) { return o.status === filter; });
-  }
-  orders = orders.reverse();
+function publishProducts() {
+  var products = getProducts();
+  downloadFile('products.json', JSON.stringify(products, null, 2), 'application/json');
+  showAdminToast(products.length + ' products exported to products.json');
+}
 
+function resetProductsToDefaults() {
+  if (!confirm('Reset all products to the original defaults? This will remove any products you\'ve added or edited. This cannot be undone.')) return;
+  localStorage.removeItem('fdc_products');
+  renderProducts();
+  showAdminToast('Products reset to defaults');
+}
+
+// ── ORDERS ──
+var selectedOrders = new Set();
+
+function populateOrderProductFilter() {
+  var orders = getOrders();
+  var products = {};
+  orders.forEach(function(o) {
+    (o.items || []).forEach(function(i) {
+      if (!products[i.id || i.name]) products[i.id || i.name] = i.name;
+    });
+  });
+  var select = document.getElementById('orderProductFilter');
+  // Keep first "All" option, clear rest
+  while (select.options.length > 1) select.remove(1);
+  Object.entries(products).sort(function(a,b) { return a[1].localeCompare(b[1]); }).forEach(function(p) {
+    var opt = document.createElement('option');
+    opt.value = p[0];
+    opt.textContent = p[1];
+    select.appendChild(opt);
+  });
+}
+
+function getFilteredOrders() {
+  var orders = getOrders();
+  var statusFilter = document.getElementById('orderStatusFilter').value;
+  var productFilter = document.getElementById('orderProductFilter').value;
+  if (statusFilter !== 'all') {
+    orders = orders.filter(function(o) { return o.status === statusFilter; });
+  }
+  if (productFilter !== 'all') {
+    orders = orders.filter(function(o) {
+      return (o.items || []).some(function(i) { return (i.id || i.name) === productFilter; });
+    });
+  }
+  return orders.reverse();
+}
+
+function renderOrders() {
+  selectedOrders.clear();
+  updateBulkBar();
+  document.getElementById('selectAllOrders').checked = false;
+
+  var orders = getFilteredOrders();
   var html = '';
   orders.forEach(function(o) {
     var itemSummary = (o.items || []).map(function(i) { return i.name + ' ×' + i.qty; }).join(', ');
     var addr = o.shippingAddress ? (o.shippingAddress.city + ', ' + o.shippingAddress.state + ' ' + o.shippingAddress.zip) : '—';
+    var statusClass = 'status-' + (o.status || 'confirmed');
+    var statusLabel = (o.status || 'confirmed').charAt(0).toUpperCase() + (o.status || 'confirmed').slice(1);
+
     html += '<tr>' +
+      '<td class="chk-col"><input type="checkbox" data-order-id="' + o.id + '" onchange="toggleOrderSelect(this)"></td>' +
       '<td style="color:var(--gold);font-family:monospace;font-size:11px;white-space:nowrap;">' + o.id + '</td>' +
       '<td style="white-space:nowrap;">' + new Date(o.date).toLocaleDateString() + '</td>' +
       '<td style="color:var(--white);">' + (o.customer ? o.customer.firstName + ' ' + o.customer.lastName : '—') + '</td>' +
       '<td>' + (o.customer ? o.customer.email : '—') + '</td>' +
       '<td style="font-size:12px;">' + addr + '</td>' +
       '<td style="font-size:12px;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="' + itemSummary + '">' + itemSummary + '</td>' +
-      '<td>$' + (o.subtotal || 0).toFixed(2) + '</td>' +
-      '<td>$' + (o.tax || 0).toFixed(2) + '</td>' +
-      '<td>$' + (o.shipping || 0).toFixed(2) + '</td>' +
       '<td style="color:var(--gold);font-weight:600;">$' + (o.total || 0).toFixed(2) + '</td>' +
       '<td>' +
         '<select onchange="updateOrderStatus(\'' + o.id + '\', this.value)" style="background:var(--darker);border:1px solid rgba(255,255,255,0.1);color:var(--white);font-size:12px;padding:4px 8px;">' +
           '<option value="confirmed"' + (o.status === 'confirmed' ? ' selected' : '') + '>Confirmed</option>' +
+          '<option value="fulfilled"' + (o.status === 'fulfilled' ? ' selected' : '') + '>✓ Fulfilled</option>' +
           '<option value="shipped"' + (o.status === 'shipped' ? ' selected' : '') + '>Shipped</option>' +
           '<option value="pending"' + (o.status === 'pending' ? ' selected' : '') + '>Pending</option>' +
         '</select>' +
@@ -1455,7 +1677,117 @@ function renderOrders() {
       '</td>' +
     '</tr>';
   });
-  document.getElementById('ordersBody').innerHTML = html || '<tr><td colspan="12" style="text-align:center;color:var(--steel);padding:40px;">No orders found</td></tr>';
+  document.getElementById('ordersBody').innerHTML = html || '<tr><td colspan="10" style="text-align:center;color:var(--steel);padding:40px;">No orders found</td></tr>';
+}
+
+function toggleOrderSelect(cb) {
+  if (cb.checked) {
+    selectedOrders.add(cb.dataset.orderId);
+  } else {
+    selectedOrders.delete(cb.dataset.orderId);
+    document.getElementById('selectAllOrders').checked = false;
+  }
+  updateBulkBar();
+}
+
+function toggleSelectAll(cb) {
+  var checkboxes = document.querySelectorAll('#ordersBody input[type="checkbox"]');
+  selectedOrders.clear();
+  checkboxes.forEach(function(box) {
+    box.checked = cb.checked;
+    if (cb.checked) selectedOrders.add(box.dataset.orderId);
+  });
+  updateBulkBar();
+}
+
+function updateBulkBar() {
+  var bar = document.getElementById('bulkBar');
+  var count = selectedOrders.size;
+  if (count > 0) {
+    bar.classList.add('visible');
+    document.getElementById('bulkCount').textContent = count + ' selected';
+  } else {
+    bar.classList.remove('visible');
+  }
+}
+
+function clearSelection() {
+  selectedOrders.clear();
+  document.getElementById('selectAllOrders').checked = false;
+  var checkboxes = document.querySelectorAll('#ordersBody input[type="checkbox"]');
+  checkboxes.forEach(function(box) { box.checked = false; });
+  updateBulkBar();
+}
+
+function bulkSetStatus(status) {
+  if (selectedOrders.size === 0) return;
+  var orders = getOrders();
+  var count = 0;
+  orders.forEach(function(o) {
+    if (selectedOrders.has(o.id)) {
+      o.status = status;
+      count++;
+    }
+  });
+  saveOrders(orders);
+  clearSelection();
+  renderOrders();
+  showAdminToast(count + ' order' + (count > 1 ? 's' : '') + ' marked as ' + status);
+}
+
+function bulkDeleteOrders() {
+  if (selectedOrders.size === 0) return;
+  if (!confirm('Delete ' + selectedOrders.size + ' selected order(s)? This cannot be undone.')) return;
+  var orders = getOrders().filter(function(o) { return !selectedOrders.has(o.id); });
+  saveOrders(orders);
+  clearSelection();
+  renderOrders();
+}
+
+function showAdminToast(msg) {
+  var el = document.createElement('div');
+  el.style.cssText = 'position:fixed;bottom:24px;right:24px;background:var(--darker);border:1px solid var(--gold);color:var(--white);padding:14px 24px;z-index:9999;font-family:Barlow Condensed,sans-serif;font-size:14px;letter-spacing:1px;transition:opacity 0.4s;';
+  el.textContent = '✓ ' + msg;
+  document.body.appendChild(el);
+  setTimeout(function() { el.style.opacity = '0'; }, 2500);
+  setTimeout(function() { el.remove(); }, 3000);
+}
+
+function printOrderList() {
+  var orders = getFilteredOrders();
+  var statusFilter = document.getElementById('orderStatusFilter').value;
+  var productFilter = document.getElementById('orderProductFilter');
+  var productName = productFilter.value === 'all' ? 'All Stickers' : productFilter.options[productFilter.selectedIndex].text;
+  var statusName = statusFilter === 'all' ? 'All Statuses' : statusFilter.charAt(0).toUpperCase() + statusFilter.slice(1);
+
+  var html = '<h2>FDC Stickers — Order List</h2>';
+  html += '<div class="print-subtitle">' + productName + ' &bull; ' + statusName + ' &bull; ' + orders.length + ' orders &bull; Printed ' + new Date().toLocaleDateString() + '</div>';
+  html += '<table><thead><tr><th>#</th><th>Order ID</th><th>Date</th><th>Customer</th><th>Email</th><th>Phone</th><th>Address</th><th>Items</th><th>Total</th><th>Status</th></tr></thead><tbody>';
+
+  orders.forEach(function(o, i) {
+    var items = (o.items || []).map(function(it) { return it.name + ' ×' + it.qty; }).join(', ');
+    var addr = o.shippingAddress ? (o.shippingAddress.address + ', ' + o.shippingAddress.city + ', ' + o.shippingAddress.state + ' ' + o.shippingAddress.zip) : '—';
+    var status = (o.status || 'confirmed');
+    html += '<tr>' +
+      '<td>' + (i + 1) + '</td>' +
+      '<td>' + o.id + '</td>' +
+      '<td>' + new Date(o.date).toLocaleDateString() + '</td>' +
+      '<td>' + (o.customer ? o.customer.firstName + ' ' + o.customer.lastName : '—') + '</td>' +
+      '<td>' + (o.customer ? o.customer.email : '—') + '</td>' +
+      '<td>' + (o.customer ? (o.customer.phone || '—') : '—') + '</td>' +
+      '<td>' + addr + '</td>' +
+      '<td>' + items + '</td>' +
+      '<td>$' + (o.total || 0).toFixed(2) + '</td>' +
+      '<td>' + (status === 'fulfilled' ? '✓ Fulfilled' : status) + '</td>' +
+    '</tr>';
+  });
+  html += '</tbody></table>';
+
+  var printArea = document.getElementById('printArea');
+  printArea.innerHTML = html;
+  printArea.style.display = 'block';
+  window.print();
+  setTimeout(function() { printArea.style.display = 'none'; }, 500);
 }
 
 function updateOrderStatus(orderId, newStatus) {
@@ -1475,11 +1807,11 @@ function deleteOrder(orderId) {
 }
 
 function exportOrders(format) {
-  var orders = getOrders();
+  var orders = getFilteredOrders();
   if (format === 'json') {
     downloadFile('fdc-orders.json', JSON.stringify(orders, null, 2), 'application/json');
   } else {
-    var csv = 'Order ID,Date,Customer,Email,City,State,ZIP,Items,Subtotal,Tax,Shipping,Total,Status\n';
+    var csv = 'Order ID,Date,Customer,Email,Phone,Address,City,State,ZIP,Items,Subtotal,Tax,Shipping,Total,Status,Payment Method\n';
     orders.forEach(function(o) {
       var items = (o.items || []).map(function(i) { return i.name + ' x' + i.qty; }).join('; ');
       csv += [
@@ -1487,6 +1819,8 @@ function exportOrders(format) {
         new Date(o.date).toLocaleDateString(),
         o.customer ? '"' + o.customer.firstName + ' ' + o.customer.lastName + '"' : '',
         o.customer ? o.customer.email : '',
+        o.customer ? (o.customer.phone || '') : '',
+        o.shippingAddress ? '"' + (o.shippingAddress.address || '') + '"' : '',
         o.shippingAddress ? o.shippingAddress.city : '',
         o.shippingAddress ? o.shippingAddress.state : '',
         o.shippingAddress ? o.shippingAddress.zip : '',
@@ -1495,7 +1829,8 @@ function exportOrders(format) {
         (o.tax || 0).toFixed(2),
         (o.shipping || 0).toFixed(2),
         (o.total || 0).toFixed(2),
-        o.status || 'confirmed'
+        o.status || 'confirmed',
+        o.paymentMethod || 'unknown'
       ].join(',') + '\n';
     });
     downloadFile('fdc-orders.csv', csv, 'text/csv');
@@ -1610,6 +1945,142 @@ function exportReport() {
     });
   });
   downloadFile('fdc-sales-report.csv', csv, 'text/csv');
+}
+
+// ── PER-STICKER REPORTS ──
+function populateReportStickerFilter() {
+  var orders = getOrders();
+  var products = {};
+  orders.forEach(function(o) {
+    (o.items || []).forEach(function(i) {
+      var key = i.id || i.name;
+      if (!products[key]) products[key] = { name: i.name, qty: 0 };
+      products[key].qty += i.qty;
+    });
+  });
+  var select = document.getElementById('reportStickerFilter');
+  while (select.options.length > 1) select.remove(1);
+  Object.entries(products).sort(function(a,b) { return a[1].name.localeCompare(b[1].name); }).forEach(function(p) {
+    var opt = document.createElement('option');
+    opt.value = p[0];
+    opt.textContent = p[1].name + ' (' + p[1].qty + ' sold)';
+    select.appendChild(opt);
+  });
+}
+
+function getStickerOrders() {
+  var stickerId = document.getElementById('reportStickerFilter').value;
+  if (!stickerId) return [];
+  var orders = getOrders();
+  var result = [];
+  orders.forEach(function(o) {
+    (o.items || []).forEach(function(i) {
+      if ((i.id || i.name) === stickerId) {
+        result.push({ order: o, qty: i.qty, itemName: i.name });
+      }
+    });
+  });
+  return result;
+}
+
+function renderStickerOrders() {
+  var entries = getStickerOrders();
+  var stickerId = document.getElementById('reportStickerFilter').value;
+  if (!stickerId) {
+    document.getElementById('stickerOrdersBody').innerHTML = '<tr><td colspan="9" style="text-align:center;color:var(--steel);padding:30px;">Select a sticker above to see its orders</td></tr>';
+    document.getElementById('stickerOrdersSummary').innerHTML = '';
+    return;
+  }
+
+  var totalQty = 0;
+  var fulfilledQty = 0;
+  var html = '';
+  entries.forEach(function(e, idx) {
+    var o = e.order;
+    var status = o.status || 'confirmed';
+    var statusLabel = status === 'fulfilled' ? '✓ Fulfilled' : (status === 'shipped' ? '📦 Shipped' : status);
+    totalQty += e.qty;
+    if (status === 'fulfilled' || status === 'shipped') fulfilledQty += e.qty;
+
+    html += '<tr>' +
+      '<td>' + (idx + 1) + '</td>' +
+      '<td style="color:var(--gold);font-family:monospace;font-size:11px;">' + o.id + '</td>' +
+      '<td>' + new Date(o.date).toLocaleDateString() + '</td>' +
+      '<td style="color:var(--white);">' + (o.customer ? o.customer.firstName + ' ' + o.customer.lastName : '—') + '</td>' +
+      '<td>' + (o.customer ? o.customer.email : '—') + '</td>' +
+      '<td>' + (o.customer ? (o.customer.phone || '—') : '—') + '</td>' +
+      '<td>' + (o.shippingAddress ? o.shippingAddress.city + ', ' + o.shippingAddress.state : '—') + '</td>' +
+      '<td>' + e.qty + '</td>' +
+      '<td><span class="status-badge status-' + status + '">' + statusLabel + '</span></td>' +
+    '</tr>';
+  });
+
+  document.getElementById('stickerOrdersBody').innerHTML = html || '<tr><td colspan="9" style="text-align:center;color:var(--steel);padding:30px;">No orders for this sticker</td></tr>';
+  document.getElementById('stickerOrdersSummary').innerHTML =
+    entries.length + ' orders &bull; ' + totalQty + ' stickers sold &bull; ' + fulfilledQty + ' fulfilled &bull; ' + (totalQty - fulfilledQty) + ' remaining';
+}
+
+function printStickerOrders() {
+  var entries = getStickerOrders();
+  var select = document.getElementById('reportStickerFilter');
+  if (!select.value || entries.length === 0) { alert('Select a sticker with orders first.'); return; }
+  var stickerName = select.options[select.selectedIndex].text;
+
+  var html = '<h2>FDC Stickers — ' + stickerName.split(' (')[0] + '</h2>';
+  html += '<div class="print-subtitle">Order list &bull; ' + entries.length + ' orders &bull; Printed ' + new Date().toLocaleDateString() + '</div>';
+  html += '<table><thead><tr><th>#</th><th>Order ID</th><th>Date</th><th>Customer</th><th>Email</th><th>Phone</th><th>City, State ZIP</th><th>Qty</th><th>Fulfilled</th></tr></thead><tbody>';
+
+  entries.forEach(function(e, idx) {
+    var o = e.order;
+    var isFulfilled = (o.status === 'fulfilled' || o.status === 'shipped');
+    var addr = o.shippingAddress ? (o.shippingAddress.city + ', ' + o.shippingAddress.state + ' ' + o.shippingAddress.zip) : '—';
+    html += '<tr>' +
+      '<td>' + (idx + 1) + '</td>' +
+      '<td>' + o.id + '</td>' +
+      '<td>' + new Date(o.date).toLocaleDateString() + '</td>' +
+      '<td>' + (o.customer ? o.customer.firstName + ' ' + o.customer.lastName : '—') + '</td>' +
+      '<td>' + (o.customer ? o.customer.email : '—') + '</td>' +
+      '<td>' + (o.customer ? (o.customer.phone || '—') : '—') + '</td>' +
+      '<td>' + addr + '</td>' +
+      '<td>' + e.qty + '</td>' +
+      '<td class="' + (isFulfilled ? 'fulfilled-check' : 'unfulfilled-check') + '">' + (isFulfilled ? '✓' : '○') + '</td>' +
+    '</tr>';
+  });
+  html += '</tbody></table>';
+
+  var printArea = document.getElementById('printArea');
+  printArea.innerHTML = html;
+  printArea.style.display = 'block';
+  window.print();
+  setTimeout(function() { printArea.style.display = 'none'; }, 500);
+}
+
+function exportStickerOrders() {
+  var entries = getStickerOrders();
+  var select = document.getElementById('reportStickerFilter');
+  if (!select.value || entries.length === 0) { alert('Select a sticker with orders first.'); return; }
+  var stickerName = select.options[select.selectedIndex].text.split(' (')[0];
+
+  var csv = '#,Order ID,Date,First Name,Last Name,Email,Phone,Address,City,State,ZIP,Qty,Status\n';
+  entries.forEach(function(e, idx) {
+    var o = e.order;
+    csv += [
+      idx + 1,
+      o.id,
+      new Date(o.date).toLocaleDateString(),
+      o.customer ? o.customer.firstName : '',
+      o.customer ? o.customer.lastName : '',
+      o.customer ? o.customer.email : '',
+      o.customer ? (o.customer.phone || '') : '',
+      o.shippingAddress ? '"' + (o.shippingAddress.address || '') + '"' : '',
+      o.shippingAddress ? o.shippingAddress.city : '',
+      o.shippingAddress ? o.shippingAddress.state : '',
+      o.shippingAddress ? o.shippingAddress.zip : '',
+      e.qty,
+      o.status || 'confirmed'
+    ].join(',') + '\n';
+  });
+  downloadFile('fdc-' + stickerName.toLowerCase().replace(/\s+/g, '-') + '-orders.csv', csv, 'text/csv');
 }
 
 // ── SETTINGS ──

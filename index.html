@@ -2040,7 +2040,7 @@ function loadAcceptJS() {
 }
 
 // ── INITIALIZE ──
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', async function() {
   // Load config from localStorage FIRST (set via admin panel)
   const savedConfig = localStorage.getItem('fdc_config');
   if (savedConfig) {
@@ -2054,6 +2054,39 @@ document.addEventListener('DOMContentLoaded', function() {
   // Load Accept.js dynamically based on sandbox config
   loadAcceptJS();
 
+  // ── PRODUCTS: Load from deployed products.json → localStorage → hardcoded defaults ──
+  var productsLoadedFromDeploy = false;
+  try {
+    var resp = await fetch('/products.json?t=' + Date.now());
+    if (resp.ok) {
+      var deployedProducts = await resp.json();
+      if (Array.isArray(deployedProducts) && deployedProducts.length > 0) {
+        PRODUCTS = deployedProducts;
+        localStorage.setItem('fdc_products', JSON.stringify(PRODUCTS));
+        productsLoadedFromDeploy = true;
+        console.log('FDC: Loaded ' + PRODUCTS.length + ' products from products.json');
+      }
+    }
+  } catch(e) {
+    console.log('FDC: No products.json found, checking localStorage...');
+  }
+
+  // If products.json didn't load, check localStorage (admin updates on same browser)
+  if (!productsLoadedFromDeploy) {
+    var savedProducts = localStorage.getItem('fdc_products');
+    if (savedProducts) {
+      var parsed = JSON.parse(savedProducts);
+      if (parsed.length > 0) {
+        PRODUCTS = parsed;
+        console.log('FDC: Loaded ' + PRODUCTS.length + ' products from localStorage');
+      }
+    } else {
+      // First visit ever — seed localStorage with defaults
+      localStorage.setItem('fdc_products', JSON.stringify(PRODUCTS));
+      console.log('FDC: Seeded localStorage with ' + PRODUCTS.length + ' default products');
+    }
+  }
+
   populateStates();
   populateExpYears();
   renderProducts('all');
@@ -2065,14 +2098,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // Now init autocomplete AFTER config is loaded
   initAddressAutocomplete();
-
-  // Load products from localStorage if admin has updated them
-  const savedProducts = localStorage.getItem('fdc_products');
-  if (savedProducts) {
-    PRODUCTS = JSON.parse(savedProducts);
-    renderProducts('all');
-    buildCategoryFilters();
-  }
 
   // Show mobile cart button
   if (window.innerWidth <= 768) {
