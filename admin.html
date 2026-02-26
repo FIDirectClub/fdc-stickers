@@ -1095,7 +1095,7 @@
             <th>Customer</th>
             <th>Email</th>
             <th>Phone</th>
-            <th>City, State</th>
+            <th>Address</th>
             <th>Qty</th>
             <th>Status</th>
           </tr>
@@ -2009,7 +2009,7 @@ function renderStickerOrders() {
       '<td style="color:var(--white);">' + (o.customer ? o.customer.firstName + ' ' + o.customer.lastName : '—') + '</td>' +
       '<td>' + (o.customer ? o.customer.email : '—') + '</td>' +
       '<td>' + (o.customer ? (o.customer.phone || '—') : '—') + '</td>' +
-      '<td>' + (o.shippingAddress ? o.shippingAddress.city + ', ' + o.shippingAddress.state : '—') + '</td>' +
+      '<td style="font-size:12px;">' + (o.shippingAddress ? (o.shippingAddress.address || '') + ', ' + o.shippingAddress.city + ', ' + o.shippingAddress.state + ' ' + o.shippingAddress.zip : '—') + '</td>' +
       '<td>' + e.qty + '</td>' +
       '<td><span class="status-badge status-' + status + '">' + statusLabel + '</span></td>' +
     '</tr>';
@@ -2028,7 +2028,7 @@ function printStickerOrders() {
 
   var html = '<h2>FDC Stickers — ' + stickerName.split(' (')[0] + '</h2>';
   html += '<div class="print-subtitle">Order list &bull; ' + entries.length + ' orders &bull; Printed ' + new Date().toLocaleDateString() + '</div>';
-  html += '<table><thead><tr><th>#</th><th>Order ID</th><th>Date</th><th>Customer</th><th>Email</th><th>Phone</th><th>City, State ZIP</th><th>Qty</th><th>Fulfilled</th></tr></thead><tbody>';
+  html += '<table><thead><tr><th>#</th><th>Order ID</th><th>Date</th><th>Customer</th><th>Email</th><th>Phone</th><th>Address</th><th>Qty</th><th>Fulfilled</th></tr></thead><tbody>';
 
   entries.forEach(function(e, idx) {
     var o = e.order;
