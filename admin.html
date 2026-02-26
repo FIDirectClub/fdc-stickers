@@ -884,14 +884,10 @@
           <div class="admin-form-row">
             <div class="admin-form-group">
               <label>Category</label>
-              <select id="pCategory">
-                <option value="logos">Logos</option>
-                <option value="flags">Flags & Patches</option>
-                <option value="bbc">BBC Suppressors</option>
-                <option value="2a">2A Lifestyle</option>
-                <option value="packs">Value Packs</option>
-                <option value="misc">Misc</option>
+              <select id="pCategory" onchange="handleCategoryChange(this)">
+                <!-- Populated dynamically from existing products -->
               </select>
+              <input type="text" id="pCategoryCustom" placeholder="New category name..." style="display:none;margin-top:6px;" onkeydown="if(event.key==='Enter'){event.preventDefault();confirmNewCategory();}">
             </div>
             <div class="admin-form-group">
               <label>Badge</label>
@@ -934,7 +930,6 @@
 
     <div class="export-btn-row" style="margin-top:24px;">
       <button class="admin-btn" onclick="publishProducts()" title="Download products.json — place in your project root and redeploy to update the store for all visitors">📤 Publish Products (Download JSON)</button>
-      <button class="admin-btn secondary" onclick="resetProductsToDefaults()">↩ Reset to Defaults</button>
     </div>
     <div style="font-size:12px;color:var(--steel);margin-top:8px;line-height:1.5;">
       <strong>How product sync works:</strong> Changes made here update your browser instantly. To update the live site for all visitors, click "Publish Products" to download <code>products.json</code>, place it in your project root folder (next to <code>index.html</code>), and redeploy to Vercel.
@@ -1478,10 +1473,10 @@ function renderProducts() {
   products.forEach(function(p) {
     var stockClass = p.stock <= 0 ? 'stock-out' : (p.stock <= 10 ? 'stock-low' : 'stock-ok');
     var stockText = p.stock <= 0 ? 'OUT OF STOCK' : (p.stock <= 10 ? 'LOW STOCK' : 'IN STOCK');
-    var catLabels = { logos:'Logos', flags:'Flags', bbc:'BBC', '2a':'2A', packs:'Packs', misc:'Misc' };
+    var catLabel = p.category ? (p.category.charAt(0).toUpperCase() + p.category.slice(1).replace(/-/g, ' ')) : 'Misc';
     html += '<tr>' +
       '<td style="color:var(--white);font-weight:500;">' + p.name + '<br><span style="font-size:11px;color:var(--steel);font-family:monospace;">' + p.id + '</span></td>' +
-      '<td>' + (catLabels[p.category] || p.category) + '</td>' +
+      '<td>' + catLabel + '</td>' +
       '<td style="color:var(--gold);">$' + p.price.toFixed(2) + '</td>' +
       '<td><input class="inline-edit" type="number" value="' + p.stock + '" min="0" onchange="updateStock(\'' + p.id + '\', this.value)"></td>' +
       '<td><span class="stock-badge ' + stockClass + '">' + stockText + '</span></td>' +
@@ -1504,6 +1499,67 @@ function updateStock(productId, newStock) {
   }
 }
 
+function populateCategoryDropdown(selectedValue) {
+  var products = getProducts();
+  var cats = {};
+  products.forEach(function(p) {
+    if (p.category && !cats[p.category]) {
+      cats[p.category] = p.category.charAt(0).toUpperCase() + p.category.slice(1);
+    }
+  });
+  // Ensure common defaults exist if no products yet
+  if (Object.keys(cats).length === 0) {
+    cats['pistols'] = 'Pistols';
+    cats['rifles'] = 'Rifles';
+    cats['shotguns'] = 'Shotguns';
+  }
+  var select = document.getElementById('pCategory');
+  select.innerHTML = '';
+  Object.entries(cats).sort(function(a,b) { return a[1].localeCompare(b[1]); }).forEach(function(c) {
+    var opt = document.createElement('option');
+    opt.value = c[0];
+    opt.textContent = c[1];
+    select.appendChild(opt);
+  });
+  // Add "new" option at the end
+  var newOpt = document.createElement('option');
+  newOpt.value = '__new__';
+  newOpt.textContent = '+ Add New Category...';
+  select.appendChild(newOpt);
+
+  if (selectedValue) select.value = selectedValue;
+  document.getElementById('pCategoryCustom').style.display = 'none';
+}
+
+function handleCategoryChange(sel) {
+  var customInput = document.getElementById('pCategoryCustom');
+  if (sel.value === '__new__') {
+    customInput.style.display = 'block';
+    customInput.value = '';
+    customInput.focus();
+  } else {
+    customInput.style.display = 'none';
+  }
+}
+
+function confirmNewCategory() {
+  var input = document.getElementById('pCategoryCustom');
+  var val = input.value.trim();
+  if (!val) return;
+  var slug = val.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  if (!slug) return;
+  var select = document.getElementById('pCategory');
+  // Insert before the "__new__" option
+  var newOpt = document.createElement('option');
+  newOpt.value = slug;
+  newOpt.textContent = val;
+  select.insertBefore(newOpt, select.querySelector('option[value="__new__"]'));
+  select.value = slug;
+  input.style.display = 'none';
+  input.value = '';
+  showAdminToast('Category "' + val + '" added');
+}
+
 function showAddProduct() {
   document.getElementById('productFormWrapper').style.display = 'block';
   document.getElementById('productFormTitle').textContent = 'Add New Product';
@@ -1514,7 +1570,7 @@ function showAddProduct() {
   document.getElementById('pDesc').value = '';
   document.getElementById('pPrice').value = '';
   document.getElementById('pStock').value = '';
-  document.getElementById('pCategory').value = 'logos';
+  populateCategoryDropdown();
   document.getElementById('pBadge').value = '';
   document.getElementById('pImage').value = '';
 }
@@ -1533,7 +1589,7 @@ function editProduct(productId) {
   document.getElementById('pDesc').value = p.description;
   document.getElementById('pPrice').value = p.price;
   document.getElementById('pStock').value = p.stock;
-  document.getElementById('pCategory').value = p.category;
+  populateCategoryDropdown(p.category);
   document.getElementById('pBadge').value = p.badge || '';
   document.getElementById('pImage').value = p.image || '';
 
@@ -1559,7 +1615,14 @@ function saveProduct() {
     description: document.getElementById('pDesc').value.trim(),
     price: parseFloat(document.getElementById('pPrice').value) || 0,
     stock: parseInt(document.getElementById('pStock').value) || 0,
-    category: document.getElementById('pCategory').value,
+    category: (function() {
+      var val = document.getElementById('pCategory').value;
+      if (val === '__new__') {
+        var custom = document.getElementById('pCategoryCustom').value.trim();
+        return custom.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'misc';
+      }
+      return val;
+    })(),
     badge: document.getElementById('pBadge').value,
     image: document.getElementById('pImage').value.trim()
   };
@@ -1598,12 +1661,6 @@ function publishProducts() {
   showAdminToast(products.length + ' products exported to products.json');
 }
 
-function resetProductsToDefaults() {
-  if (!confirm('Reset all products to the original defaults? This will remove any products you\'ve added or edited. This cannot be undone.')) return;
-  localStorage.removeItem('fdc_products');
-  renderProducts();
-  showAdminToast('Products reset to defaults');
-}
 
 // ── ORDERS ──
 var selectedOrders = new Set();
