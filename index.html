@@ -2090,6 +2090,11 @@ document.addEventListener('DOMContentLoaded', async function() {
   if (window.innerWidth <= 768) {
     document.getElementById('mobileCartBtn').style.display = 'block';
   }
+  // Auto-open checkout if arriving from product page with #checkout hash
+  if (window.location.hash === '#checkout' && cart.length > 0) {
+    setTimeout(function() { openCheckout(); }, 100);
+  }
+
   window.addEventListener('resize', function() {
     document.getElementById('mobileCartBtn').style.display = window.innerWidth <= 768 ? 'block' : 'none';
   });
