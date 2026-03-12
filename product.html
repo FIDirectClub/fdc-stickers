@@ -568,12 +568,12 @@ function updateCartUI() {
         (product.prize ? '<div style="font-size:11px;color:var(--gold);margin-top:2px;">🏆 ' + product.prize + '</div>' : '') +
         '<div class="cart-item-price">$' + (product.price * item.qty).toFixed(2) + ' — ' + item.qty + (item.qty === 1 ? ' Sticker' : ' Stickers') + '</div>' +
         '<div class="cart-item-qty">' +
-          '<button class="qty-btn" onclick="updateQty('' + item.id + '',-1)">−</button>' +
+          '<button class="qty-btn" onclick="updateQty(\' + item.id + \',-1)">−</button>' +
           '<span class="qty-value">' + item.qty + '</span>' +
-          '<button class="qty-btn" onclick="updateQty('' + item.id + '',1)">+</button>' +
+          '<button class="qty-btn" onclick="updateQty(\' + item.id + \',1)">+</button>' +
         '</div>' +
       '</div>' +
-      '<button class="cart-item-remove" onclick="removeFromCart('' + item.id + '')" title="Remove">&times;</button>' +
+      '<button class="cart-item-remove" onclick="removeFromCart(\' + item.id + \')" title="Remove">&times;</button>' +
     '</div>';
   });
   container.innerHTML = html;
