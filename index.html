@@ -2155,7 +2155,7 @@ function renderProducts(category) {
 
     var imageHtml = p.image
       ? '<img src="' + p.image + '" alt="' + p.name + '">'
-      : '<div class="product-image-placeholder">🔫</div>';
+      : '<img src="/fdc-default-sticker.jpg" alt="' + p.name + '" style="width:80%;height:80%;object-fit:contain;">';
 
     var entriesHtml = oos
       ? '<span class="product-stock" style="color:var(--red);">SOLD OUT</span>'
@@ -2325,7 +2325,7 @@ function updateCartUI() {
     if (!product) return;
     var imgHtml = product.image
       ? '<img src="' + product.image + '" alt="' + product.name + '">'
-      : '<div style="font-size:28px;opacity:0.3;">🔫</div>';
+      : '<img src="/fdc-default-sticker.jpg" alt="FDC Sticker" style="width:100%;height:100%;object-fit:contain;padding:4px;">';
 
     html += '<div class="cart-item">' +
       '<div class="cart-item-image">' + imgHtml + '</div>' +

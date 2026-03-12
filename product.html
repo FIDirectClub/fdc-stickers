@@ -559,7 +559,7 @@ function updateCartUI() {
     subtotal += product.price * item.qty;
     var imgHtml = product.image
       ? '<img src="' + product.image + '" alt="' + product.name + '">'
-      : '<div style="font-size:28px;opacity:0.3;">🔫</div>';
+      : '<img src="/fdc-default-sticker.jpg" alt="FDC Sticker" style="width:100%;height:100%;object-fit:contain;padding:4px;">';
 
     html += '<div class="cart-item">' +
       '<div class="cart-item-image">' + imgHtml + '</div>' +
@@ -614,7 +614,7 @@ function renderProduct(product) {
 
   var imgHtml = product.image
     ? '<img src="' + product.image + '" alt="' + product.name + '">'
-    : '<div class="product-image-placeholder">🔫</div>';
+    : '<img src="/fdc-default-sticker.jpg" alt="' + product.name + '" style="width:80%;height:80%;object-fit:contain;">';
 
   var stockHtml = oos
     ? '<span class="stock-out">SOLD OUT</span>'
@@ -658,7 +658,7 @@ function renderProduct(product) {
 
   html += '<div class="related-section"><h2 class="related-title">You Might Also Like</h2><div class="related-grid">';
   related.forEach(function(r) {
-    var rImg = r.image ? '<img src="' + r.image + '" alt="' + r.name + '">' : '<div style="font-size:48px;opacity:0.15;">🔫</div>';
+    var rImg = r.image ? '<img src="' + r.image + '" alt="' + r.name + '">' : '<img src="/fdc-default-sticker.jpg" alt="' + r.name + '" style="width:100%;height:100%;object-fit:contain;padding:12px;">';
     html += '<a class="related-card" href="/product?id=' + r.id + '"><div class="related-card-img">' + rImg + '</div><div class="related-card-body"><div class="related-card-name">' + r.name + '</div><div class="related-card-price">$' + r.price.toFixed(2) + '</div></div></a>';
   });
   html += '</div></div>';
