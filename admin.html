@@ -1896,29 +1896,55 @@ async function deleteOrder(orderId) {
 async function exportOrders(format) {
   var orders = await getFilteredOrders();
   if (format === 'json') {
-    downloadFile('fdc-orders.json', JSON.stringify(orders, null, 2), 'application/json');
-  } else {
-    var csv = 'Order ID,Date,Customer,Email,Phone,Address,City,State,ZIP,Items,Subtotal,Tax,Shipping,Total,Status,Payment Method\n';
+    var rows = [];
     orders.forEach(function(o) {
-      var items = (o.items || []).map(function(i) { return i.name + ' x' + i.qty; }).join('; ');
-      csv += [
-        o.id,
-        new Date(o.date).toLocaleDateString(),
-        o.customer ? '"' + o.customer.firstName + ' ' + o.customer.lastName + '"' : '',
-        o.customer ? o.customer.email : '',
-        o.customer ? (o.customer.phone || '') : '',
-        o.shippingAddress ? '"' + (o.shippingAddress.address || '') + '"' : '',
-        o.shippingAddress ? o.shippingAddress.city : '',
-        o.shippingAddress ? o.shippingAddress.state : '',
-        o.shippingAddress ? o.shippingAddress.zip : '',
-        '"' + items + '"',
-        (o.subtotal || 0).toFixed(2),
-        (o.tax || 0).toFixed(2),
-        (o.shipping || 0).toFixed(2),
-        (o.total || 0).toFixed(2),
-        o.status || 'confirmed',
-        o.paymentMethod || 'unknown'
-      ].join(',') + '\n';
+      (o.items || []).forEach(function(item) {
+        rows.push({
+          orderId: o.id, date: o.date, status: o.status || 'confirmed',
+          firstName: o.customer ? o.customer.firstName : '',
+          lastName: o.customer ? o.customer.lastName : '',
+          email: o.customer ? o.customer.email : '',
+          phone: o.customer ? (o.customer.phone || '') : '',
+          address: o.shippingAddress ? (o.shippingAddress.address || '') : '',
+          city: o.shippingAddress ? o.shippingAddress.city : '',
+          state: o.shippingAddress ? o.shippingAddress.state : '',
+          zip: o.shippingAddress ? o.shippingAddress.zip : '',
+          product: item.name, qty: item.qty, unitPrice: item.price,
+          lineTotal: item.price * item.qty,
+          subtotal: o.subtotal || 0, tax: o.tax || 0,
+          shipping: o.shipping || 0, total: o.total || 0,
+          paymentMethod: o.paymentMethod || 'unknown'
+        });
+      });
+    });
+    downloadFile('fdc-orders.json', JSON.stringify(rows, null, 2), 'application/json');
+  } else {
+    var csv = 'Order ID,Date,First Name,Last Name,Email,Phone,Address,City,State,ZIP,Product,Qty,Unit Price,Line Total,Subtotal,Tax,Shipping,Order Total,Status,Payment Method\n';
+    orders.forEach(function(o) {
+      (o.items || []).forEach(function(item) {
+        csv += [
+          o.id,
+          new Date(o.date).toLocaleDateString(),
+          o.customer ? o.customer.firstName : '',
+          o.customer ? o.customer.lastName : '',
+          o.customer ? o.customer.email : '',
+          o.customer ? (o.customer.phone || '') : '',
+          o.shippingAddress ? '"' + (o.shippingAddress.address || '') + '"' : '',
+          o.shippingAddress ? o.shippingAddress.city : '',
+          o.shippingAddress ? o.shippingAddress.state : '',
+          o.shippingAddress ? o.shippingAddress.zip : '',
+          '"' + item.name + '"',
+          item.qty,
+          item.price.toFixed(2),
+          (item.price * item.qty).toFixed(2),
+          (o.subtotal || 0).toFixed(2),
+          (o.tax || 0).toFixed(2),
+          (o.shipping || 0).toFixed(2),
+          (o.total || 0).toFixed(2),
+          o.status || 'confirmed',
+          o.paymentMethod || 'unknown'
+        ].join(',') + '\n';
+      });
     });
     downloadFile('fdc-orders.csv', csv, 'text/csv');
   }
