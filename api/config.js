@@ -1,5 +1,5 @@
 // /api/config.js — Public + Admin config endpoint (CommonJS for Vercel)
-const { sql, verifyAdmin, setCors } = require('./_db');
+const { sql, initSchema, verifyAdmin, setCors } = require('./_db');
 
 module.exports = async function handler(req, res) {
   setCors(res);
@@ -8,6 +8,7 @@ module.exports = async function handler(req, res) {
   // ── GET: public — return config as flat object ──
   if (req.method === 'GET') {
     try {
+      await initSchema();
       const { rows } = await sql`SELECT key, value FROM config`;
       const config = {};
       for (const row of rows) {

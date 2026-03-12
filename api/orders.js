@@ -1,5 +1,5 @@
 // /api/orders.js — Orders CRUD endpoint (CommonJS for Vercel)
-const { sql, verifyAdmin, setCors } = require('./_db');
+const { sql, initSchema, verifyAdmin, setCors } = require('./_db');
 
 // Map a DB row (snake_case) to a frontend-friendly object (camelCase)
 function mapRow(r) {
@@ -26,6 +26,8 @@ module.exports = async function handler(req, res) {
   if (req.method === 'OPTIONS') return res.status(200).end();
 
   try {
+    await initSchema();
+
     // ── GET — admin auth, list orders with optional filters ──
     if (req.method === 'GET') {
       var user = verifyAdmin(req);

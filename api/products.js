@@ -45,6 +45,9 @@ module.exports = async function handler(req, res) {
   if (req.method === 'OPTIONS') return res.status(200).end();
 
   try {
+    // Ensure tables exist (idempotent, fast if already created)
+    await initSchema();
+
     // ── GET — public, no auth ──
     if (req.method === 'GET') {
       var id = req.query.id;

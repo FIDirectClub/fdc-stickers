@@ -29,7 +29,9 @@ var sql = new Proxy(function(){}, {
   }
 });
 // ── SCHEMA INITIALIZATION ──
+var _schemaReady = false;
 async function initSchema() {
+  if (_schemaReady) return;
   var db = getSql();
   await db`
     CREATE TABLE IF NOT EXISTS products (
@@ -77,6 +79,7 @@ async function initSchema() {
       value JSONB NOT NULL,
       updated_at TIMESTAMPTZ DEFAULT NOW()
     )`;
+  _schemaReady = true;
 }
 // ── AUTH HELPER ──
 function verifyToken(token, secret) {
