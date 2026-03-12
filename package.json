@@ -5,7 +5,7 @@
   "private": true,
   "dependencies": {
     "nodemailer": "^6.9.0",
-    "@neondatabase/serverless": "^0.10.0"
+    "@neondatabase/serverless": "^1.0.0"
   },
   "scripts": {
     "dev": "npx serve .",
