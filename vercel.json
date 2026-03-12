@@ -19,6 +19,10 @@
         {
           "key": "Referrer-Policy",
           "value": "strict-origin-when-cross-origin"
+        },
+        {
+          "key": "Strict-Transport-Security",
+          "value": "max-age=63072000; includeSubDomains; preload"
         }
       ]
     }
@@ -27,6 +31,10 @@
     {
       "source": "/product",
       "destination": "/product.html"
+    },
+    {
+      "source": "/order",
+      "destination": "/order.html"
     }
   ],
   "functions": {
@@ -49,6 +57,12 @@
       "maxDuration": 10
     },
     "api/config.js": {
+      "maxDuration": 10
+    },
+    "api/upload.js": {
+      "maxDuration": 15
+    },
+    "api/order-lookup.js": {
       "maxDuration": 10
     }
   }

@@ -1,5 +1,6 @@
 // /api/auth.js — Admin Authentication (CommonJS for Vercel)
 const crypto = require('crypto');
+const { setCors } = require('./_db');
 
 function signToken(payload, secret) {
   const data = JSON.stringify(payload);
@@ -21,9 +22,7 @@ function verifyToken(token, secret) {
 }
 
 module.exports = async function handler(req, res) {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  setCors(res, req);
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 

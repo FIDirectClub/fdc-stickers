@@ -102,8 +102,18 @@ function verifyAdmin(req) {
 }
 
 // ── CORS HELPER ──
-function setCors(res) {
-  res.setHeader('Access-Control-Allow-Origin', '*');
+var ALLOWED_ORIGINS = [
+  'https://fdc-stickers.vercel.app',
+  'https://stickers.firearmsdirectclub.com',
+  'http://localhost:3000',
+  'http://localhost:5000'
+];
+function setCors(res, req) {
+  var origin = req && req.headers ? req.headers.origin : '';
+  if (origin && ALLOWED_ORIGINS.indexOf(origin) >= 0) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+    res.setHeader('Vary', 'Origin');
+  }
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
 }

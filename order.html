@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Order Status | FDC Stickers</title>
+  <meta name="description" content="Check your FDC Stickers order status.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Barlow+Condensed:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root { --bg:#e8e5dd; --dark:#1a1a1a; --gold:#FF2D55; --white:#f5f3ee; --steel:#888; --steel-light:#aaa; --border:#1a1a1a; }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family:'Barlow Condensed',sans-serif; background:var(--bg); color:var(--dark); min-height:100vh; min-height:100dvh; }
+    .page-header { background:var(--dark); padding:24px; text-align:center; }
+    .page-header h1 { font-family:'Bangers',cursive; font-size:28px; letter-spacing:4px; color:var(--gold); }
+    .page-header a { color:var(--steel); text-decoration:none; font-size:12px; letter-spacing:2px; text-transform:uppercase; }
+    .container { max-width:640px; margin:40px auto; padding:0 20px; }
+    .lookup-form { background:var(--white); border:2px solid var(--border); padding:32px; margin-bottom:24px; }
+    .lookup-form h2 { font-family:'Bangers',cursive; font-size:24px; letter-spacing:2px; color:var(--gold); margin-bottom:16px; }
+    .lookup-form label { display:block; font-size:11px; letter-spacing:2px; text-transform:uppercase; color:var(--steel); margin-bottom:4px; margin-top:16px; }
+    .lookup-form input { width:100%; padding:12px 16px; border:2px solid var(--border); background:var(--bg); font-family:inherit; font-size:15px; }
+    .lookup-form input:focus { outline:none; border-color:var(--gold); }
+    .lookup-btn { display:block; width:100%; margin-top:24px; padding:14px; background:var(--dark); color:var(--gold); border:2px solid var(--border); font-family:'Bangers',cursive; font-size:18px; letter-spacing:3px; cursor:pointer; transition:all 0.2s; }
+    .lookup-btn:hover { background:var(--gold); color:var(--dark); }
+    .lookup-btn:disabled { opacity:0.5; cursor:not-allowed; }
+    .error-msg { background:rgba(255,0,0,0.08); border-left:4px solid #c00; padding:12px 16px; margin-top:16px; font-size:14px; color:#c00; display:none; }
+    .order-card { background:var(--white); border:2px solid var(--border); display:none; }
+    .order-card-header { padding:24px 32px; border-bottom:2px solid var(--border); text-align:center; }
+    .order-card-header h3 { font-family:'Bangers',cursive; font-size:28px; letter-spacing:3px; color:var(--gold); }
+    .order-id { font-size:14px; color:var(--steel); letter-spacing:2px; margin-top:4px; }
+    .order-card-body { padding:24px 32px; }
+    .order-status { display:inline-block; padding:6px 16px; font-size:12px; letter-spacing:2px; text-transform:uppercase; font-weight:700; border:2px solid; margin-bottom:20px; }
+    .status-confirmed { color:#2ECC40; border-color:#2ECC40; }
+    .status-shipped { color:#0074D9; border-color:#0074D9; }
+    .status-fulfilled { color:var(--gold); border-color:var(--gold); }
+    .status-pending { color:#FF851B; border-color:#FF851B; }
+    .order-items { width:100%; border-collapse:collapse; margin-bottom:20px; }
+    .order-items th { text-align:left; font-size:11px; letter-spacing:2px; text-transform:uppercase; color:var(--steel); padding:8px 0; border-bottom:2px solid var(--border); }
+    .order-items td { padding:10px 0; border-bottom:1px solid #e0ddd5; font-size:14px; }
+    .order-items .price { text-align:right; }
+    .order-totals { border-top:2px solid var(--border); padding-top:16px; }
+    .order-totals .row { display:flex; justify-content:space-between; padding:4px 0; font-size:14px; color:var(--steel); }
+    .order-totals .total { font-size:20px; font-weight:700; color:var(--gold); padding-top:12px; border-top:2px solid var(--border); margin-top:8px; }
+    .order-shipping { margin-top:20px; padding:16px; background:var(--bg); }
+    .order-shipping .label { font-size:11px; letter-spacing:2px; text-transform:uppercase; color:var(--steel); margin-bottom:4px; }
+    .order-date { font-size:13px; color:var(--steel); margin-bottom:4px; }
+    .back-link { display:block; text-align:center; margin-top:24px; color:var(--gold); text-decoration:none; font-size:14px; letter-spacing:2px; text-transform:uppercase; }
+    footer { text-align:center; padding:32px 20px; font-size:12px; color:var(--steel); }
+    footer a { color:var(--gold); text-decoration:none; }
+  </style>
+</head>
+<body>
+  <div class="page-header">
+    <h1>FDC STICKERS</h1>
+    <a href="/">Back to Store</a>
+  </div>
+  <div class="container">
+    <div class="lookup-form" id="lookupForm">
+      <h2>Order Lookup</h2>
+      <p style="font-size:14px;color:var(--steel);line-height:1.5;">Enter your order number and email address to check your order status.</p>
+      <label>Order Number</label>
+      <input type="text" id="olOrderId" placeholder="FDC-XXXXX-XXXX">
+      <label>Email Address</label>
+      <input type="email" id="olEmail" placeholder="your@email.com">
+      <button class="lookup-btn" id="lookupBtn" onclick="lookupOrder()">Look Up Order</button>
+      <div class="error-msg" id="lookupError"></div>
+    </div>
+    <div class="order-card" id="orderCard">
+      <div class="order-card-header">
+        <h3>Order Details</h3>
+        <div class="order-id" id="ocOrderId"></div>
+      </div>
+      <div class="order-card-body">
+        <div class="order-date" id="ocDate"></div>
+        <div id="ocStatus"></div>
+        <table class="order-items">
+          <thead><tr><th>Item</th><th>Qty</th><th class="price">Price</th></tr></thead>
+          <tbody id="ocItems"></tbody>
+        </table>
+        <div class="order-totals" id="ocTotals"></div>
+        <div class="order-shipping" id="ocShipping"></div>
+      </div>
+    </div>
+    <a class="back-link" href="/">&#8592; Continue Shopping</a>
+  </div>
+  <footer>
+    <p>&copy; 2025 Firearms Direct Club LLC. All rights reserved. <a href="/">FDC Stickers</a>&trade;</p>
+  </footer>
+  <script>
+  // Auto-fill from URL params
+  (function() {
+    var params = new URLSearchParams(window.location.search);
+    if (params.get('id')) document.getElementById('olOrderId').value = params.get('id');
+    if (params.get('email')) document.getElementById('olEmail').value = params.get('email');
+    if (params.get('id') && params.get('email')) lookupOrder();
+  })();
+
+  async function lookupOrder() {
+    var orderId = document.getElementById('olOrderId').value.trim();
+    var email = document.getElementById('olEmail').value.trim();
+    var errEl = document.getElementById('lookupError');
+    var btn = document.getElementById('lookupBtn');
+
+    errEl.style.display = 'none';
+    if (!orderId || !email) { errEl.textContent = 'Please enter both order number and email.'; errEl.style.display = 'block'; return; }
+
+    btn.disabled = true; btn.textContent = 'Looking up...';
+    try {
+      var resp = await fetch('/api/order-lookup?id=' + encodeURIComponent(orderId) + '&email=' + encodeURIComponent(email));
+      var data = await resp.json();
+      if (!resp.ok) { errEl.textContent = data.error || 'Order not found.'; errEl.style.display = 'block'; btn.disabled = false; btn.textContent = 'Look Up Order'; return; }
+
+      // Populate order card
+      document.getElementById('ocOrderId').textContent = data.id;
+      document.getElementById('ocDate').textContent = 'Placed ' + new Date(data.date).toLocaleDateString('en-US', { year:'numeric', month:'long', day:'numeric' });
+
+      var statusEl = document.getElementById('ocStatus');
+      statusEl.innerHTML = '<span class="order-status status-' + data.status + '">' + data.status + '</span>';
+
+      var itemsHtml = '';
+      (data.items || []).forEach(function(item) {
+        itemsHtml += '<tr><td>' + esc(item.name) + '</td><td>' + item.qty + '</td><td class="price">$' + (item.price * item.qty).toFixed(2) + '</td></tr>';
+      });
+      document.getElementById('ocItems').innerHTML = itemsHtml;
+
+      var totalsHtml = '<div class="row"><span>Subtotal</span><span>$' + data.subtotal.toFixed(2) + '</span></div>';
+      if (data.tax > 0) totalsHtml += '<div class="row"><span>Tax</span><span>$' + data.tax.toFixed(2) + '</span></div>';
+      totalsHtml += '<div class="row"><span>Shipping</span><span style="color:#2ECC40;font-weight:700;">FREE</span></div>';
+      totalsHtml += '<div class="row total"><span>Total</span><span>$' + data.total.toFixed(2) + '</span></div>';
+      document.getElementById('ocTotals').innerHTML = totalsHtml;
+
+      var sa = data.shippingAddress || {};
+      document.getElementById('ocShipping').innerHTML = '<div class="label">Shipping To</div><div>' + esc(sa.city) + ', ' + esc(sa.state) + ' ' + esc(sa.zip) + '</div>';
+
+      document.getElementById('lookupForm').style.display = 'none';
+      document.getElementById('orderCard').style.display = 'block';
+    } catch (e) {
+      errEl.textContent = 'Network error. Please try again.'; errEl.style.display = 'block';
+    }
+    btn.disabled = false; btn.textContent = 'Look Up Order';
+  }
+
+  function esc(s) { if (!s) return ''; var d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+  </script>
+</body>
+</html>

@@ -468,7 +468,7 @@
       <button class="place-order-btn" id="placeOrderBtn" onclick="placeOrder()">Place Order</button>
     </div>
     <div class="order-processing" id="orderProcessing"><div class="spinner"></div><p style="font-family:'Barlow Condensed',sans-serif;font-size:16px;letter-spacing:2px;color:var(--steel-light);">PROCESSING YOUR ORDER...</p><p style="margin-top:8px;font-size:13px;color:var(--steel);">Do not close this window.</p></div>
-    <div class="order-success" id="orderSuccess"><div class="order-success-icon">&#127881;</div><h4>You're Entered!</h4><p>Your sticker order is confirmed and your free sweepstakes entries are locked in.</p><p style="margin-top:12px;">Good luck. Somebody's winning a gun, and it might be you.</p><p style="margin-top:12px;color:var(--gold);font-family:'Barlow Condensed',sans-serif;letter-spacing:2px;">Order #<span id="orderNumber">&#8212;</span></p><button class="btn-primary" style="margin-top:24px;" onclick="closeCheckout();">Continue Browsing</button></div>
+    <div class="order-success" id="orderSuccess"><div class="order-success-icon">&#127881;</div><h4>You're Entered!</h4><p>Your sticker order is confirmed and your free sweepstakes entries are locked in.</p><p style="margin-top:12px;">Good luck. Somebody's winning a gun, and it might be you.</p><p style="margin-top:12px;color:var(--gold);font-family:'Barlow Condensed',sans-serif;letter-spacing:2px;">Order #<span id="orderNumber">&#8212;</span></p><p style="margin-top:16px;"><a id="orderStatusLink" href="/order" style="color:var(--gold);text-decoration:underline;font-size:14px;">View Order Status</a></p><button class="btn-primary" style="margin-top:24px;" onclick="closeCheckout();">Continue Browsing</button></div>
   </div>
 </div>
 <!-- RULES MODAL -->
@@ -881,7 +881,7 @@ function showOrderSuccess(orderId) {
     shippingAddress: { address: document.getElementById('coAddress').value, address2: document.getElementById('coAddress2').value, city: document.getElementById('coCity').value, state: state, zip: document.getElementById('coZip').value },
     items: cart.map(function(item) { var p = PRODUCTS.find(function(x) { return x.id === item.id; }); return { id: item.id, name: p ? p.name : item.id, price: p ? p.price : 0, qty: item.qty, prize: p ? p.prize : '' }; }),
     subtotal: totals.subtotal, tax: totals.tax, shipping: totals.shipping, total: totals.total };
-  document.getElementById('orderProcessing').style.display = 'none'; document.getElementById('orderSuccess').style.display = 'block'; document.getElementById('orderNumber').textContent = orderId;
+  document.getElementById('orderProcessing').style.display = 'none'; document.getElementById('orderSuccess').style.display = 'block'; document.getElementById('orderNumber').textContent = orderId; var email = document.getElementById('coEmail').value; document.getElementById('orderStatusLink').href = '/order?id=' + encodeURIComponent(orderId) + '&email=' + encodeURIComponent(email);
   resetAfterOrder();
   fetch('/api/send-email', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(emailData) }).catch(function() {});
 }

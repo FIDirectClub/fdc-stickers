@@ -1837,6 +1837,7 @@
       <p>Your sticker order is confirmed and your free sweepstakes entries are locked in. Stickers ship free — you'll get a confirmation email shortly.</p>
       <p style="margin-top:12px;">Good luck. Somebody's winning a gun, and it might be you.</p>
       <p style="margin-top:12px;color:var(--gold);font-family:'Barlow Condensed',sans-serif;letter-spacing:2px;">Order #<span id="orderNumber">—</span></p>
+      <p style="margin-top:16px;"><a id="orderStatusLink" href="/order" style="color:var(--gold);text-decoration:underline;font-size:14px;">View Order Status</a></p>
       <button class="btn-primary" style="margin-top:24px;" onclick="closeCheckout();resetAfterOrder();">Continue Browsing</button>
     </div>
   </div>
@@ -2693,6 +2694,8 @@ function showOrderSuccess(orderId) {
   document.getElementById('orderProcessing').style.display = 'none';
   document.getElementById('orderSuccess').style.display = 'block';
   document.getElementById('orderNumber').textContent = orderId;
+  var email = document.getElementById('coEmail').value;
+  document.getElementById('orderStatusLink').href = '/order?id=' + encodeURIComponent(orderId) + '&email=' + encodeURIComponent(email);
   resetAfterOrder();
 
   // Fire off confirmation email (non-blocking)

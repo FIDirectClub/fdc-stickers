@@ -900,8 +900,14 @@
           </div>
           <div class="admin-form-row full">
             <div class="admin-form-group">
-              <label>Image URL (optional)</label>
-              <input type="text" id="pImage" placeholder="https://... or leave blank for placeholder">
+              <label>Product Image</label>
+              <input type="text" id="pImage" placeholder="https://... or upload below" oninput="previewProductImage(this.value)">
+              <div style="margin-top:8px;display:flex;align-items:center;gap:12px;">
+                <input type="file" id="pImageFile" accept="image/jpeg,image/png,image/webp,image/gif" style="display:none" onchange="uploadProductImage(this.files[0])">
+                <button type="button" class="admin-btn secondary" onclick="document.getElementById('pImageFile').click()" style="font-size:12px;padding:6px 16px;white-space:nowrap;" id="uploadImgBtn">Upload Image</button>
+                <span id="pImageStatus" style="font-size:12px;color:#888;"></span>
+              </div>
+              <img id="pImagePreview" src="" style="display:none;max-width:200px;max-height:200px;margin-top:12px;border:2px solid #1a1a1a;background:#fff;">
             </div>
           </div>
           <div class="admin-btn-row">
@@ -1359,6 +1365,43 @@ async function getProducts() {
   return [];
 }
 
+
+async function uploadProductImage(file) {
+  if (!file) return;
+  var status = document.getElementById('pImageStatus');
+  var btn = document.getElementById('uploadImgBtn');
+  var allowed = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
+  if (allowed.indexOf(file.type) < 0) { status.textContent = 'Only JPEG, PNG, WebP, GIF allowed'; status.style.color = '#c00'; return; }
+  if (file.size > 2 * 1024 * 1024) { status.textContent = 'Image must be under 2MB'; status.style.color = '#c00'; return; }
+  btn.disabled = true; status.textContent = 'Uploading...'; status.style.color = '#888';
+  var reader = new FileReader();
+  reader.onload = async function() {
+    try {
+      var base64 = reader.result.split(',')[1];
+      var resp = await fetch('/api/upload', {
+        method: 'POST', headers: getAuthHeader(),
+        body: JSON.stringify({ filename: file.name, contentType: file.type, data: base64 })
+      });
+      var result = await resp.json();
+      if (resp.ok && result.url) {
+        document.getElementById('pImage').value = result.url;
+        previewProductImage(result.url);
+        status.textContent = 'Uploaded!'; status.style.color = '#2ECC40';
+      } else {
+        status.textContent = result.error || 'Upload failed'; status.style.color = '#c00';
+      }
+    } catch(e) { status.textContent = 'Upload failed'; status.style.color = '#c00'; }
+    btn.disabled = false;
+  };
+  reader.readAsDataURL(file);
+}
+
+function previewProductImage(url) {
+  var img = document.getElementById('pImagePreview');
+  if (url && (url.startsWith('http') || url.startsWith('data:'))) { img.src = url; img.style.display = 'block'; img.onerror = function() { img.style.display = 'none'; }; }
+  else { img.style.display = 'none'; }
+}
+
 async function saveProduct(product) {
   try {
     var resp = await fetch('/api/products', { method: 'POST', headers: getAuthHeader(), body: JSON.stringify(product) });
@@ -1569,6 +1612,9 @@ async function showAddProduct() {
   await populateCategoryDropdown();
   document.getElementById('pBadge').value = '';
   document.getElementById('pImage').value = '';
+  document.getElementById('pImagePreview').style.display = 'none';
+  document.getElementById('pImageStatus').textContent = '';
+  document.getElementById('pImageFile').value = '';
 }
 
 async function editProduct(productId) {
@@ -1588,6 +1634,9 @@ async function editProduct(productId) {
   await populateCategoryDropdown(p.category);
   document.getElementById('pBadge').value = p.badge || '';
   document.getElementById('pImage').value = p.image || '';
+  previewProductImage(p.image || '');
+  document.getElementById('pImageStatus').textContent = '';
+  document.getElementById('pImageFile').value = '';
 
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
