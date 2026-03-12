@@ -1,4 +1,5 @@
 // /api/charge.js — Authorize.net Payment Processing (CommonJS for Vercel)
+const { sql } = require('./_db');
 
 module.exports = async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -98,6 +99,33 @@ module.exports = async function handler(req, res) {
     if (data.messages && data.messages.resultCode === 'Ok') {
       var tr = data.transactionResponse;
       if (tr && tr.responseCode === '1') {
+        // Save order to database and decrement stock atomically
+        try {
+          await sql`
+            INSERT INTO orders (id, order_date, customer, shipping_address, items,
+              subtotal, tax, shipping, total, status, payment_method, transaction_id, auth_code)
+            VALUES (
+              ${orderId}, ${new Date().toISOString()},
+              ${JSON.stringify(customer)}, ${JSON.stringify(shippingAddress)},
+              ${JSON.stringify(items)}, ${parseFloat(amount) - parseFloat(tax || 0) - parseFloat(shipping || 0)},
+              ${parseFloat(tax || 0)}, ${parseFloat(shipping || 0)}, ${parseFloat(amount)},
+              'confirmed', 'authorize.net', ${tr.transId || ''}, ${tr.authCode || ''}
+            )`;
+          // Decrement stock for each item purchased
+          for (var si = 0; si < (items || []).length; si++) {
+            await sql`
+              UPDATE products
+              SET stock = GREATEST(0, stock - ${items[si].qty}),
+                  entries_remaining = GREATEST(0, entries_remaining - ${items[si].qty}),
+                  updated_at = NOW()
+              WHERE id = ${items[si].id}`;
+          }
+        } catch (dbErr) {
+          // Payment succeeded but DB save failed - log but still return success
+          // The payment was already captured, so the order exists at Authorize.net
+          console.error('FDC charge.js: DB save failed after successful payment:', dbErr);
+        }
+
         return res.status(200).json({
           success: true, orderId: orderId,
           transactionId: tr.transId, authCode: tr.authCode

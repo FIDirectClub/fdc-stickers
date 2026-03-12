@@ -4,15 +4,30 @@
     {
       "source": "/(.*)",
       "headers": [
-        { "key": "X-Content-Type-Options", "value": "nosniff" },
-        { "key": "X-Frame-Options", "value": "DENY" },
-        { "key": "X-XSS-Protection", "value": "1; mode=block" },
-        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" }
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "key": "X-XSS-Protection",
+          "value": "1; mode=block"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        }
       ]
     }
   ],
   "rewrites": [
-    { "source": "/product", "destination": "/product.html" }
+    {
+      "source": "/product",
+      "destination": "/product.html"
+    }
   ],
   "functions": {
     "api/charge.js": {
@@ -23,6 +38,18 @@
     },
     "api/send-email.js": {
       "maxDuration": 15
+    },
+    "api/init.js": {
+      "maxDuration": 15
+    },
+    "api/products.js": {
+      "maxDuration": 10
+    },
+    "api/orders.js": {
+      "maxDuration": 10
+    },
+    "api/config.js": {
+      "maxDuration": 10
     }
   }
 }

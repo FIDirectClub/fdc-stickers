@@ -2041,51 +2041,38 @@ function loadAcceptJS() {
 
 // ── INITIALIZE ──
 document.addEventListener('DOMContentLoaded', async function() {
-  // Load config from localStorage FIRST (set via admin panel)
-  const savedConfig = localStorage.getItem('fdc_config');
-  if (savedConfig) {
-    const cfg = JSON.parse(savedConfig);
-    if (cfg.apiLoginId) CONFIG.AUTHNET_API_LOGIN_ID = cfg.apiLoginId;
-    if (cfg.clientKey) CONFIG.AUTHNET_CLIENT_KEY = cfg.clientKey;
-    if (cfg.sandbox !== undefined) CONFIG.AUTHNET_SANDBOX = cfg.sandbox;
-    if (cfg.googleMapsKey) CONFIG.GOOGLE_MAPS_KEY = cfg.googleMapsKey;
+  // Load config from API
+  try {
+    var cfgResp = await fetch('/api/config');
+    if (cfgResp.ok) {
+      var cfg = await cfgResp.json();
+      if (cfg.apiLoginId) CONFIG.AUTHNET_API_LOGIN_ID = cfg.apiLoginId;
+      if (cfg.clientKey) CONFIG.AUTHNET_CLIENT_KEY = cfg.clientKey;
+      if (cfg.sandbox !== undefined) CONFIG.AUTHNET_SANDBOX = cfg.sandbox;
+      if (cfg.googleMapsKey) CONFIG.GOOGLE_MAPS_KEY = cfg.googleMapsKey;
+    }
+  } catch(e) {
+    console.log('FDC: Config API unavailable, using defaults');
   }
 
   // Load Accept.js dynamically based on sandbox config
   loadAcceptJS();
 
-  // ── PRODUCTS: Load from deployed products.json → localStorage → hardcoded defaults ──
-  var productsLoadedFromDeploy = false;
+  // ── PRODUCTS: Load from API (falls back to hardcoded defaults if API unavailable) ──
   try {
-    var resp = await fetch('/products.json?t=' + Date.now());
-    if (resp.ok) {
-      var deployedProducts = await resp.json();
-      if (Array.isArray(deployedProducts) && deployedProducts.length > 0) {
-        PRODUCTS = deployedProducts;
-        localStorage.setItem('fdc_products', JSON.stringify(PRODUCTS));
-        productsLoadedFromDeploy = true;
-        console.log('FDC: Loaded ' + PRODUCTS.length + ' products from products.json');
+    var prodResp = await fetch('/api/products');
+    if (prodResp.ok) {
+      var apiProducts = await prodResp.json();
+      if (Array.isArray(apiProducts) && apiProducts.length > 0) {
+        PRODUCTS = apiProducts;
+        console.log('FDC: Loaded ' + PRODUCTS.length + ' products from API');
       }
     }
   } catch(e) {
-    console.log('FDC: No products.json found, checking localStorage...');
+    console.log('FDC: Products API unavailable, using defaults');
   }
-
-  // If products.json didn't load, check localStorage (admin updates on same browser)
-  if (!productsLoadedFromDeploy) {
-    var savedProducts = localStorage.getItem('fdc_products');
-    if (savedProducts) {
-      var parsed = JSON.parse(savedProducts);
-      if (parsed.length > 0) {
-        PRODUCTS = parsed;
-        console.log('FDC: Loaded ' + PRODUCTS.length + ' products from localStorage');
-      }
-    } else {
-      // First visit ever — seed localStorage with defaults
-      localStorage.setItem('fdc_products', JSON.stringify(PRODUCTS));
-      console.log('FDC: Seeded localStorage with ' + PRODUCTS.length + ' default products');
-    }
-  }
+  // Sync entriesRemaining with stock
+  PRODUCTS.forEach(function(p) { p.entriesRemaining = p.stock; });
 
   populateStates();
   populateExpYears();
@@ -2579,34 +2566,13 @@ function chargeViaServer(opaqueData) {
     if (data.success) {
       var finalOrderId = data.orderId || generateOrderId();
 
-      // Save order to localStorage for admin panel
-      var order = {
-        id: finalOrderId,
-        transactionId: data.transactionId || '',
-        authCode: data.authCode || '',
-        date: new Date().toISOString(),
-        customer: orderData.customer,
-        shippingAddress: orderData.shippingAddress,
-        items: orderData.items,
-        subtotal: totals.subtotal,
-        tax: totals.tax,
-        shipping: totals.shipping,
-        total: totals.total,
-        status: 'confirmed',
-        paymentMethod: 'authorize.net'
-      };
-      var orders = JSON.parse(localStorage.getItem('fdc_orders') || '[]');
-      orders.push(order);
-      localStorage.setItem('fdc_orders', JSON.stringify(orders));
-
-      // Update inventory
+      // Order is saved to DB by charge.js, just update local product stock for display
       cart.forEach(function(item) {
         var product = PRODUCTS.find(function(p) { return p.id === item.id; });
         if (product) {
           product.stock = Math.max(0, product.stock - item.qty);
         }
       });
-      localStorage.setItem('fdc_products', JSON.stringify(PRODUCTS));
 
       showOrderSuccess(finalOrderId);
     } else {
@@ -2665,19 +2631,20 @@ function simulatePayment() {
     paymentMethod: 'demo'
   };
 
-  // Save order
-  var orders = JSON.parse(localStorage.getItem('fdc_orders') || '[]');
-  orders.push(order);
-  localStorage.setItem('fdc_orders', JSON.stringify(orders));
+  // Save order to database (POST is open, no auth needed)
+  fetch('/api/orders', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(order)
+  }).catch(function(e) { console.log('Demo order save:', e); });
 
-  // Update inventory
+  // Update local inventory for display only (DB stock stays unchanged in demo mode)
   cart.forEach(function(item) {
     var product = PRODUCTS.find(function(p) { return p.id === item.id; });
     if (product) {
       product.stock = Math.max(0, product.stock - item.qty);
     }
   });
-  localStorage.setItem('fdc_products', JSON.stringify(PRODUCTS));
 
   setTimeout(function() {
     showOrderSuccess(orderId);

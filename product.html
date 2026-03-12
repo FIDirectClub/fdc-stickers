@@ -287,29 +287,23 @@
 var PRODUCTS = [];
 
 async function loadProducts() {
-  // Try deployed products.json first (works for all visitors)
+  // Load products from API
   try {
-    var resp = await fetch('/products.json?t=' + Date.now());
+    var resp = await fetch('/api/products');
     if (resp.ok) {
-      var deployed = await resp.json();
-      if (Array.isArray(deployed) && deployed.length > 0) {
-        PRODUCTS = deployed;
-        localStorage.setItem('fdc_products', JSON.stringify(PRODUCTS));
+      var apiProducts = await resp.json();
+      if (Array.isArray(apiProducts) && apiProducts.length > 0) {
+        PRODUCTS = apiProducts;
+        console.log('FDC Product: Loaded ' + PRODUCTS.length + ' products from API');
         return;
       }
     }
-  } catch(e) {}
-
-  // Then try localStorage (admin on same browser)
-  var saved = localStorage.getItem('fdc_products');
-  if (saved) {
-    var parsed = JSON.parse(saved);
-    if (parsed.length > 0) { PRODUCTS = parsed; return; }
+  } catch(e) {
+    console.log('FDC Product: API unavailable, using defaults');
   }
 
   // Final fallback: hardcoded defaults
   PRODUCTS = getDefaultProducts();
-  localStorage.setItem('fdc_products', JSON.stringify(PRODUCTS));
 }
 
 function getDefaultProducts() {

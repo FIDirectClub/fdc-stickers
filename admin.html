@@ -905,7 +905,7 @@
             </div>
           </div>
           <div class="admin-btn-row">
-            <button class="admin-btn" onclick="saveProduct()">Save Product</button>
+            <button class="admin-btn" onclick="saveProductForm()">Save Product</button>
             <button class="admin-btn secondary" onclick="hideProductForm()">Cancel</button>
           </div>
         </div>
@@ -1293,16 +1293,16 @@ function showLoginScreen() {
   document.getElementById('adminApp').classList.remove('unlocked');
 }
 
-function unlockAdmin(username) {
+async function unlockAdmin(username) {
   document.getElementById('loginScreen').classList.add('hidden');
   document.getElementById('adminApp').classList.add('unlocked');
   document.getElementById('sessionUser').textContent = username || 'Admin';
 
-  // Initialize admin panel — seed products to localStorage if first time
-  if (!localStorage.getItem('fdc_products')) {
-    saveProducts(getProducts());
-  }
-  renderDashboard();
+  // Initialize database (creates tables + seeds defaults if empty)
+  try {
+    await fetch('/api/init', { method: 'POST', headers: getAuthHeader() });
+  } catch(e) { console.log('DB init check:', e); }
+  await renderDashboard();
   var now = new Date();
   var thirtyDaysAgo = new Date(now - 30 * 24 * 60 * 60 * 1000);
   document.getElementById('reportTo').value = now.toISOString().split('T')[0];
@@ -1346,85 +1346,81 @@ function checkLocalFallback(token) {
 // ============================================================
 
 // ── DATA ACCESS ──
-function getProducts() {
-  var saved = localStorage.getItem('fdc_products');
-  if (saved) return JSON.parse(saved);
-  // Default products — matches storefront index.html hardcoded defaults
-  // These only show if localStorage has never been seeded
-  return [
-    { id:'glock-19-gen5', name:'Glock 19 Gen 5 Sticker', price:9.99, category:'pistols', image:'', badge:'hot', stock:200,
-      tagline:'America\'s favorite carry gun could be yours.',
-      description:'Limited edition FDC sticker — includes a free entry to win a Glock 19 Gen 5 (ARV $549). 4" premium vinyl.',
-      prize:'Glock 19 Gen 5', prizeValue:549, prizeType:'Pistol — 9mm', entries:200, entriesRemaining:200,
-      specs:{ prize:'Glock 19 Gen 5', caliber:'9mm', prizeARV:'$549', stickerSize:'4" × 4"', entries:'200 Max', material:'Premium Vinyl' } },
-    { id:'sig-p365', name:'SIG P365 Sticker', price:9.99, category:'pistols', image:'', badge:'new', stock:150,
-      tagline:'Macro performance. Micro sticker price.',
-      description:'Limited edition FDC sticker — includes a free entry to win a SIG Sauer P365 (ARV $499). 4" die-cut vinyl.',
-      prize:'SIG Sauer P365', prizeValue:499, prizeType:'Pistol — 9mm', entries:150, entriesRemaining:150,
-      specs:{ prize:'SIG Sauer P365', caliber:'9mm', prizeARV:'$499', stickerSize:'4" × 3"', entries:'150 Max', material:'Die-Cut Vinyl' } },
-    { id:'smith-mp-shield', name:'M&P Shield Plus Sticker', price:7.99, category:'pistols', image:'', badge:'', stock:250,
-      tagline:'Shield up. Stack your odds.',
-      description:'Limited edition FDC sticker — includes a free entry to win a Smith & Wesson M&P Shield Plus (ARV $449). 4" matte vinyl.',
-      prize:'Smith & Wesson M&P Shield Plus', prizeValue:449, prizeType:'Pistol — 9mm', entries:250, entriesRemaining:250,
-      specs:{ prize:'S&W M&P Shield Plus', caliber:'9mm', prizeARV:'$449', stickerSize:'4" × 4"', entries:'250 Max', material:'Matte Vinyl' } },
-    { id:'ar15-psa', name:'PSA AR-15 Sticker', price:14.99, category:'rifles', image:'', badge:'hot', stock:100,
-      tagline:'The modern musket. The original freedom stick.',
-      description:'Limited edition FDC sticker — includes a free entry to win a Palmetto State Armory AR-15 (ARV $699). 5" premium vinyl.',
-      prize:'PSA PA-15 16" AR-15', prizeValue:699, prizeType:'Rifle — 5.56 NATO', entries:100, entriesRemaining:100,
-      specs:{ prize:'PSA PA-15 AR-15', caliber:'5.56 NATO', prizeARV:'$699', stickerSize:'5" × 2"', entries:'100 Max', material:'Premium Vinyl' } },
-    { id:'henry-lever-action', name:'Henry Big Boy Sticker', price:14.99, category:'rifles', image:'', badge:'new', stock:75,
-      tagline:'Cowboy action meets modern sweepstakes.',
-      description:'Limited edition FDC sticker — includes a free entry to win a Henry Big Boy Classic .44 Mag (ARV $899). 5" die-cut vinyl.',
-      prize:'Henry Big Boy Classic .44 Mag', prizeValue:899, prizeType:'Lever Action — .44 Mag', entries:75, entriesRemaining:75,
-      specs:{ prize:'Henry Big Boy Classic', caliber:'.44 Magnum', prizeARV:'$899', stickerSize:'5" × 2"', entries:'75 Max', material:'Die-Cut Vinyl' } },
-    { id:'mossberg-500', name:'Mossberg 500 Sticker', price:9.99, category:'shotguns', image:'', badge:'', stock:175,
-      tagline:'Home defense legend. Sticker game legend.',
-      description:'Limited edition FDC sticker — includes a free entry to win a Mossberg 500 Tactical (ARV $479). 4" matte vinyl.',
-      prize:'Mossberg 500 Tactical', prizeValue:479, prizeType:'Shotgun — 12 Gauge', entries:175, entriesRemaining:175,
-      specs:{ prize:'Mossberg 500 Tactical', caliber:'12 Gauge', prizeARV:'$479', stickerSize:'4" × 4"', entries:'175 Max', material:'Matte Vinyl' } },
-    { id:'ruger-1022', name:'Ruger 10/22 Sticker', price:7.99, category:'rifles', image:'', badge:'', stock:300,
-      tagline:'Everybody\'s first. Could be your next.',
-      description:'Limited edition FDC sticker — includes a free entry to win a Ruger 10/22 Carbine (ARV $309). 4" premium vinyl.',
-      prize:'Ruger 10/22 Carbine', prizeValue:309, prizeType:'Rifle — .22 LR', entries:300, entriesRemaining:300,
-      specs:{ prize:'Ruger 10/22 Carbine', caliber:'.22 LR', prizeARV:'$309', stickerSize:'4" × 3"', entries:'300 Max', material:'Premium Vinyl' } },
-    { id:'springfield-hellcat', name:'Hellcat Pro Sticker', price:9.99, category:'pistols', image:'', badge:'hot', stock:150,
-      tagline:'Unleash the Hellcat.',
-      description:'Limited edition FDC sticker — includes a free entry to win a Springfield Hellcat Pro (ARV $569). 4" holographic vinyl.',
-      prize:'Springfield Hellcat Pro', prizeValue:569, prizeType:'Pistol — 9mm', entries:150, entriesRemaining:150,
-      specs:{ prize:'Springfield Hellcat Pro', caliber:'9mm', prizeARV:'$569', stickerSize:'4" × 4"', entries:'150 Max', material:'Holographic Vinyl' } }
-  ];
+function getAuthHeader() {
+  var token = sessionStorage.getItem(AUTH_TOKEN_KEY);
+  return token ? { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' } : { 'Content-Type': 'application/json' };
 }
 
-function saveProducts(products) {
-  localStorage.setItem('fdc_products', JSON.stringify(products));
+async function getProducts() {
+  try {
+    var resp = await fetch('/api/products');
+    if (resp.ok) return await resp.json();
+  } catch(e) { console.error('Failed to load products:', e); }
+  return [];
 }
 
-function getOrders() {
-  return JSON.parse(localStorage.getItem('fdc_orders') || '[]');
+async function saveProduct(product) {
+  try {
+    var resp = await fetch('/api/products', { method: 'POST', headers: getAuthHeader(), body: JSON.stringify(product) });
+    return resp.ok;
+  } catch(e) { console.error('Failed to save product:', e); return false; }
 }
 
-function saveOrders(orders) {
-  localStorage.setItem('fdc_orders', JSON.stringify(orders));
+async function deleteProductFromDB(productId) {
+  try {
+    var resp = await fetch('/api/products?id=' + encodeURIComponent(productId), { method: 'DELETE', headers: getAuthHeader() });
+    return resp.ok;
+  } catch(e) { console.error('Failed to delete product:', e); return false; }
+}
+
+async function getOrders() {
+  try {
+    var resp = await fetch('/api/orders', { headers: getAuthHeader() });
+    if (resp.ok) return await resp.json();
+  } catch(e) { console.error('Failed to load orders:', e); }
+  return [];
+}
+
+async function updateOrderInDB(orderId, updates) {
+  try {
+    updates.id = orderId;
+    var resp = await fetch('/api/orders', { method: 'PUT', headers: getAuthHeader(), body: JSON.stringify(updates) });
+    return resp.ok;
+  } catch(e) { console.error('Failed to update order:', e); return false; }
+}
+
+async function deleteOrderFromDB(orderId) {
+  try {
+    var resp = await fetch('/api/orders?id=' + encodeURIComponent(orderId), { method: 'DELETE', headers: getAuthHeader() });
+    return resp.ok;
+  } catch(e) { console.error('Failed to delete order:', e); return false; }
+}
+
+async function deleteOrdersBulk(orderIds) {
+  try {
+    var resp = await fetch('/api/orders?ids=' + orderIds.map(encodeURIComponent).join(','), { method: 'DELETE', headers: getAuthHeader() });
+    return resp.ok;
+  } catch(e) { console.error('Failed to bulk delete orders:', e); return false; }
 }
 
 // ── TAB SWITCHING ──
-function switchTab(tab) {
+async function switchTab(tab) {
   document.querySelectorAll('.admin-tab').forEach(function(t) { t.classList.remove('active'); });
   document.querySelectorAll('.tab-panel').forEach(function(p) { p.classList.remove('active'); });
   event.target.classList.add('active');
   document.getElementById('tab-' + tab).classList.add('active');
 
-  if (tab === 'dashboard') renderDashboard();
-  if (tab === 'products') renderProducts();
-  if (tab === 'orders') { populateOrderProductFilter(); renderOrders(); }
-  if (tab === 'reports') { populateReportStickerFilter(); generateReport(); }
-  if (tab === 'settings') loadSettings();
+  if (tab === 'dashboard') await renderDashboard();
+  if (tab === 'products') await renderProducts();
+  if (tab === 'orders') { await populateOrderProductFilter(); await renderOrders(); }
+  if (tab === 'reports') { await populateReportStickerFilter(); await generateReport(); }
+  if (tab === 'settings') await loadSettings();
 }
 
 // ── DASHBOARD ──
-function renderDashboard() {
-  var products = getProducts();
-  var orders = getOrders();
+async function renderDashboard() {
+  var products = await getProducts();
+  var orders = await getOrders();
 
   var totalRevenue = orders.reduce(function(sum, o) { return sum + (o.total || 0); }, 0);
   var totalOrders = orders.length;
@@ -1467,8 +1463,8 @@ function dashCard(label, value, sub) {
 }
 
 // ── PRODUCTS ──
-function renderProducts() {
-  var products = getProducts();
+async function renderProducts() {
+  var products = await getProducts();
   var html = '';
   products.forEach(function(p) {
     var stockClass = p.stock <= 0 ? 'stock-out' : (p.stock <= 10 ? 'stock-low' : 'stock-ok');
@@ -1489,18 +1485,18 @@ function renderProducts() {
   document.getElementById('productsBody').innerHTML = html;
 }
 
-function updateStock(productId, newStock) {
-  var products = getProducts();
+async function updateStock(productId, newStock) {
+  var products = await getProducts();
   var product = products.find(function(p) { return p.id === productId; });
   if (product) {
     product.stock = parseInt(newStock) || 0;
-    saveProducts(products);
-    renderProducts();
+    await saveProduct(product);
+    await renderProducts();
   }
 }
 
-function populateCategoryDropdown(selectedValue) {
-  var products = getProducts();
+async function populateCategoryDropdown(selectedValue) {
+  var products = await getProducts();
   var cats = {};
   products.forEach(function(p) {
     if (p.category && !cats[p.category]) {
@@ -1560,7 +1556,7 @@ function confirmNewCategory() {
   showAdminToast('Category "' + val + '" added');
 }
 
-function showAddProduct() {
+async function showAddProduct() {
   document.getElementById('productFormWrapper').style.display = 'block';
   document.getElementById('productFormTitle').textContent = 'Add New Product';
   document.getElementById('pEditId').value = '';
@@ -1570,13 +1566,13 @@ function showAddProduct() {
   document.getElementById('pDesc').value = '';
   document.getElementById('pPrice').value = '';
   document.getElementById('pStock').value = '';
-  populateCategoryDropdown();
+  await populateCategoryDropdown();
   document.getElementById('pBadge').value = '';
   document.getElementById('pImage').value = '';
 }
 
-function editProduct(productId) {
-  var products = getProducts();
+async function editProduct(productId) {
+  var products = await getProducts();
   var p = products.find(function(prod) { return prod.id === productId; });
   if (!p) return;
 
@@ -1589,7 +1585,7 @@ function editProduct(productId) {
   document.getElementById('pDesc').value = p.description;
   document.getElementById('pPrice').value = p.price;
   document.getElementById('pStock').value = p.stock;
-  populateCategoryDropdown(p.category);
+  await populateCategoryDropdown(p.category);
   document.getElementById('pBadge').value = p.badge || '';
   document.getElementById('pImage').value = p.image || '';
 
@@ -1600,9 +1596,9 @@ function hideProductForm() {
   document.getElementById('productFormWrapper').style.display = 'none';
 }
 
-function saveProduct() {
+async function saveProductForm() {
   var editId = document.getElementById('pEditId').value;
-  var products = getProducts();
+  var products = await getProducts();
 
   if (products.length >= 100 && !editId) {
     alert('Maximum 100 products reached. Delete a product before adding a new one.');
@@ -1632,31 +1628,26 @@ function saveProduct() {
     return;
   }
 
-  if (editId) {
-    var idx = products.findIndex(function(p) { return p.id === editId; });
-    if (idx >= 0) products[idx] = productData;
-  } else {
+  if (!editId) {
     if (products.find(function(p) { return p.id === productData.id; })) {
       alert('A product with this ID already exists.');
       return;
     }
-    products.push(productData);
   }
 
-  saveProducts(products);
+  await saveProduct(productData);
   hideProductForm();
-  renderProducts();
+  await renderProducts();
 }
 
-function deleteProduct(productId) {
+async function deleteProduct(productId) {
   if (!confirm('Delete this product? This cannot be undone.')) return;
-  var products = getProducts().filter(function(p) { return p.id !== productId; });
-  saveProducts(products);
-  renderProducts();
+  await deleteProductFromDB(productId);
+  await renderProducts();
 }
 
-function publishProducts() {
-  var products = getProducts();
+async function publishProducts() {
+  var products = await getProducts();
   downloadFile('products.json', JSON.stringify(products, null, 2), 'application/json');
   showAdminToast(products.length + ' products exported to products.json');
 }
@@ -1665,8 +1656,8 @@ function publishProducts() {
 // ── ORDERS ──
 var selectedOrders = new Set();
 
-function populateOrderProductFilter() {
-  var orders = getOrders();
+async function populateOrderProductFilter() {
+  var orders = await getOrders();
   var products = {};
   orders.forEach(function(o) {
     (o.items || []).forEach(function(i) {
@@ -1684,8 +1675,8 @@ function populateOrderProductFilter() {
   });
 }
 
-function getFilteredOrders() {
-  var orders = getOrders();
+async function getFilteredOrders() {
+  var orders = await getOrders();
   var statusFilter = document.getElementById('orderStatusFilter').value;
   var productFilter = document.getElementById('orderProductFilter').value;
   if (statusFilter !== 'all') {
@@ -1699,12 +1690,12 @@ function getFilteredOrders() {
   return orders.reverse();
 }
 
-function renderOrders() {
+async function renderOrders() {
   selectedOrders.clear();
   updateBulkBar();
   document.getElementById('selectAllOrders').checked = false;
 
-  var orders = getFilteredOrders();
+  var orders = await getFilteredOrders();
   var html = '';
   orders.forEach(function(o) {
     var itemSummary = (o.items || []).map(function(i) { return i.name + ' ×' + i.qty; }).join(', ');
@@ -1776,29 +1767,25 @@ function clearSelection() {
   updateBulkBar();
 }
 
-function bulkSetStatus(status) {
+async function bulkSetStatus(status) {
   if (selectedOrders.size === 0) return;
-  var orders = getOrders();
   var count = 0;
-  orders.forEach(function(o) {
-    if (selectedOrders.has(o.id)) {
-      o.status = status;
-      count++;
-    }
-  });
-  saveOrders(orders);
+  var ids = Array.from(selectedOrders);
+  for (var i = 0; i < ids.length; i++) {
+    await updateOrderInDB(ids[i], { status: status });
+    count++;
+  }
   clearSelection();
-  renderOrders();
+  await renderOrders();
   showAdminToast(count + ' order' + (count > 1 ? 's' : '') + ' marked as ' + status);
 }
 
-function bulkDeleteOrders() {
+async function bulkDeleteOrders() {
   if (selectedOrders.size === 0) return;
   if (!confirm('Delete ' + selectedOrders.size + ' selected order(s)? This cannot be undone.')) return;
-  var orders = getOrders().filter(function(o) { return !selectedOrders.has(o.id); });
-  saveOrders(orders);
+  await deleteOrdersBulk(Array.from(selectedOrders));
   clearSelection();
-  renderOrders();
+  await renderOrders();
 }
 
 function showAdminToast(msg) {
@@ -1810,8 +1797,8 @@ function showAdminToast(msg) {
   setTimeout(function() { el.remove(); }, 3000);
 }
 
-function printOrderList() {
-  var orders = getFilteredOrders();
+async function printOrderList() {
+  var orders = await getFilteredOrders();
   var statusFilter = document.getElementById('orderStatusFilter').value;
   var productFilter = document.getElementById('orderProductFilter');
   var productName = productFilter.value === 'all' ? 'All Stickers' : productFilter.options[productFilter.selectedIndex].text;
@@ -1847,24 +1834,18 @@ function printOrderList() {
   setTimeout(function() { printArea.style.display = 'none'; }, 500);
 }
 
-function updateOrderStatus(orderId, newStatus) {
-  var orders = getOrders();
-  var order = orders.find(function(o) { return o.id === orderId; });
-  if (order) {
-    order.status = newStatus;
-    saveOrders(orders);
-  }
+async function updateOrderStatus(orderId, newStatus) {
+  await updateOrderInDB(orderId, { status: newStatus });
 }
 
-function deleteOrder(orderId) {
+async function deleteOrder(orderId) {
   if (!confirm('Delete this order record? This cannot be undone.')) return;
-  var orders = getOrders().filter(function(o) { return o.id !== orderId; });
-  saveOrders(orders);
-  renderOrders();
+  await deleteOrderFromDB(orderId);
+  await renderOrders();
 }
 
-function exportOrders(format) {
-  var orders = getFilteredOrders();
+async function exportOrders(format) {
+  var orders = await getFilteredOrders();
   if (format === 'json') {
     downloadFile('fdc-orders.json', JSON.stringify(orders, null, 2), 'application/json');
   } else {
@@ -1895,8 +1876,8 @@ function exportOrders(format) {
 }
 
 // ── REPORTS ──
-function generateReport() {
-  var orders = getOrders();
+async function generateReport() {
+  var orders = await getOrders();
   var from = document.getElementById('reportFrom').value;
   var to = document.getElementById('reportTo').value;
 
@@ -1968,8 +1949,8 @@ function generateReport() {
   document.getElementById('stateBreakdownBody').innerHTML = html || '<tr><td colspan="4" style="text-align:center;color:var(--steel);padding:20px;">No data</td></tr>';
 }
 
-function exportReport() {
-  var orders = getOrders();
+async function exportReport() {
+  var orders = await getOrders();
   var from = document.getElementById('reportFrom').value;
   var to = document.getElementById('reportTo').value;
   if (from) orders = orders.filter(function(o) { return new Date(o.date) >= new Date(from); });
@@ -2005,8 +1986,8 @@ function exportReport() {
 }
 
 // ── PER-STICKER REPORTS ──
-function populateReportStickerFilter() {
-  var orders = getOrders();
+async function populateReportStickerFilter() {
+  var orders = await getOrders();
   var products = {};
   orders.forEach(function(o) {
     (o.items || []).forEach(function(i) {
@@ -2025,10 +2006,10 @@ function populateReportStickerFilter() {
   });
 }
 
-function getStickerOrders() {
+async function getStickerOrders() {
   var stickerId = document.getElementById('reportStickerFilter').value;
   if (!stickerId) return [];
-  var orders = getOrders();
+  var orders = await getOrders();
   var result = [];
   orders.forEach(function(o) {
     (o.items || []).forEach(function(i) {
@@ -2040,8 +2021,8 @@ function getStickerOrders() {
   return result;
 }
 
-function renderStickerOrders() {
-  var entries = getStickerOrders();
+async function renderStickerOrders() {
+  var entries = await getStickerOrders();
   var stickerId = document.getElementById('reportStickerFilter').value;
   if (!stickerId) {
     document.getElementById('stickerOrdersBody').innerHTML = '<tr><td colspan="9" style="text-align:center;color:var(--steel);padding:30px;">Select a sticker above to see its orders</td></tr>';
@@ -2077,8 +2058,8 @@ function renderStickerOrders() {
     entries.length + ' orders &bull; ' + totalQty + ' stickers sold &bull; ' + fulfilledQty + ' fulfilled &bull; ' + (totalQty - fulfilledQty) + ' remaining';
 }
 
-function printStickerOrders() {
-  var entries = getStickerOrders();
+async function printStickerOrders() {
+  var entries = await getStickerOrders();
   var select = document.getElementById('reportStickerFilter');
   if (!select.value || entries.length === 0) { alert('Select a sticker with orders first.'); return; }
   var stickerName = select.options[select.selectedIndex].text;
@@ -2112,8 +2093,8 @@ function printStickerOrders() {
   setTimeout(function() { printArea.style.display = 'none'; }, 500);
 }
 
-function exportStickerOrders() {
-  var entries = getStickerOrders();
+async function exportStickerOrders() {
+  var entries = await getStickerOrders();
   var select = document.getElementById('reportStickerFilter');
   if (!select.value || entries.length === 0) { alert('Select a sticker with orders first.'); return; }
   var stickerName = select.options[select.selectedIndex].text.split(' (')[0];
@@ -2141,15 +2122,20 @@ function exportStickerOrders() {
 }
 
 // ── SETTINGS ──
-function loadSettings() {
-  var config = JSON.parse(localStorage.getItem('fdc_config') || '{}');
-  document.getElementById('cfgApiLoginId').value = config.apiLoginId || '';
-  document.getElementById('cfgClientKey').value = config.clientKey || '';
-  document.getElementById('cfgGoogleMapsKey').value = config.googleMapsKey || '';
-  var sandbox = config.sandbox !== false;
-  var toggle = document.getElementById('cfgSandboxToggle');
-  if (sandbox) toggle.classList.add('active'); else toggle.classList.remove('active');
-  document.getElementById('sandboxAlert').style.display = sandbox ? 'flex' : 'none';
+async function loadSettings() {
+  try {
+    var resp = await fetch('/api/config');
+    if (resp.ok) {
+      var config = await resp.json();
+      document.getElementById('cfgApiLoginId').value = config.apiLoginId || '';
+      document.getElementById('cfgClientKey').value = config.clientKey || '';
+      document.getElementById('cfgGoogleMapsKey').value = config.googleMapsKey || '';
+      var sandbox = config.sandbox !== false;
+      var toggle = document.getElementById('cfgSandboxToggle');
+      if (sandbox) toggle.classList.add('active'); else toggle.classList.remove('active');
+      document.getElementById('sandboxAlert').style.display = sandbox ? 'flex' : 'none';
+    }
+  } catch(e) { console.error('Failed to load settings:', e); }
 }
 
 function toggleSandbox() {
@@ -2158,25 +2144,35 @@ function toggleSandbox() {
   document.getElementById('sandboxAlert').style.display = toggle.classList.contains('active') ? 'flex' : 'none';
 }
 
-function saveConfig() {
+async function saveConfig() {
   var config = {
     apiLoginId: document.getElementById('cfgApiLoginId').value.trim(),
     clientKey: document.getElementById('cfgClientKey').value.trim(),
     sandbox: document.getElementById('cfgSandboxToggle').classList.contains('active'),
     googleMapsKey: document.getElementById('cfgGoogleMapsKey').value.trim()
   };
-  localStorage.setItem('fdc_config', JSON.stringify(config));
-  alert('Configuration saved! Changes will take effect on next page load.');
+  try {
+    var resp = await fetch('/api/config', { method: 'POST', headers: getAuthHeader(), body: JSON.stringify(config) });
+    if (resp.ok) {
+      alert('Configuration saved! Changes will take effect on next page load.');
+    } else {
+      alert('Failed to save configuration.');
+    }
+  } catch(e) { alert('Error saving configuration: ' + e.message); }
 }
 
 // ── DATA MANAGEMENT ──
-function exportAllData() {
+async function exportAllData() {
   var data = {
-    products: getProducts(),
-    orders: getOrders(),
-    config: JSON.parse(localStorage.getItem('fdc_config') || '{}'),
+    products: await getProducts(),
+    orders: await getOrders(),
+    config: {},
     exportDate: new Date().toISOString()
   };
+  try {
+    var cfgResp = await fetch('/api/config');
+    if (cfgResp.ok) data.config = await cfgResp.json();
+  } catch(e) {}
   downloadFile('fdc-stickers-backup.json', JSON.stringify(data, null, 2), 'application/json');
 }
 
@@ -2188,12 +2184,23 @@ function handleImport(e) {
   var file = e.target.files[0];
   if (!file) return;
   var reader = new FileReader();
-  reader.onload = function(ev) {
+  reader.onload = async function(ev) {
     try {
       var data = JSON.parse(ev.target.result);
-      if (data.products) saveProducts(data.products);
-      if (data.orders) saveOrders(data.orders);
-      if (data.config) localStorage.setItem('fdc_config', JSON.stringify(data.config));
+      if (data.products) {
+        for (var i = 0; i < data.products.length; i++) {
+          await saveProduct(data.products[i]);
+        }
+      }
+      if (data.orders) {
+        for (var i = 0; i < data.orders.length; i++) {
+          var o = data.orders[i];
+          await fetch('/api/orders', { method: 'POST', headers: getAuthHeader(), body: JSON.stringify(o) });
+        }
+      }
+      if (data.config) {
+        await fetch('/api/config', { method: 'POST', headers: getAuthHeader(), body: JSON.stringify(data.config) });
+      }
       alert('Data imported successfully! Reloading...');
       location.reload();
     } catch(err) {
@@ -2203,15 +2210,22 @@ function handleImport(e) {
   reader.readAsText(file);
 }
 
-function resetAllData() {
+async function resetAllData() {
   if (!confirm('⚠️ This will delete ALL products, orders, and settings. Are you sure?')) return;
   if (!confirm('FINAL WARNING: This cannot be undone. Continue?')) return;
-  localStorage.removeItem('fdc_products');
-  localStorage.removeItem('fdc_orders');
-  localStorage.removeItem('fdc_config');
-  localStorage.removeItem('fdc_cart');
-  alert('All data has been reset.');
-  location.reload();
+  try {
+    var products = await getProducts();
+    for (var i = 0; i < products.length; i++) {
+      await deleteProductFromDB(products[i].id);
+    }
+    var orders = await getOrders();
+    if (orders.length > 0) {
+      await deleteOrdersBulk(orders.map(function(o) { return o.id; }));
+    }
+    localStorage.removeItem('fdc_cart');
+    alert('All data has been reset.');
+    location.reload();
+  } catch(e) { alert('Error resetting data: ' + e.message); }
 }
 
 // ── UTILITIES ──

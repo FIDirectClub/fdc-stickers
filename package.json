@@ -4,6 +4,7 @@
   "description": "FDC Stickers — Official sticker shop for Firearms Direct Club",
   "private": true,
   "dependencies": {
+    "@vercel/postgres": "^0.10.0",
     "nodemailer": "^6.9.0"
   },
   "scripts": {
