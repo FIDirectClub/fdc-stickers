@@ -306,7 +306,7 @@
   }
   .cart-item-remove:hover { color:var(--red); }
   .cart-footer {
-    padding:24px 28px; border-top:2px solid var(--border); background:rgba(255,255,255,0.4);
+    padding:24px 28px; border-top:2px solid var(--border); background:rgba(255,255,255,0.4); position:relative; z-index:1001;
   }
   .cart-summary-row {
     display:flex; justify-content:space-between; font-family:'Barlow Condensed',sans-serif;
@@ -325,13 +325,68 @@
     text-decoration:none; display:block; text-align:center;
   }
   .checkout-btn:hover { background:var(--gold-bright); transform:translate(-1px,-1px); box-shadow:4px 4px 0 var(--border); }
+
+  /* === CHECKOUT MODAL === */
+  body.checkout-open { overflow: hidden; }
+  .checkout-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.85); z-index: 2000; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.3s; padding: 20px; }
+  .checkout-overlay.open { opacity: 1; pointer-events: auto; }
+  .checkout-modal { background: #e8e5dd; border: 2px solid var(--border); width: 100%; max-width: 640px; max-height: 90vh; overflow-y: auto; transform: translateY(20px); transition: transform 0.3s; }
+  .checkout-overlay.open .checkout-modal { transform: translateY(0); }
+  .checkout-header { padding: 24px 32px; border-bottom: 2px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+  .checkout-header h3 { font-family: 'Bangers', cursive; font-size: 28px; letter-spacing: 3px; color: var(--gold); }
+  .checkout-body { padding: 28px 32px 36px; }
+  .checkout-section-title { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 12px; letter-spacing: 4px; text-transform: uppercase; color: var(--gold); margin-bottom: 16px; margin-top: 32px; }
+  .checkout-section-title:first-child { margin-top: 0; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
+  .form-row.full { grid-template-columns: 1fr; }
+  .form-group { display: flex; flex-direction: column; }
+  .form-group label { font-family: 'Barlow Condensed', sans-serif; font-weight: 600; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: var(--steel-light); margin-bottom: 6px; }
+  .form-group input, .form-group select { background: rgba(255,255,255,0.6); border: 2px solid rgba(0,0,0,0.2); color: var(--white); font-family: 'Barlow', sans-serif; font-size: 15px; padding: 10px 14px; transition: border-color 0.3s; outline: none; border-radius: 0; -webkit-appearance: none; }
+  .form-group input:focus, .form-group select:focus { border-color: var(--gold); }
+  .form-group input.error, .form-group select.error { border-color: var(--red); }
+  .form-group select { cursor: pointer; background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23666' stroke-width='1.5' fill='none'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 36px; }
+  .checkout-order-summary { background: rgba(255,255,255,0.4); border: 2px solid var(--border); padding: 20px; }
+  .checkout-item-row { display: flex; justify-content: space-between; font-size: 14px; color: var(--steel-light); padding: 6px 0; }
+  .checkout-total-section { margin-top: 12px; padding-top: 12px; border-top: 2px solid var(--border); }
+  .checkout-total-row { display: flex; justify-content: space-between; font-family: 'Barlow Condensed', sans-serif; font-size: 14px; color: var(--steel-light); padding: 4px 0; }
+  .checkout-total-row.grand { font-size: 20px; color: var(--white); font-weight: 700; letter-spacing: 2px; margin-top: 8px; padding-top: 8px; border-top: 2px solid var(--border); }
+  .checkout-total-row.grand span:last-child { color: var(--blue); }
+  .place-order-btn { width: 100%; margin-top: 24px; background: var(--gold); color: #fff; font-family: 'Bangers', cursive; font-size: 22px; letter-spacing: 4px; padding: 18px; border: 2px solid var(--border); cursor: pointer; transition: all 0.3s; box-shadow: 3px 3px 0 var(--border); }
+  .place-order-btn:hover { background: var(--gold-bright); transform: translate(-1px,-1px); box-shadow: 4px 4px 0 var(--border); }
+  .place-order-btn:disabled { opacity: 0.4; cursor: not-allowed; background: #999; color: #ccc; border-color: #777; box-shadow: none; transform: none; }
+  .order-processing { text-align: center; padding: 40px 0; display: none; }
+  .order-processing .spinner { width: 48px; height: 48px; border: 3px solid var(--gold-dim); border-top-color: var(--gold); border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 20px; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .order-success { text-align: center; padding: 40px 20px; display: none; }
+  .order-success-icon { font-size: 64px; margin-bottom: 16px; }
+  .order-success h4 { font-family: 'Bangers', cursive; font-size: 36px; letter-spacing: 3px; color: var(--gold); margin-bottom: 12px; }
+  .order-success p { color: var(--steel-light); line-height: 1.6; }
+  .order-error { background: rgba(204,17,51,0.08); border: 2px solid var(--red); color: var(--red); padding: 12px 16px; margin-top: 16px; font-size: 14px; font-weight: 500; display: none; }
+  .tc-checkbox-wrapper { margin-top: 24px; padding: 16px 20px; background: rgba(255,204,0,0.1); border: 2px solid var(--border); }
+  .tc-checkbox-wrapper label { display: flex; align-items: flex-start; gap: 12px; cursor: pointer; font-size: 13px; color: var(--steel-light); line-height: 1.5; }
+  .tc-checkbox-wrapper input[type="checkbox"] { width: 20px; height: 20px; margin-top: 2px; flex-shrink: 0; accent-color: var(--gold); cursor: pointer; }
+  .tc-checkbox-wrapper a { color: var(--gold); text-decoration: underline; cursor: pointer; }
+  .tc-checkbox-wrapper.error { border-color: var(--red); animation: shake 0.4s ease; }
+  @keyframes shake { 0%,100%{transform:translateX(0)} 15%{transform:translateX(-6px)} 30%{transform:translateX(6px)} 45%{transform:translateX(-4px)} 60%{transform:translateX(4px)} 75%{transform:translateX(-2px)} }
+  .rules-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.85); z-index: 4000; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.3s; padding: 20px; }
+  .rules-overlay.open { opacity: 1; pointer-events: auto; }
+  .rules-modal { background: #e8e5dd; border: 2px solid var(--border); width: 100%; max-width: 720px; max-height: 85vh; display: flex; flex-direction: column; box-shadow: 6px 6px 0 rgba(0,0,0,0.2); }
+  .rules-modal-header { padding: 24px 28px; border-bottom: 2px solid var(--border); display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; }
+  .rules-modal-header h3 { font-family: 'Bangers', cursive; font-size: 28px; letter-spacing: 3px; color: var(--gold); }
+  .rules-modal-body { padding: 28px; overflow-y: auto; font-size: 13px; line-height: 1.8; color: var(--steel-light); }
+  .rules-modal-body h4 { font-family: 'Bangers', cursive; font-size: 20px; letter-spacing: 2px; color: var(--white); margin-top: 20px; margin-bottom: 6px; }
+  .rules-modal-body h4:first-child { margin-top: 0; }
+  .rules-modal-body p { margin-bottom: 10px; }
+  .rules-modal-body strong { color: var(--white); }
+  .btn-primary { background: var(--gold); color: #fff; font-family: 'Bangers', cursive; font-size: 18px; letter-spacing: 3px; padding: 14px 32px; border: 2px solid var(--border); cursor: pointer; transition: all 0.3s; }
+  .btn-primary:hover { background: var(--gold-bright); }
 </style>
 </head>
 <body>
 
 <nav>
   <a href="/" class="nav-brand">
-    <div class="nav-logo">FDC STICKERS<span>Firearms Direct Club &bull; Milton, FL</span></div>
+    <div class="nav-logo">FDC STICKERS<span>Firearms Direct Club</span></div>
   </a>
   <div class="nav-right">
     <a href="/#shop">Shop</a>
@@ -383,15 +438,77 @@
       <span>Total</span>
       <span class="cart-summary-value" id="cartTotal">$0.00</span>
     </div>
-    <a class="checkout-btn" href="/#checkout">Proceed to Checkout</a>
+    <button class="checkout-btn" onclick="openCheckout()">Proceed to Checkout</button>
   </div>
 </div>
+
+
+<!-- CHECKOUT MODAL -->
+<div class="checkout-overlay" id="checkoutOverlay">
+  <div class="checkout-modal">
+    <div class="checkout-header"><h3>Checkout</h3><button class="cart-close" onclick="closeCheckout()">&times;</button></div>
+    <div class="checkout-body" id="checkoutForm">
+      <div class="checkout-section-title">Contact Information</div>
+      <div class="form-row"><div class="form-group"><label for="coFirstName">First Name *</label><input type="text" id="coFirstName" required></div><div class="form-group"><label for="coLastName">Last Name *</label><input type="text" id="coLastName" required></div></div>
+      <div class="form-row full"><div class="form-group"><label for="coEmail">Email *</label><input type="email" id="coEmail" required></div></div>
+      <div class="form-row full"><div class="form-group"><label for="coPhone">Phone *</label><input type="tel" id="coPhone" placeholder="(555) 555-1234" required></div></div>
+      <div class="checkout-section-title">Shipping Address</div>
+      <div class="form-row full"><div class="form-group"><label for="coAddress">Street Address *</label><input type="text" id="coAddress" required autocomplete="street-address"></div></div>
+      <div class="form-row full"><div class="form-group"><label for="coAddress2">Apt / Suite / Unit</label><input type="text" id="coAddress2" placeholder="Optional"></div></div>
+      <div class="form-row"><div class="form-group"><label for="coCity">City *</label><input type="text" id="coCity" required></div><div class="form-group"><label for="coState">State *</label><select id="coState" required><option value="">Select State</option></select></div></div>
+      <div class="form-row"><div class="form-group"><label for="coZip">ZIP Code *</label><input type="text" id="coZip" required maxlength="10"></div></div>
+      <div class="checkout-section-title">Payment (Authorize.net)</div>
+      <div class="form-row full"><div class="form-group"><label for="coCardNumber">Card Number *</label><input type="text" id="coCardNumber" required maxlength="19" placeholder="1234 5678 9012 3456" autocomplete="cc-number"></div></div>
+      <div class="form-row"><div class="form-group"><label for="coExpMonth">Exp Month *</label><select id="coExpMonth" required><option value="">MM</option><option value="01">01</option><option value="02">02</option><option value="03">03</option><option value="04">04</option><option value="05">05</option><option value="06">06</option><option value="07">07</option><option value="08">08</option><option value="09">09</option><option value="10">10</option><option value="11">11</option><option value="12">12</option></select></div><div class="form-group"><label for="coExpYear">Exp Year *</label><select id="coExpYear" required><option value="">YYYY</option></select></div></div>
+      <div class="form-row"><div class="form-group"><label for="coCvv">CVV *</label><input type="text" id="coCvv" required maxlength="4" placeholder="123" autocomplete="cc-csc"></div><div class="form-group"><label for="coCardZip">Billing ZIP *</label><input type="text" id="coCardZip" required maxlength="10" placeholder="12345"></div></div>
+      <div class="checkout-section-title">Order Summary</div>
+      <div class="checkout-order-summary" id="checkoutSummary"></div>
+      <div class="tc-checkbox-wrapper" id="tcWrapper"><label><input type="checkbox" id="coAcceptTC"> I am 21 years of age or older, a legal resident of the lower 48 United States, and I have read and agree to the <a href="#" onclick="event.preventDefault();event.stopPropagation();openRulesModal();">Official Sweepstakes Rules</a>. I understand that each sticker purchase includes one (1) free entry into the corresponding firearm sweepstakes.</label></div>
+      <div class="order-error" id="orderError"></div>
+      <button class="place-order-btn" id="placeOrderBtn" onclick="placeOrder()">Place Order</button>
+    </div>
+    <div class="order-processing" id="orderProcessing"><div class="spinner"></div><p style="font-family:'Barlow Condensed',sans-serif;font-size:16px;letter-spacing:2px;color:var(--steel-light);">PROCESSING YOUR ORDER...</p><p style="margin-top:8px;font-size:13px;color:var(--steel);">Do not close this window.</p></div>
+    <div class="order-success" id="orderSuccess"><div class="order-success-icon">&#127881;</div><h4>You're Entered!</h4><p>Your sticker order is confirmed and your free sweepstakes entries are locked in.</p><p style="margin-top:12px;">Good luck. Somebody's winning a gun, and it might be you.</p><p style="margin-top:12px;color:var(--gold);font-family:'Barlow Condensed',sans-serif;letter-spacing:2px;">Order #<span id="orderNumber">&#8212;</span></p><button class="btn-primary" style="margin-top:24px;" onclick="closeCheckout();">Continue Browsing</button></div>
+  </div>
+</div>
+<!-- RULES MODAL -->
+<div class="rules-overlay" id="rulesOverlay"><div class="rules-modal"><div class="rules-modal-header"><h3>Official Sweepstakes Rules</h3><button class="cart-close" onclick="closeRulesModal()">&times;</button></div><div class="rules-modal-body"><h4>1. Introduction</h4><p>By entering any sweepstakes conducted by Firearms Direct Club, LLC, each participant agrees to these Rules. <strong>NO PURCHASE NECESSARY.</strong></p><h4>2. Eligibility</h4><p>Open only to legal residents of the lower 48 US, 21+ years of age.</p><h4>3-4. Entry</h4><p><strong>Online:</strong> Purchase the applicable Sticker for one free entry. <strong>Mail-In:</strong> Send info to FDC, 409 N. Pace Blvd., Pensacola, FL 32505.</p><h4>5-6. Drawing &amp; Prize</h4><p>Random drawing within 5 business days. One (1) Prize per Sweepstakes. No cash equivalent.</p><h4>7-8. Winner &amp; Taxes</h4><p>Notified by email/mail. 30 days to claim. All taxes are Winner's responsibility.</p><h4>9-12. Legal</h4><p>Participants release FDC from claims. Max liability $500. Florida law governs.</p><h4>13. Sponsor</h4><p><strong>Firearms Direct Club, LLC</strong><br>409 N. Pace Blvd., Pensacola, FL 32505</p></div></div></div>
 
 <footer>
   <p>&copy; 2025 Firearms Direct Club LLC. All rights reserved. <a href="/">FDC Stickers</a>&trade;</p>
 </footer>
 
 <script>
+
+// ── CHECKOUT CONFIG ──
+var CONFIG = {
+  AUTHNET_API_LOGIN_ID: '', AUTHNET_CLIENT_KEY: '', AUTHNET_SANDBOX: true,
+  FL_TAX_RATE: 0.075, FLAT_SHIPPING: 0, FREE_SHIPPING_THRESHOLD: 0,
+  ALLOWED_STATES: {'AL':'Alabama','AZ':'Arizona','AR':'Arkansas','CA':'California','CO':'Colorado','CT':'Connecticut','DE':'Delaware','FL':'Florida','GA':'Georgia','ID':'Idaho','IL':'Illinois','IN':'Indiana','IA':'Iowa','KS':'Kansas','KY':'Kentucky','LA':'Louisiana','ME':'Maine','MD':'Maryland','MA':'Massachusetts','MI':'Michigan','MN':'Minnesota','MS':'Mississippi','MO':'Missouri','MT':'Montana','NE':'Nebraska','NV':'Nevada','NH':'New Hampshire','NJ':'New Jersey','NM':'New Mexico','NY':'New York','NC':'North Carolina','ND':'North Dakota','OH':'Ohio','OK':'Oklahoma','OR':'Oregon','PA':'Pennsylvania','RI':'Rhode Island','SC':'South Carolina','SD':'South Dakota','TN':'Tennessee','TX':'Texas','UT':'Utah','VT':'Vermont','VA':'Virginia','WA':'Washington','WV':'West Virginia','WI':'Wisconsin','WY':'Wyoming','DC':'District of Columbia'},
+  FL_CODES: ['FL']
+};
+var acceptJSLoaded = false;
+function loadAcceptJS() {
+  if (acceptJSLoaded) return;
+  var isSandbox = CONFIG.AUTHNET_SANDBOX;
+  var url = isSandbox ? 'https://jstest.authorize.net/v1/Accept.js' : 'https://js.authorize.net/v1/Accept.js';
+  var s = document.createElement('script'); s.src = url; s.charset = 'utf-8';
+  s.onload = function() { acceptJSLoaded = true; };
+  document.head.appendChild(s);
+}
+async function loadConfig() {
+  try {
+    var r = await fetch('/api/config');
+    if (r.ok) {
+      var c = await r.json();
+      if (c.apiLoginId) CONFIG.AUTHNET_API_LOGIN_ID = c.apiLoginId;
+      if (c.clientKey) CONFIG.AUTHNET_CLIENT_KEY = c.clientKey;
+      if (c.sandbox !== undefined) CONFIG.AUTHNET_SANDBOX = c.sandbox;
+    }
+  } catch(e) {}
+  loadAcceptJS();
+}
+
 // ── PRODUCT DATABASE ──
 // Matches index.html — extended with full descriptions and specs
 var PRODUCTS = [];
@@ -682,10 +799,130 @@ function changeQty(d) {
   input.value = v;
 }
 
+
+// ── CART TOTALS ──
+function getCartTotals(state) {
+  var subtotal = 0;
+  cart.forEach(function(item) { var p = PRODUCTS.find(function(x) { return x.id === item.id; }); if (p) subtotal += p.price * item.qty; });
+  var tax = (state && CONFIG.FL_CODES.indexOf(state) >= 0) ? subtotal * CONFIG.FL_TAX_RATE : 0;
+  var shipping = subtotal >= CONFIG.FREE_SHIPPING_THRESHOLD ? 0 : CONFIG.FLAT_SHIPPING;
+  if (cart.length === 0) shipping = 0;
+  return { subtotal: subtotal, tax: tax, shipping: shipping, total: subtotal + tax + shipping };
+}
+function openCheckout() {
+  if (cart.length === 0) return;
+  closeCart();
+  document.getElementById('checkoutOverlay').classList.add('open');
+  document.body.classList.add('checkout-open');
+  document.getElementById('checkoutForm').style.display = 'block';
+  document.getElementById('orderProcessing').style.display = 'none';
+  document.getElementById('orderSuccess').style.display = 'none';
+  document.getElementById('orderError').style.display = 'none';
+  document.getElementById('coAcceptTC').checked = false;
+  document.getElementById('placeOrderBtn').disabled = true;
+  updateCheckoutSummary();
+}
+function closeCheckout() { document.getElementById('checkoutOverlay').classList.remove('open'); document.body.classList.remove('checkout-open'); }
+function updateCheckoutSummary() {
+  var state = document.getElementById('coState').value;
+  var totals = getCartTotals(state);
+  var html = '';
+  cart.forEach(function(item) { var p = PRODUCTS.find(function(x) { return x.id === item.id; }); if (!p) return; html += '<div class="checkout-item-row"><span>' + p.name + ' x ' + item.qty + '</span><span>$' + (p.price * item.qty).toFixed(2) + '</span></div>'; });
+  html += '<div class="checkout-total-section"><div class="checkout-total-row"><span>Subtotal</span><span>$' + totals.subtotal.toFixed(2) + '</span></div>';
+  if (totals.tax > 0) html += '<div class="checkout-total-row"><span>FL Sales Tax (7.5%)</span><span>$' + totals.tax.toFixed(2) + '</span></div>';
+  html += '<div class="checkout-total-row"><span>Shipping</span><span>' + (totals.shipping === 0 ? 'FREE' : '$' + totals.shipping.toFixed(2)) + '</span></div>';
+  html += '<div class="checkout-total-row grand"><span>Total</span><span>$' + totals.total.toFixed(2) + '</span></div></div>';
+  document.getElementById('checkoutSummary').innerHTML = html;
+}
+function placeOrder() {
+  if (!validateCheckoutForm()) return;
+  if (!document.getElementById('coAcceptTC').checked) { document.getElementById('tcWrapper').classList.add('error'); setTimeout(function() { document.getElementById('tcWrapper').classList.remove('error'); }, 600); showOrderError('You must accept the Official Sweepstakes Rules.'); return; }
+  document.getElementById('placeOrderBtn').disabled = true;
+  document.getElementById('orderError').style.display = 'none';
+  if (CONFIG.AUTHNET_API_LOGIN_ID && CONFIG.AUTHNET_CLIENT_KEY) tokenizeAndCharge(); else simulatePayment();
+}
+function tokenizeAndCharge() {
+  if (typeof Accept === 'undefined') { showOrderError('Payment system loading. Please wait.'); document.getElementById('placeOrderBtn').disabled = false; return; }
+  document.getElementById('checkoutForm').style.display = 'none';
+  document.getElementById('orderProcessing').style.display = 'block';
+  var authData = { clientKey: CONFIG.AUTHNET_CLIENT_KEY, apiLoginID: CONFIG.AUTHNET_API_LOGIN_ID };
+  var cardData = { cardNumber: document.getElementById('coCardNumber').value.replace(/\s/g, ''), month: document.getElementById('coExpMonth').value, year: document.getElementById('coExpYear').value, cardCode: document.getElementById('coCvv').value, zip: document.getElementById('coCardZip').value };
+  Accept.dispatchData({ authData: authData, cardData: cardData }, function(response) {
+    if (response.messages.resultCode === 'Error') { var errs = response.messages.message.map(function(m) { return m.text; }).join(', '); document.getElementById('checkoutForm').style.display = 'block'; document.getElementById('orderProcessing').style.display = 'none'; document.getElementById('placeOrderBtn').disabled = false; showOrderError(errs); return; }
+    chargeViaServer(response.opaqueData);
+  });
+}
+function chargeViaServer(opaqueData) {
+  var state = document.getElementById('coState').value; var totals = getCartTotals(state);
+  var orderData = { opaqueData: opaqueData, amount: totals.total.toFixed(2), tax: totals.tax.toFixed(2), shipping: totals.shipping.toFixed(2),
+    customer: { firstName: document.getElementById('coFirstName').value, lastName: document.getElementById('coLastName').value, email: document.getElementById('coEmail').value, phone: document.getElementById('coPhone').value },
+    shippingAddress: { address: document.getElementById('coAddress').value, address2: document.getElementById('coAddress2').value, city: document.getElementById('coCity').value, state: state, zip: document.getElementById('coZip').value },
+    items: cart.map(function(item) { var p = PRODUCTS.find(function(x) { return x.id === item.id; }); return { id: item.id, name: p ? p.name : item.id, price: p ? p.price : 0, qty: item.qty }; }) };
+  fetch('/api/charge', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(orderData) })
+  .then(function(res) { return res.json(); }).then(function(data) {
+    if (data.success) { showOrderSuccess(data.orderId || generateOrderId()); } else { document.getElementById('checkoutForm').style.display = 'block'; document.getElementById('orderProcessing').style.display = 'none'; document.getElementById('placeOrderBtn').disabled = false; showOrderError(data.error || 'Payment failed.'); }
+  }).catch(function() { document.getElementById('checkoutForm').style.display = 'block'; document.getElementById('orderProcessing').style.display = 'none'; document.getElementById('placeOrderBtn').disabled = false; showOrderError('Network error.'); });
+}
+function simulatePayment() {
+  document.getElementById('checkoutForm').style.display = 'none'; document.getElementById('orderProcessing').style.display = 'block';
+  var state = document.getElementById('coState').value; var totals = getCartTotals(state); var orderId = generateOrderId();
+  var order = { id: orderId, date: new Date().toISOString(),
+    customer: { firstName: document.getElementById('coFirstName').value, lastName: document.getElementById('coLastName').value, email: document.getElementById('coEmail').value, phone: document.getElementById('coPhone').value },
+    shippingAddress: { address: document.getElementById('coAddress').value, address2: document.getElementById('coAddress2').value, city: document.getElementById('coCity').value, state: state, zip: document.getElementById('coZip').value },
+    items: cart.map(function(item) { var p = PRODUCTS.find(function(x) { return x.id === item.id; }); return { id: item.id, name: p ? p.name : item.id, price: p ? p.price : 0, qty: item.qty }; }),
+    subtotal: totals.subtotal, tax: totals.tax, shipping: totals.shipping, total: totals.total, status: 'confirmed', paymentMethod: 'demo' };
+  fetch('/api/orders', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(order) }).catch(function() {});
+  setTimeout(function() { showOrderSuccess(orderId); }, 2000);
+}
+function showOrderSuccess(orderId) {
+  var state = document.getElementById('coState').value; var totals = getCartTotals(state);
+  var emailData = { orderId: orderId,
+    customer: { firstName: document.getElementById('coFirstName').value, lastName: document.getElementById('coLastName').value, email: document.getElementById('coEmail').value, phone: document.getElementById('coPhone').value },
+    shippingAddress: { address: document.getElementById('coAddress').value, address2: document.getElementById('coAddress2').value, city: document.getElementById('coCity').value, state: state, zip: document.getElementById('coZip').value },
+    items: cart.map(function(item) { var p = PRODUCTS.find(function(x) { return x.id === item.id; }); return { id: item.id, name: p ? p.name : item.id, price: p ? p.price : 0, qty: item.qty, prize: p ? p.prize : '' }; }),
+    subtotal: totals.subtotal, tax: totals.tax, shipping: totals.shipping, total: totals.total };
+  document.getElementById('orderProcessing').style.display = 'none'; document.getElementById('orderSuccess').style.display = 'block'; document.getElementById('orderNumber').textContent = orderId;
+  resetAfterOrder();
+  fetch('/api/send-email', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(emailData) }).catch(function() {});
+}
+function showOrderError(msg) { document.getElementById('orderProcessing').style.display = 'none'; document.getElementById('checkoutForm').style.display = 'block'; document.getElementById('orderError').textContent = msg; document.getElementById('orderError').style.display = 'block'; document.getElementById('placeOrderBtn').disabled = false; }
+function resetAfterOrder() { cart = []; saveCart(); updateCartCount(); var inputs = document.querySelectorAll('#checkoutForm input, #checkoutForm select'); inputs.forEach(function(el) { if (el.tagName === 'SELECT') el.selectedIndex = 0; else el.value = ''; }); }
+function generateOrderId() { return 'FDC-' + Date.now().toString(36).toUpperCase() + '-' + Math.random().toString(36).substr(2, 4).toUpperCase(); }
+function validateCheckoutForm() {
+  var valid = true;
+  ['coFirstName','coLastName','coEmail','coPhone','coAddress','coCity','coState','coZip','coCardNumber','coExpMonth','coExpYear','coCvv','coCardZip'].forEach(function(id) { var el = document.getElementById(id); if (!el.value.trim()) { el.classList.add('error'); valid = false; } else { el.classList.remove('error'); } });
+  var email = document.getElementById('coEmail');
+  if (email.value && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value)) { email.classList.add('error'); valid = false; }
+  var phone = document.getElementById('coPhone');
+  if (phone.value.replace(/\D/g, '').length < 10) { phone.classList.add('error'); valid = false; }
+  var state = document.getElementById('coState').value;
+  if (state && !CONFIG.ALLOWED_STATES[state]) { document.getElementById('coState').classList.add('error'); showOrderError('Sorry, we only ship to the lower 48.'); valid = false; }
+  if (!valid) showOrderError('Please fill in all required fields.');
+  return valid;
+}
+function populateStates() { var sel = document.getElementById('coState'); Object.keys(CONFIG.ALLOWED_STATES).sort().forEach(function(code) { var o = document.createElement('option'); o.value = code; o.textContent = CONFIG.ALLOWED_STATES[code]; sel.appendChild(o); }); }
+function populateExpYears() { var sel = document.getElementById('coExpYear'); var yr = new Date().getFullYear(); for (var i = 0; i < 12; i++) { var o = document.createElement('option'); o.value = (yr+i).toString(); o.textContent = (yr+i).toString(); sel.appendChild(o); } }
+function setupCardFormatting() { document.getElementById('coCardNumber').addEventListener('input', function(e) { var v = e.target.value.replace(/\D/g, '').substring(0, 16); var f = v.match(/.{1,4}/g); e.target.value = f ? f.join(' ') : ''; }); }
+function setupPhoneFormatting() { document.getElementById('coPhone').addEventListener('input', function(e) { var v = e.target.value.replace(/\D/g, '').substring(0, 10); if (v.length >= 7) e.target.value = '(' + v.substring(0,3) + ') ' + v.substring(3,6) + '-' + v.substring(6); else if (v.length >= 4) e.target.value = '(' + v.substring(0,3) + ') ' + v.substring(3); else if (v.length > 0) e.target.value = '(' + v; }); }
+function openRulesModal() { document.getElementById('rulesOverlay').classList.add('open'); }
+function closeRulesModal() { document.getElementById('rulesOverlay').classList.remove('open'); }
+
 // ── INIT ──
 (async function() {
+  await loadConfig();
   await loadProducts();
   updateCartCount();
+  populateStates();
+  populateExpYears();
+  setupCardFormatting();
+  setupPhoneFormatting();
+  document.getElementById('coState').addEventListener('change', updateCheckoutSummary);
+  document.getElementById('coZip').addEventListener('input', function() { var cz = document.getElementById('coCardZip'); if (!cz.dataset.manuallyEdited) cz.value = this.value; });
+  document.getElementById('coCardZip').addEventListener('input', function() { this.dataset.manuallyEdited = 'true'; });
+  document.getElementById('coAcceptTC').addEventListener('change', function() { document.getElementById('placeOrderBtn').disabled = !this.checked; });
+  document.addEventListener('keydown', function(e) { if (e.key === 'Escape') { closeRulesModal(); closeCheckout(); } });
+  document.getElementById('rulesOverlay').addEventListener('click', function(e) { if (e.target === this) closeRulesModal(); });
+  document.getElementById('checkoutOverlay').addEventListener('click', function(e) { if (e.target === this) closeCheckout(); });
 
   var params = new URLSearchParams(window.location.search);
   var productId = params.get('id');

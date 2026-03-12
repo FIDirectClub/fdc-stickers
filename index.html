@@ -4,9 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>FDC Stickers — Buy a Sticker. Win a Gun. | Firearms Direct Club</title>
-<meta name="description" content="FDC Stickers — Limited edition stickers from Firearms Direct Club. Every sticker includes a free sweepstakes entry to win the firearm it represents. Milton, Florida.">
+<meta name="description" content="FDC Stickers — Limited edition stickers from Firearms Direct Club. Every sticker includes a free sweepstakes entry to win the firearm it represents. ">
 <meta property="og:title" content="FDC Stickers — Buy a Sticker. Win a Gun.">
-<meta property="og:description" content="Limited edition stickers from Firearms Direct Club. Every sticker includes a free sweepstakes entry. Milton, FL.">
+<meta property="og:description" content="Limited edition stickers from Firearms Direct Club. Every sticker includes a free sweepstakes entry. ">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" type="image/png" href="/favicon.png">
@@ -804,6 +804,8 @@
     padding: 24px 28px;
     border-top: 2px solid var(--border);
     background: rgba(255,255,255,0.4);
+    position: relative;
+    z-index: 1001;
   }
 
   .cart-summary-row {
@@ -1505,7 +1507,7 @@
   <a href="#" class="nav-brand" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;">
     <div class="nav-logo">
       FDC STICKERS
-      <span>Firearms Direct Club &bull; Milton, FL</span>
+      <span>Firearms Direct Club</span>
     </div>
   </a>
   <ul class="nav-links">
@@ -1537,7 +1539,7 @@
   <a href="#rules">Rules</a>
   <a href="#" onclick="openCart();closeMobileMenu();return false;">Cart</a>
   <div class="mobile-menu-footer">
-    <p>Milton, FL &bull; Est. 2025</p>
+    <p>Est. 2025</p>
   </div>
 </div>
 
@@ -1639,7 +1641,7 @@
     <div class="footer-brand">
       <div class="nav-logo" style="margin-bottom:12px;">
         FDC STICKERS
-        <span>Firearms Direct Club &bull; Milton, FL</span>
+        <span>Firearms Direct Club</span>
       </div>
       <p>The official sweepstakes sticker shop of Firearms Direct Club. Buy a limited edition sticker — each purchase includes a free entry to win the gun. It's that simple.</p>
       <p style="margin-top:12px;"><a href="mailto:stickers@firearmsdirectclub.com" style="color:var(--gold);text-decoration:none;">stickers@firearmsdirectclub.com</a></p>
@@ -2090,11 +2092,6 @@ document.addEventListener('DOMContentLoaded', async function() {
   if (window.innerWidth <= 768) {
     document.getElementById('mobileCartBtn').style.display = 'block';
   }
-  // Auto-open checkout if arriving from product page with #checkout hash
-  if (window.location.hash === '#checkout' && cart.length > 0) {
-    setTimeout(function() { openCheckout(); }, 100);
-  }
-
   window.addEventListener('resize', function() {
     document.getElementById('mobileCartBtn').style.display = window.innerWidth <= 768 ? 'block' : 'none';
   });
