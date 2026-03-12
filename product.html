@@ -258,7 +258,7 @@
   .cart-overlay.open { opacity:1; pointer-events:auto; }
   .cart-drawer {
     position:fixed; top:0; right:-480px; width:480px; max-width:100vw;
-    height:100vh; background:#e8e5dd; border-left:2px solid var(--border);
+    height:100vh; height:100dvh; background:#e8e5dd; border-left:2px solid var(--border);
     z-index:1000; display:flex; flex-direction:column;
     transition:right 0.4s cubic-bezier(0.25,0.46,0.45,0.94);
   }
@@ -330,7 +330,7 @@
   body.checkout-open { overflow: hidden; }
   .checkout-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.85); z-index: 2000; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.3s; padding: 20px; }
   .checkout-overlay.open { opacity: 1; pointer-events: auto; }
-  .checkout-modal { background: #e8e5dd; border: 2px solid var(--border); width: 100%; max-width: 640px; max-height: 90vh; overflow-y: auto; transform: translateY(20px); transition: transform 0.3s; }
+  .checkout-modal { background: #e8e5dd; border: 2px solid var(--border); width: 100%; max-width: 640px; max-height: 90vh; max-height: 90dvh; overflow-y: auto; transform: translateY(20px); transition: transform 0.3s; }
   .checkout-overlay.open .checkout-modal { transform: translateY(0); }
   .checkout-header { padding: 24px 32px; border-bottom: 2px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
   .checkout-header h3 { font-family: 'Bangers', cursive; font-size: 28px; letter-spacing: 3px; color: var(--gold); }
