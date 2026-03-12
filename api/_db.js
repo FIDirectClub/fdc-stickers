@@ -1,7 +1,11 @@
 // /api/_db.js — Shared database helper, schema init, and auth verification
 // Underscore prefix means Vercel won’t expose this as an API endpoint
-const { sql } = require('@vercel/postgres');
+const { neon } = require('@neondatabase/serverless');
 const crypto = require('crypto');
+
+// Create sql tagged template function with fullResults mode
+// so return format matches { rows: [...], rowCount: N } like pg
+const sql = neon(process.env.POSTGRES_URL || process.env.DATABASE_URL, { fullResults: true });
 
 // ── SCHEMA INITIALIZATION ──
 async function initSchema() {

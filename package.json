@@ -1,11 +1,11 @@
 {
   "name": "fdc-stickers",
   "version": "1.0.0",
-  "description": "FDC Stickers — Official sticker shop for Firearms Direct Club",
+  "description": "FDC Stickers \u00e2\u20ac\u201d Official sticker shop for Firearms Direct Club",
   "private": true,
   "dependencies": {
-    "@vercel/postgres": "^0.10.0",
-    "nodemailer": "^6.9.0"
+    "nodemailer": "^6.9.0",
+    "@neondatabase/serverless": "^0.10.0"
   },
   "scripts": {
     "dev": "npx serve .",
