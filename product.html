@@ -423,7 +423,7 @@
     <div class="cart-empty" id="cartEmpty">
       <div class="cart-empty-icon">🏆</div>
       <p>No stickers yet.</p>
-      <p style="margin-top:8px;font-size:13px;">Each sticker includes a free sweepstakes entry.</p>
+      <p style="margin-top:8px;font-size:13px;">Each sticker includes a free giveaway entry.</p>
     </div>
   </div>
   <div class="cart-footer" id="cartFooter" style="display:none;">
@@ -464,16 +464,16 @@
       <div class="form-row"><div class="form-group"><label for="coCvv">CVV *</label><input type="text" id="coCvv" required maxlength="4" placeholder="123" autocomplete="cc-csc"></div><div class="form-group"><label for="coCardZip">Billing ZIP *</label><input type="text" id="coCardZip" required maxlength="10" placeholder="12345"></div></div>
       <div class="checkout-section-title">Order Summary</div>
       <div class="checkout-order-summary" id="checkoutSummary"></div>
-      <div class="tc-checkbox-wrapper" id="tcWrapper"><label><input type="checkbox" id="coAcceptTC"><span>I am 21 years of age or older, a legal resident of the lower 48 United States, and I have read and agree to the <a href="#" onclick="event.preventDefault();event.stopPropagation();openRulesModal();">Official Sweepstakes Rules</a>. I understand that each sticker purchase includes one (1) free entry into the corresponding firearm sweepstakes.</span></label></div>
+      <div class="tc-checkbox-wrapper" id="tcWrapper"><label><input type="checkbox" id="coAcceptTC"><span>I am 21 years of age or older, a legal resident of the lower 48 United States, and I have read and agree to the <a href="#" onclick="event.preventDefault();event.stopPropagation();openRulesModal();">Official Giveaway Rules</a>. I understand that each sticker purchase includes one (1) free entry into the corresponding firearm giveaway.</span></label></div>
       <div class="order-error" id="orderError"></div>
       <button class="place-order-btn" id="placeOrderBtn" onclick="placeOrder()">Place Order</button>
     </div>
     <div class="order-processing" id="orderProcessing"><div class="spinner"></div><p style="font-family:'Barlow Condensed',sans-serif;font-size:16px;letter-spacing:2px;color:var(--steel-light);">PROCESSING YOUR ORDER...</p><p style="margin-top:8px;font-size:13px;color:var(--steel);">Do not close this window.</p></div>
-    <div class="order-success" id="orderSuccess"><div class="order-success-icon">&#127881;</div><h4>You're Entered!</h4><p>Your sticker order is confirmed and your free sweepstakes entries are locked in.</p><p style="margin-top:12px;">Good luck. Somebody's winning a gun, and it might be you.</p><p style="margin-top:12px;color:var(--gold);font-family:'Barlow Condensed',sans-serif;letter-spacing:2px;">Order #<span id="orderNumber">&#8212;</span></p><p style="margin-top:16px;"><a id="orderStatusLink" href="/order" style="color:var(--gold);text-decoration:underline;font-size:14px;">View Order Status</a></p><button class="btn-primary" style="margin-top:24px;" onclick="closeCheckout();">Continue Browsing</button></div>
+    <div class="order-success" id="orderSuccess"><div class="order-success-icon">&#127881;</div><h4>You're Entered!</h4><p>Your sticker order is confirmed and your free giveaway entries are locked in.</p><p style="margin-top:12px;">Good luck. Somebody's winning a gun, and it might be you.</p><p style="margin-top:12px;color:var(--gold);font-family:'Barlow Condensed',sans-serif;letter-spacing:2px;">Order #<span id="orderNumber">&#8212;</span></p><p style="margin-top:16px;"><a id="orderStatusLink" href="/order" style="color:var(--gold);text-decoration:underline;font-size:14px;">View Order Status</a></p><button class="btn-primary" style="margin-top:24px;" onclick="closeCheckout();">Continue Browsing</button></div>
   </div>
 </div>
 <!-- RULES MODAL -->
-<div class="rules-overlay" id="rulesOverlay"><div class="rules-modal"><div class="rules-modal-header"><h3>Official Sweepstakes Rules</h3><button class="cart-close" onclick="closeRulesModal()">&times;</button></div><div class="rules-modal-body"><h4>1. Introduction</h4><p>By entering any sweepstakes conducted by Firearms Direct Club, LLC, each participant agrees to these Rules. <strong>NO PURCHASE NECESSARY.</strong></p><h4>2. Eligibility</h4><p>Open only to legal residents of the lower 48 US, 21+ years of age.</p><h4>3-4. Entry</h4><p><strong>Online:</strong> Purchase the applicable Sticker for one free entry. <strong>Mail-In:</strong> Send info to FDC, 409 N. Pace Blvd., Pensacola, FL 32505.</p><h4>5-6. Drawing &amp; Prize</h4><p>Random drawing within 5 business days. One (1) Prize per Sweepstakes. No cash equivalent.</p><h4>7-8. Winner &amp; Taxes</h4><p>Notified by email/mail. 30 days to claim. All taxes are Winner's responsibility.</p><h4>9-12. Legal</h4><p>Participants release FDC from claims. Max liability $500. Florida law governs.</p><h4>13. Sponsor</h4><p><strong>Firearms Direct Club, LLC</strong><br>409 N. Pace Blvd., Pensacola, FL 32505</p></div></div></div>
+<div class="rules-overlay" id="rulesOverlay"><div class="rules-modal"><div class="rules-modal-header"><h3>Official Giveaway Rules</h3><button class="cart-close" onclick="closeRulesModal()">&times;</button></div><div class="rules-modal-body"><h4>1. Introduction</h4><p>By entering any giveaway conducted by Firearms Direct Club, LLC, each participant agrees to these Rules. <strong>NO PURCHASE NECESSARY.</strong></p><h4>2. Eligibility</h4><p>Open only to legal residents of the lower 48 US, 21+ years of age.</p><h4>3-4. Entry</h4><p><strong>Online:</strong> Purchase the applicable Sticker for one free entry. <strong>Mail-In:</strong> Send info to FDC, 409 N. Pace Blvd., Pensacola, FL 32505.</p><h4>5-6. Drawing &amp; Prize</h4><p>Random drawing within 5 business days. One (1) Prize per Giveaway. No cash equivalent.</p><h4>7-8. Winner &amp; Taxes</h4><p>Notified by email/mail. 30 days to claim. All taxes are Winner's responsibility.</p><h4>9-12. Legal</h4><p>Participants release FDC from claims. Max liability $500. Florida law governs.</p><h4>13. Sponsor</h4><p><strong>Firearms Direct Club, LLC</strong><br>409 N. Pace Blvd., Pensacola, FL 32505</p></div></div></div>
 
 <footer>
   <p>&copy; 2025 Firearms Direct Club LLC. All rights reserved. <a href="/">FDC Stickers</a>&trade; &middot; <a href="/order" style="color:var(--gold);">Check Order Status</a> &middot; <a href="/privacy" style="color:var(--gold);">Privacy</a> &middot; <a href="/returns" style="color:var(--gold);">Returns</a></p>
@@ -539,15 +539,15 @@ function getDefaultProducts() {
     {
       id:'glock-19-gen5', name:'Glock 19 Gen 5 Sticker', price:9.99, category:'pistols', image:'', badge:'hot', stock:200,
       tagline:'America\'s favorite carry gun could be yours.',
-      description:'Limited edition FDC sticker — includes a free entry to win a Glock 19 Gen 5 (ARV $549). 4" premium vinyl. Includes free sweepstakes entry.',
-      fullDescription:'<p>The Glock 19 Gen 5 needs no introduction. It\'s the gold standard of concealed carry, trusted by law enforcement and civilians worldwide. And now, one lucky FDC Stickers customer is going to win one — for the price of a sticker.</p><p>This limited edition 4-inch premium vinyl sticker features a custom FDC design and your purchase includes one free entry into the Glock 19 Gen 5 sweepstakes. The more stickers you buy, the more entries you get.</p>',
+      description:'Limited edition FDC sticker — includes a free entry to win a Glock 19 Gen 5 (ARV $549). 4" premium vinyl. Includes free giveaway entry.',
+      fullDescription:'<p>The Glock 19 Gen 5 needs no introduction. It\'s the gold standard of concealed carry, trusted by law enforcement and civilians worldwide. And now, one lucky FDC Stickers customer is going to win one — for the price of a sticker.</p><p>This limited edition 4-inch premium vinyl sticker features a custom FDC design and your purchase includes one free entry into the Glock 19 Gen 5 giveaway. The more stickers you buy, the more entries you get.</p>',
       prize:'Glock 19 Gen 5', prizeValue:549, prizeType:'Pistol — 9mm', entries:200, entriesRemaining:200,
       specs:{ prize:'Glock 19 Gen 5', caliber:'9mm', prizeARV:'$549', stickerSize:'4" × 4"', entries:'200 Max', material:'Premium Vinyl' }
     },
     {
       id:'sig-p365', name:'SIG P365 Sticker', price:9.99, category:'pistols', image:'', badge:'new', stock:150,
       tagline:'Macro performance. Micro sticker price.',
-      description:'Limited edition FDC sticker — includes a free entry to win a SIG Sauer P365 (ARV $499). 4" die-cut vinyl. Includes free sweepstakes entry.',
+      description:'Limited edition FDC sticker — includes a free entry to win a SIG Sauer P365 (ARV $499). 4" die-cut vinyl. Includes free giveaway entry.',
       fullDescription:'<p>The SIG P365 redefined what a micro-compact pistol could be. High capacity, smooth shooting, and endlessly reliable — this is the gun that changed the CCW game forever.</p><p>Pick up this limited edition die-cut vinyl sticker and you\'re automatically entered to win a SIG Sauer P365. Each sticker = one free entry. Stack your odds.</p>',
       prize:'SIG Sauer P365', prizeValue:499, prizeType:'Pistol — 9mm', entries:150, entriesRemaining:150,
       specs:{ prize:'SIG Sauer P365', caliber:'9mm', prizeARV:'$499', stickerSize:'4" × 3"', entries:'150 Max', material:'Die-Cut Vinyl' }
@@ -564,15 +564,15 @@ function getDefaultProducts() {
       id:'ar15-psa', name:'PSA AR-15 Sticker', price:14.99, category:'rifles', image:'', badge:'hot', stock:100,
       tagline:'The modern musket. The original freedom stick.',
       description:'Limited edition FDC sticker — includes a free entry to win a Palmetto State Armory AR-15 (ARV $699). 5" premium vinyl.',
-      fullDescription:'<p>The AR-15 is America\'s most popular rifle for a reason. This Palmetto State Armory PA-15 is a rock-solid, no-frills build that runs like a sewing machine and looks good doing it.</p><p>This 5-inch premium vinyl sticker features a custom FDC rifle design. Each purchase includes one free entry into the AR-15 sweepstakes draw.</p>',
+      fullDescription:'<p>The AR-15 is America\'s most popular rifle for a reason. This Palmetto State Armory PA-15 is a rock-solid, no-frills build that runs like a sewing machine and looks good doing it.</p><p>This 5-inch premium vinyl sticker features a custom FDC rifle design. Each purchase includes one free entry into the AR-15 giveaway draw.</p>',
       prize:'PSA PA-15 16" AR-15', prizeValue:699, prizeType:'Rifle — 5.56 NATO', entries:100, entriesRemaining:100,
       specs:{ prize:'PSA PA-15 AR-15', caliber:'5.56 NATO', prizeARV:'$699', stickerSize:'5" × 2"', entries:'100 Max', material:'Premium Vinyl' }
     },
     {
       id:'henry-lever-action', name:'Henry Big Boy Sticker', price:14.99, category:'rifles', image:'', badge:'new', stock:75,
-      tagline:'Cowboy action meets modern sweepstakes.',
+      tagline:'Cowboy action meets modern giveaway.',
       description:'Limited edition FDC sticker — includes a free entry to win a Henry Big Boy Classic .44 Mag (ARV $899). 5" die-cut vinyl.',
-      fullDescription:'<p>The Henry Big Boy Classic in .44 Magnum is a lever-action work of art. Brass receiver, American walnut stock, and the smoothest action in the business.</p><p>This 5-inch die-cut sticker captures the spirit of the American West. One purchase = one free sweepstakes entry. The highest prize value in the shop.</p>',
+      fullDescription:'<p>The Henry Big Boy Classic in .44 Magnum is a lever-action work of art. Brass receiver, American walnut stock, and the smoothest action in the business.</p><p>This 5-inch die-cut sticker captures the spirit of the American West. One purchase = one free giveaway entry. The highest prize value in the shop.</p>',
       prize:'Henry Big Boy Classic .44 Mag', prizeValue:899, prizeType:'Lever Action — .44 Mag', entries:75, entriesRemaining:75,
       specs:{ prize:'Henry Big Boy Classic', caliber:'.44 Magnum', prizeARV:'$899', stickerSize:'5" × 2"', entries:'75 Max', material:'Die-Cut Vinyl' }
     },
@@ -588,7 +588,7 @@ function getDefaultProducts() {
       id:'ruger-1022', name:'Ruger 10/22 Sticker', price:7.99, category:'rifles', image:'', badge:'', stock:300,
       tagline:'Everybody\'s first. Could be your next.',
       description:'Limited edition FDC sticker — includes a free entry to win a Ruger 10/22 Carbine (ARV $309). 4" premium vinyl.',
-      fullDescription:'<p>The Ruger 10/22 is the rifle that taught America to shoot. Lightweight, reliable, and endlessly customizable — it\'s the perfect first gun, the perfect plinking gun, and the perfect prize.</p><p>This sticker purchase includes a free sweepstakes entry. With 300 max entries, the odds are better than most giveaways you\'ll find.</p>',
+      fullDescription:'<p>The Ruger 10/22 is the rifle that taught America to shoot. Lightweight, reliable, and endlessly customizable — it\'s the perfect first gun, the perfect plinking gun, and the perfect prize.</p><p>This sticker purchase includes a free giveaway entry. With 300 max entries, the odds are better than most giveaways you\'ll find.</p>',
       prize:'Ruger 10/22 Carbine', prizeValue:309, prizeType:'Rifle — .22 LR', entries:300, entriesRemaining:300,
       specs:{ prize:'Ruger 10/22 Carbine', caliber:'.22 LR', prizeARV:'$309', stickerSize:'4" × 3"', entries:'300 Max', material:'Premium Vinyl' }
     },
@@ -663,7 +663,7 @@ function updateCartUI() {
   var footerEl = document.getElementById('cartFooter');
 
   if (cart.length === 0) {
-    container.innerHTML = '<div class="cart-empty"><div class="cart-empty-icon">🏆</div><p>No stickers yet.</p><p style="margin-top:8px;font-size:13px;">Each sticker includes a free sweepstakes entry.</p></div>';
+    container.innerHTML = '<div class="cart-empty"><div class="cart-empty-icon">🏆</div><p>No stickers yet.</p><p style="margin-top:8px;font-size:13px;">Each sticker includes a free giveaway entry.</p></div>';
     footerEl.style.display = 'none';
     return;
   }
@@ -763,7 +763,7 @@ function renderProduct(product) {
         '</div>' +
         '<button class="pdp-add-btn" id="pdpAddBtn" onclick="addToCartPDP(\'' + product.id + '\', getQty())"' + (oos ? ' disabled' : '') + '>' + (oos ? 'SOLD OUT' : 'ADD TO CART — $' + product.price.toFixed(2) + '/ea') + '</button>' +
       '</div>' +
-      '<div class="shipping-note">🏆 Each sticker purchased includes a free sweepstakes entry for the prize firearm shown above. Stickers ship free to the lower 48 once all entries are sold and the winner is drawn. FL orders include 7.5% sales tax. No purchase necessary — <a href="/#rules" style="color:var(--gold);">see Official Rules</a>.</div>' +
+      '<div class="shipping-note">🏆 Each sticker purchased includes a free giveaway entry for the prize firearm shown above. Stickers ship free to the lower 48 once all entries are sold and the winner is drawn. FL orders include 7.5% sales tax. No purchase necessary — <a href="/#rules" style="color:var(--gold);">see Official Rules</a>.</div>' +
       '<div class="product-description"><h3>About This Giveaway</h3>' + (product.fullDescription || '<p>' + product.description + '</p>') + '</div>' +
       (specsHtml ? '<div class="product-specs">' + specsHtml + '</div>' : '') +
     '</div>' +
@@ -837,7 +837,7 @@ function updateCheckoutSummary() {
 }
 function placeOrder() {
   if (!validateCheckoutForm()) return;
-  if (!document.getElementById('coAcceptTC').checked) { document.getElementById('tcWrapper').classList.add('error'); setTimeout(function() { document.getElementById('tcWrapper').classList.remove('error'); }, 600); showOrderError('You must accept the Official Sweepstakes Rules.'); return; }
+  if (!document.getElementById('coAcceptTC').checked) { document.getElementById('tcWrapper').classList.add('error'); setTimeout(function() { document.getElementById('tcWrapper').classList.remove('error'); }, 600); showOrderError('You must accept the Official Giveaway Rules.'); return; }
   document.getElementById('placeOrderBtn').disabled = true;
   document.getElementById('orderError').style.display = 'none';
   if (CONFIG.AUTHNET_API_LOGIN_ID && CONFIG.AUTHNET_CLIENT_KEY) tokenizeAndCharge(); else simulatePayment();

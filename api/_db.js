@@ -141,7 +141,7 @@ function getDefaultProducts() {
       fullDescription:'', prize:'PSA PA-15 16″ AR-15', prizeValue:699, prizeType:'Rifle — 5.56 NATO', entries:100, entriesRemaining:100,
       specs:{ prize:'PSA PA-15 AR-15', caliber:'5.56 NATO', prizeARV:'$699', stickerSize:'5″ × 2″', entries:'100 Max', material:'Premium Vinyl' } },
     { id:'henry-lever-action', name:'Henry Big Boy Sticker', price:14.99, category:'rifles', image:'', badge:'new', stock:75,
-      tagline:'Cowboy action meets modern sweepstakes.',
+      tagline:'Cowboy action meets modern giveaway.',
       description:'Limited edition FDC sticker — includes a free entry to win a Henry Big Boy Classic .44 Mag (ARV $899). 5″ die-cut vinyl.',
       fullDescription:'', prize:'Henry Big Boy Classic .44 Mag', prizeValue:899, prizeType:'Lever Action — .44 Mag', entries:75, entriesRemaining:75,
       specs:{ prize:'Henry Big Boy Classic', caliber:'.44 Magnum', prizeARV:'$899', stickerSize:'5″ × 2″', entries:'75 Max', material:'Die-Cut Vinyl' } },
