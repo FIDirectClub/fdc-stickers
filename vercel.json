@@ -35,6 +35,14 @@
     {
       "source": "/order",
       "destination": "/order.html"
+    },
+    {
+      "source": "/privacy",
+      "destination": "/privacy.html"
+    },
+    {
+      "source": "/returns",
+      "destination": "/returns.html"
     }
   ],
   "functions": {

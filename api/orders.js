@@ -64,8 +64,10 @@ module.exports = async function handler(req, res) {
       return res.status(200).json(result.rows.map(mapRow));
     }
 
-    // ── POST — create new order (no auth — called by charge.js or demo mode) ──
+    // ── POST — admin auth required (orders are created internally by charge.js via direct SQL) ──
     if (req.method === 'POST') {
+      var user = verifyAdmin(req);
+      if (!user) return res.status(401).json({ error: 'Unauthorized' });
       var body = req.body || {};
 
       if (!body.id || !body.customer || !body.shippingAddress || !body.items || body.total == null) {
