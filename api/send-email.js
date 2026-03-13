@@ -54,7 +54,7 @@ module.exports = async function handler(req, res) {
 '</div>' +
 '<div style="background:#ffffff;padding:40px 32px;">' +
   '<h2 style="margin:0 0 8px;font-size:28px;color:#1a1a1a;font-family:Impact,Arial Black,sans-serif;letter-spacing:2px;">ORDER CONFIRMED! ' + String.fromCodePoint(0x1F389) + '</h2>' +
-  '<p style="margin:0 0 24px;font-size:15px;color:#666;line-height:1.6;">Thanks for your order, <strong style="color:#1a1a1a;">' + esc(customer.firstName) + '</strong>! Your stickers are on the way and your free sweepstakes entries are locked in.</p>' +
+  '<p style="margin:0 0 24px;font-size:15px;color:#666;line-height:1.6;">Thanks for your order, <strong style="color:#1a1a1a;">' + esc(customer.firstName) + '</strong>! Your free sweepstakes entries are locked in. Stickers will be mailed out once all entries are sold and the winner is drawn.</p>' +
   '<div style="background:#f5f3ee;border:2px solid #1a1a1a;padding:16px 20px;margin-bottom:24px;text-align:center;">' +
     '<span style="font-size:11px;letter-spacing:3px;text-transform:uppercase;color:#666;">Order Number</span><br>' +
     '<strong style="font-size:20px;color:#1a1a1a;letter-spacing:2px;">' + esc(orderId) + '</strong>' +
@@ -98,7 +98,7 @@ module.exports = async function handler(req, res) {
 '</div></body></html>';
 
     const textEmail = 'ORDER CONFIRMED \u2014 ' + orderId +
-      '\n\nThanks for your order, ' + customer.firstName + '! Your stickers are on the way.' +
+      '\n\nThanks for your order, ' + customer.firstName + '! Your sweepstakes entries are locked in. Stickers will be mailed out once all entries are sold.' +
       '\n\nOrder: ' + orderId +
       '\nTotal: $' + (total || 0).toFixed(2) +
       '\nShipping: FREE' +

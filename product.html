@@ -736,7 +736,7 @@ function renderProduct(product) {
 
   var stockHtml = oos
     ? '<span class="stock-out">SOLD OUT</span>'
-    : (low ? '<span class="stock-low">Only ' + product.stock + ' remaining!</span>' : '<span class="stock-in">✓ ' + product.stock + ' remaining — Ships free</span>');
+    : (low ? '<span class="stock-low">Only ' + product.stock + ' remaining!</span>' : '<span class="stock-in">✓ ' + product.stock + ' remaining — Free shipping</span>');
 
   var specsHtml = '';
   if (product.specs) {
@@ -763,7 +763,7 @@ function renderProduct(product) {
         '</div>' +
         '<button class="pdp-add-btn" id="pdpAddBtn" onclick="addToCartPDP(\'' + product.id + '\', getQty())"' + (oos ? ' disabled' : '') + '>' + (oos ? 'SOLD OUT' : 'ADD TO CART — $' + product.price.toFixed(2) + '/ea') + '</button>' +
       '</div>' +
-      '<div class="shipping-note">🏆 Each sticker purchased includes a free sweepstakes entry for the prize firearm shown above. Ships free to lower 48. FL orders include 7.5% sales tax. No purchase necessary — <a href="/#rules" style="color:var(--gold);">see Official Rules</a>.</div>' +
+      '<div class="shipping-note">🏆 Each sticker purchased includes a free sweepstakes entry for the prize firearm shown above. Stickers ship free to the lower 48 once all entries are sold and the winner is drawn. FL orders include 7.5% sales tax. No purchase necessary — <a href="/#rules" style="color:var(--gold);">see Official Rules</a>.</div>' +
       '<div class="product-description"><h3>About This Giveaway</h3>' + (product.fullDescription || '<p>' + product.description + '</p>') + '</div>' +
       (specsHtml ? '<div class="product-specs">' + specsHtml + '</div>' : '') +
     '</div>' +
