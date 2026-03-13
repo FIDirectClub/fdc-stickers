@@ -2171,7 +2171,7 @@ function renderProducts(category) {
     var entriesHtml = oos
       ? '<span class="product-stock" style="color:var(--red);">SOLD OUT</span>'
       : (low ? '<span class="product-stock low">' + p.stock + ' left!</span>'
-             : '<span class="product-stock">' + p.stock + ' of ' + (p.entries||p.stock) + ' left</span>');
+             : '<span class="product-stock">' + p.stock + ' left</span>');
 
     // Entries progress bar
     var progressHtml = '<div style="width:100%;height:4px;background:rgba(0,0,0,0.08);margin-top:8px;">' +
